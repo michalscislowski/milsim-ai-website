@@ -561,7 +561,7 @@ section {
 /* Clickable markers */
 .marker {
   cursor: none;
-  z-index: 70;
+  z-index: 45;
   pointer-events: auto;
 }
 
@@ -1319,17 +1319,28 @@ section {
     z-index: 80;
   }
 
+  .tactical-hud-top,
+  .tactical-hud-bottom {
+    z-index: 85;
+    position: relative;
+  }
+
   /* Hero content text should be above markers but below HUD bars */
   .hero-content {
     z-index: 75;
   }
 
-  /* Player marker should be above HQ Active but below text */
-  .player-marker {
-    z-index: 72;
+  /* All markers should be below HUD bars */
+  .marker {
+    z-index: 68 !important;
   }
 
-  /* Geofences should be below text */
+  /* Player marker should be above other markers but below text */
+  .player-marker {
+    z-index: 70;
+  }
+
+  /* Geofences should be below markers */
   .geofence-svg {
     z-index: 65;
   }
