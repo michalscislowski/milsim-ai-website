@@ -10,6 +10,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover", // Enable safe area insets for notched devices and browser chrome
 };
 
 export default function RootLayout({ children }) {
