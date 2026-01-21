@@ -10,6 +10,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Detect mobile once at module level
+const getIsMobile = () => typeof window !== "undefined" && window.innerWidth <= 800;
+
 export default function Home() {
   const containerRef = useRef(null);
   const heroImgRef = useRef(null);
@@ -143,6 +146,25 @@ export default function Home() {
   // Selected marker state
   const [selectedMarker, setSelectedMarker] = useState(null);
 
+  // Mobile detection and locked viewport - prevents inconsistencies across browsers
+  const [isMobile, setIsMobile] = useState(false);
+  const [lockedViewportHeight, setLockedViewportHeight] = useState(null);
+
+  // Lock viewport dimensions on mount - this prevents issues with address bar changes
+  useEffect(() => {
+    const mobile = getIsMobile();
+    setIsMobile(mobile);
+
+    // Lock the viewport height at initialization
+    // Use visualViewport if available (more accurate), otherwise innerHeight
+    const height = window.visualViewport?.height || window.innerHeight;
+    setLockedViewportHeight(height);
+
+    // Set CSS custom property for consistent sizing across all elements
+    document.documentElement.style.setProperty('--locked-vh', `${height}px`);
+    document.documentElement.style.setProperty('--locked-vh-unit', `${height / 100}px`);
+  }, []);
+
   const handleMarkerClick = (markerId, e) => {
     e.stopPropagation();
     setSelectedMarker(selectedMarker === markerId ? null : markerId);
@@ -218,19 +240,24 @@ export default function Home() {
       const tacticalHud = tacticalHudRef.current;
       const customCursor = customCursorRef.current;
 
+      // LOCK all dimensions at initialization to prevent cross-browser inconsistencies
+      // These values won't change during the session, avoiding issues with address bar changes
+      const isMobileLocked = window.innerWidth <= 800;
+      const viewportHeightLocked = window.visualViewport?.height || window.innerHeight;
+      const viewportWidthLocked = window.innerWidth;
+
       const heroContentHeight = heroContent.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      const heroContentMovedistance = heroContentHeight - viewportHeight;
+      const heroContentMovedistance = heroContentHeight - viewportHeightLocked;
 
       const heroImgHeight = heroImg.offsetHeight;
-      const heroImgMovedistance = heroImgHeight - viewportHeight;
+      const heroImgMovedistance = heroImgHeight - viewportHeightLocked;
 
       const ease = (x) => x * x * (3 - 2 * x);
 
       ScrollTrigger.create({
         trigger: ".hero",
         start: "top top",
-        end: `+=${window.innerHeight * 6.02}px`,
+        end: `+=${viewportHeightLocked * 6.02}px`,
         pin: true,
         pinSpacing: true,
         scrub: 1,
@@ -270,8 +297,7 @@ export default function Home() {
           // Phase 5 (80-100%): Final state, CTA transition
 
           // Use larger mask scale on mobile (portrait) to ensure it's fully off-screen
-          const isMobile = window.innerWidth <= 800;
-          const maxMaskScale = isMobile ? 6 : 2.5;
+          const maxMaskScale = isMobileLocked ? 6 : 2.5;
           const maskScaleRange = maxMaskScale - 1;
 
           let heroMaskScale;
@@ -593,8 +619,8 @@ export default function Home() {
 
           // Calculate inset values (from edge position to converged position)
           // On mobile, only converge vertically (no horizontal inset)
-          const maxInsetX = isMobile ? 0 : window.innerWidth * 0.38;
-          const maxInsetY = window.innerHeight * 0.3;
+          const maxInsetX = isMobileLocked ? 0 : viewportWidthLocked * 0.38;
+          const maxInsetY = viewportHeightLocked * 0.3;
           const currentInsetX = cornerProgress * maxInsetX;
           const currentInsetY = cornerProgress * maxInsetY;
 
@@ -643,7 +669,7 @@ export default function Home() {
           let smartphoneMaskOpacity;
           let jaggedMaskOpacity;
 
-          if (isMobile) {
+          if (isMobileLocked) {
             // On mobile, keep jagged mask visible throughout
             smartphoneMaskOpacity = 0;
             jaggedMaskOpacity = 1;
@@ -709,7 +735,7 @@ export default function Home() {
           let tacticalHudRadius;
 
           // On mobile, match the jagged mask (75% width), on desktop use smartphone mask (50% width)
-          const hudBaseWidth = isMobile ? 75 : 50;
+          const hudBaseWidth = isMobileLocked ? 75 : 50;
           const hudExpandRange = 100 - hudBaseWidth;
 
           if (self.progress <= 0.48) {
@@ -717,19 +743,19 @@ export default function Home() {
             tacticalHudOpacity = 0;
             tacticalHudWidth = hudBaseWidth;
             tacticalHudHeight = null; // use aspect-ratio
-            tacticalHudRadius = isMobile ? 0 : 50;
+            tacticalHudRadius = isMobileLocked ? 0 : 50;
           } else if (self.progress <= 0.55) {
             // Fade in with mask
             tacticalHudOpacity = ease((self.progress - 0.48) / 0.07);
             tacticalHudWidth = hudBaseWidth;
             tacticalHudHeight = null;
-            tacticalHudRadius = isMobile ? 0 : 50;
+            tacticalHudRadius = isMobileLocked ? 0 : 50;
           } else if (self.progress <= 0.75) {
             // Stay in mask position until mask starts fading
             tacticalHudOpacity = 1;
             tacticalHudWidth = hudBaseWidth;
             tacticalHudHeight = null;
-            tacticalHudRadius = isMobile ? 0 : 50;
+            tacticalHudRadius = isMobileLocked ? 0 : 50;
           } else if (self.progress <= 0.82) {
             // Expand to full screen as mask disappears
             const expandProgress = ease((self.progress - 0.75) / 0.07);
@@ -737,9 +763,9 @@ export default function Home() {
             tacticalHudWidth = hudBaseWidth + hudExpandRange * expandProgress;
             // Start from mask height to 100vh
             const mobileHudHeight = 70;
-            const startHeight = isMobile ? mobileHudHeight : (hudBaseWidth * window.innerWidth / window.innerHeight) * (1050 / 1550);
+            const startHeight = isMobileLocked ? mobileHudHeight : (hudBaseWidth * viewportWidthLocked / viewportHeightLocked) * (1050 / 1550);
             tacticalHudHeight = startHeight + (100 - startHeight) * expandProgress;
-            tacticalHudRadius = isMobile ? 0 : 50 * (1 - expandProgress);
+            tacticalHudRadius = isMobileLocked ? 0 : 50 * (1 - expandProgress);
           } else {
             // Stay expanded for rest of scroll
             tacticalHudOpacity = 1;
@@ -749,26 +775,16 @@ export default function Home() {
           }
 
           // On mobile, use fixed height instead of aspect-ratio to match mask edges
-          const useAspectRatio = !isMobile && tacticalHudHeight === null;
+          const useAspectRatio = !isMobileLocked && tacticalHudHeight === null;
           const mobileHudHeight = 70; // Approximate height to match jagged mask opening
 
-          // On mobile, use visualViewport for accurate visible height (works in Brave)
-          // Fall back to innerHeight if visualViewport not available
-          const getVisualViewportHeight = () => {
-            if (window.visualViewport) {
-              return window.visualViewport.height;
-            }
-            return window.innerHeight;
-          };
-
           let hudHeightValue;
-          if (isMobile) {
-            const visualHeight = getVisualViewportHeight();
+          if (isMobileLocked) {
+            // Use locked viewport height for consistent sizing across browsers
             if (tacticalHudHeight !== null) {
-              // Convert percentage to pixels based on visual viewport
-              hudHeightValue = `${(tacticalHudHeight / 100) * visualHeight}px`;
+              hudHeightValue = `${(tacticalHudHeight / 100) * viewportHeightLocked}px`;
             } else {
-              hudHeightValue = `${(mobileHudHeight / 100) * visualHeight}px`;
+              hudHeightValue = `${(mobileHudHeight / 100) * viewportHeightLocked}px`;
             }
           } else {
             hudHeightValue = tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : "auto";
@@ -789,7 +805,8 @@ export default function Home() {
 
   return (
     <>
-      <ReactLenis root />
+      {/* Disable Lenis smooth scroll on mobile for consistent native scrolling */}
+      {!isMobile && <ReactLenis root />}
       {/* Custom Cursor */}
       <div className="custom-cursor" ref={customCursorRef}>
         <svg className="cursor-progress-ring" viewBox="0 0 100 100">
