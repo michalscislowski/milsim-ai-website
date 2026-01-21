@@ -19,11 +19,19 @@
   display: none;
 }
 
+html {
+  /* Prevent pull-to-refresh and overscroll on mobile */
+  overscroll-behavior: none;
+}
+
 body {
   font-family: "DM Sans", sans-serif;
   background-color: var(--dark);
   color: var(--light);
   cursor: none;
+  /* Prevent pinch-zoom and double-tap zoom on mobile */
+  touch-action: pan-y;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Custom Cursor */
@@ -884,6 +892,10 @@ section {
   z-index: 99;
   --corner-inset-x: 0px;
   --corner-inset-y: 0px;
+  /* Force GPU compositing to prevent mobile scroll jank */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .hud-corner {
@@ -928,13 +940,17 @@ section {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
   width: min(45vw, 40vh);
   height: min(35vw, 35vh);
   z-index: 98;
   pointer-events: none;
   opacity: 0;
   --geofence-progress: 0;
+  /* Force GPU compositing to prevent mobile scroll jank */
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .geofence-shape {
@@ -986,13 +1002,17 @@ section {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   opacity: 0;
   z-index: 45;
+  /* Force GPU compositing to prevent mobile scroll jank */
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   pointer-events: none;
 }
 
@@ -1033,7 +1053,7 @@ section {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1045,6 +1065,9 @@ section {
   --hud-radius: 50px;
   width: var(--hud-width);
   aspect-ratio: var(--hud-aspect);
+  /* Force GPU compositing to prevent mobile scroll jank */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .tactical-hud-top,

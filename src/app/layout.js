@@ -1,8 +1,15 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Advanced Scroll Animations | Codegrid",
-  description: "A collection of advanced scroll-based animations built with GSAP and Next.js",
+  title: "MILSIM.AI | Command Your Battlefield",
+  description: "Tactical airsoft community platform with real-time battlefield awareness",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({ children }) {
