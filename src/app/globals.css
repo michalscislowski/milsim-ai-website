@@ -141,6 +141,10 @@ section {
   height: auto;
   min-height: 100svh;
   padding: 4rem 2rem;
+  /* High z-index to cover fixed elements (geofence, markers) when scrolling past hero */
+  position: relative;
+  z-index: 150;
+  background-color: var(--dark);
 }
 
 /* Animation Navigation */

@@ -564,7 +564,7 @@ export default function Home() {
           });
 
           // Second Geofence (Enemy zone) - draws in red after OBJ Charlie (~92%)
-          // Hidden at 99% to prevent visual glitch when leaving pinned section on mobile
+          // Stays visible - outro section covers it with higher z-index
           let geofence2Progress;
           let geofence2Opacity;
           if (self.progress <= 0.92) {
@@ -574,14 +574,10 @@ export default function Home() {
             // Fade in
             geofence2Progress = 0;
             geofence2Opacity = ease((self.progress - 0.92) / 0.02);
-          } else if (self.progress <= 0.99) {
-            // Draw the polygon and stay visible
-            geofence2Progress = ease((self.progress - 0.94) / 0.05);
-            geofence2Opacity = 1;
           } else {
-            // Hide just before leaving pinned section to prevent floating on mobile
-            geofence2Progress = 1;
-            geofence2Opacity = 0;
+            // Draw the polygon and stay visible
+            geofence2Progress = Math.min(1, ease((self.progress - 0.94) / 0.06));
+            geofence2Opacity = 1;
           }
 
           gsap.set(geofence2, {
@@ -590,16 +586,14 @@ export default function Home() {
           });
 
           // Marker 10 (Enemy HQ) - appears in center of red geofence (~94%)
-          // Hidden at 99% to prevent floating when leaving pinned section on mobile
+          // Stays visible - outro section covers it with higher z-index
           let marker10Opacity;
           if (self.progress <= 0.94) {
             marker10Opacity = 0;
           } else if (self.progress <= 0.97) {
             marker10Opacity = ease((self.progress - 0.94) / 0.03);
-          } else if (self.progress <= 0.99) {
-            marker10Opacity = 1;
           } else {
-            marker10Opacity = 0;
+            marker10Opacity = 1;
           }
 
           // Marker 10 appears at progress ~0.94, when heroImgProgress ≈ 0.9
