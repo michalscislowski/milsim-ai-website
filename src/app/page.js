@@ -794,13 +794,15 @@ export default function Home() {
           const mobileHudHeight = 70; // Approximate height to match jagged mask opening
 
           let hudHeightValue;
-          // Use vh for both mobile and desktop - works correctly on Safari/Chrome
-          if (tacticalHudHeight !== null) {
-            hudHeightValue = `${tacticalHudHeight}vh`;
-          } else if (isMobileLocked) {
-            hudHeightValue = `${mobileHudHeight}vh`;
+          // Use svh on mobile to stay within visible viewport, vh on desktop
+          if (isMobileLocked) {
+            if (tacticalHudHeight !== null) {
+              hudHeightValue = `${tacticalHudHeight}svh`;
+            } else {
+              hudHeightValue = `${mobileHudHeight}svh`;
+            }
           } else {
-            hudHeightValue = "auto";
+            hudHeightValue = tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : "auto";
           }
 
           gsap.set(tacticalHud, {
