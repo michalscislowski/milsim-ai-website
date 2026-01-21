@@ -1234,7 +1234,18 @@ section {
 }
 
 @media (max-width: 800px) {
+  /*
+   * Use svh (small viewport height) on mobile to stay within visible viewport.
+   * svh represents viewport with browser UI visible, so elements won't be
+   * hidden under browser bars.
+   */
+
+  section.hero {
+    height: 100svh;
+  }
+
   .hero-mask {
+    height: 100svh;
     mask: linear-gradient(var(--light), var(--light)),
       url("/mask.svg") center/75% no-repeat;
     -webkit-mask: linear-gradient(var(--light), var(--light)),
@@ -1244,6 +1255,7 @@ section {
   }
 
   .hero-mask--smartphone {
+    height: 100svh;
     mask: linear-gradient(var(--light), var(--light)),
       url("/smartphone-mask.svg") center/75% no-repeat;
     -webkit-mask: linear-gradient(var(--light), var(--light)),
@@ -1251,88 +1263,98 @@ section {
   }
 
   .hero-grid-overlay {
+    top: 50svh;
     width: 100%;
   }
 
-  /* Mobile marker positions using vh */
+  /* Mobile marker positions using svh */
   .marker-1 {
-    top: 52.5vh;
+    top: 52.5svh;
     left: 50vw;
   }
 
   .marker-2 {
-    top: 45vh;
+    top: 45svh;
     left: 70vw;
   }
 
   .marker-3 {
-    top: 20vh;
+    top: 20svh;
     left: 20vw;
   }
 
   .marker-4 {
-    top: 42vh;
+    top: 42svh;
     left: 35vw;
   }
 
   .marker-5 {
-    top: 35vh;
+    top: 35svh;
     left: 55vw;
   }
 
   .marker-6 {
-    top: 28vh;
+    top: 28svh;
     left: 45vw;
   }
 
   .marker-7 {
-    top: 24vh;
+    top: 24svh;
     left: 35vw;
   }
 
   .marker-8 {
-    top: 17vh;
+    top: 17svh;
     left: 25vw;
   }
 
   .marker-9 {
-    top: 4vh;
+    top: 4svh;
     left: 55vw;
   }
 
   .marker-10 {
-    top: 28vh;
+    top: 28svh;
     left: 75vw;
   }
 
   .geofence-svg {
+    top: 50svh;
     z-index: 65;
   }
 
   .geofence-svg--enemy {
-    top: 38vh;
+    top: 38svh;
     left: 70%;
   }
 
   .player-marker {
+    top: 50svh;
     z-index: 70;
   }
 
   .tactical-hud {
+    top: 50svh;
     z-index: 80;
   }
 
   .hero-scroll-progress-bar {
+    top: 50svh;
     right: 1rem;
   }
 
+  .hero-content {
+    height: 602svh;
+  }
+
   .hero-content .hero-content-block {
+    height: 100svh;
     padding: 1.5rem;
   }
 
   /* First block has text at bottom - add padding to clear browser bar */
   .hero-content .hero-content-block:nth-child(1) {
-    padding-bottom: 6rem;
+    padding-bottom: 4rem;
   }
 
   .hero-content .hero-content-copy {
