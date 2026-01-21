@@ -751,13 +751,33 @@ export default function Home() {
           // On mobile, use fixed height instead of aspect-ratio to match mask edges
           const useAspectRatio = !isMobile && tacticalHudHeight === null;
           const mobileHudHeight = 70; // Approximate height to match jagged mask opening
-          // Use svh on mobile to account for address bar, vh on desktop
-          const heightUnit = isMobile ? "svh" : "vh";
+
+          // On mobile, use visualViewport for accurate visible height (works in Brave)
+          // Fall back to innerHeight if visualViewport not available
+          const getVisualViewportHeight = () => {
+            if (window.visualViewport) {
+              return window.visualViewport.height;
+            }
+            return window.innerHeight;
+          };
+
+          let hudHeightValue;
+          if (isMobile) {
+            const visualHeight = getVisualViewportHeight();
+            if (tacticalHudHeight !== null) {
+              // Convert percentage to pixels based on visual viewport
+              hudHeightValue = `${(tacticalHudHeight / 100) * visualHeight}px`;
+            } else {
+              hudHeightValue = `${(mobileHudHeight / 100) * visualHeight}px`;
+            }
+          } else {
+            hudHeightValue = tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : "auto";
+          }
 
           gsap.set(tacticalHud, {
             opacity: tacticalHudOpacity,
             width: `${tacticalHudWidth}%`,
-            height: tacticalHudHeight !== null ? `${tacticalHudHeight}${heightUnit}` : (isMobile ? `${mobileHudHeight}svh` : "auto"),
+            height: hudHeightValue,
             aspectRatio: useAspectRatio ? "1550 / 1050" : "auto",
             "--hud-radius": `${tacticalHudRadius}px`,
           });
