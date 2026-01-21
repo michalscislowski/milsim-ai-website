@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 
 import { ReactLenis } from "lenis/react";
@@ -34,6 +34,163 @@ export default function Home() {
   const geofenceRef = useRef(null);
   const playerMarkerRef = useRef(null);
   const tacticalHudRef = useRef(null);
+  const customCursorRef = useRef(null);
+
+  // Marker data for CoT popups
+  const markerData = {
+    1: {
+      type: "HQ",
+      name: "HQ Active",
+      callsign: "COMMAND-1",
+      coords: "51.5074° N, 0.1278° W",
+      mgrs: "30U XC 99287 11934",
+      status: "Operational",
+      frequency: "148.500 MHz",
+      personnel: 12,
+    },
+    2: {
+      type: "Team",
+      name: "Alpha Squad",
+      callsign: "ALPHA-6",
+      coords: "51.5082° N, 0.1265° W",
+      mgrs: "30U XC 99312 11956",
+      status: "Moving",
+      members: ["Alpha-1", "Alpha-2", "Alpha-3", "Alpha-4"],
+      heading: "045°",
+    },
+    3: {
+      type: "Objective",
+      name: "OBJ Bravo",
+      designation: "BRAVO",
+      coords: "51.5091° N, 0.1301° W",
+      mgrs: "30U XC 99245 11978",
+      status: "Contested",
+      priority: "High",
+      timeLimit: "15:00",
+    },
+    4: {
+      type: "Team",
+      name: "Delta Team",
+      callsign: "DELTA-6",
+      coords: "51.5078° N, 0.1290° W",
+      mgrs: "30U XC 99267 11945",
+      status: "Holding",
+      members: ["Delta-1", "Delta-2", "Delta-3"],
+      heading: "270°",
+    },
+    5: {
+      type: "Team",
+      name: "Bravo Team",
+      callsign: "BRAVO-6",
+      coords: "51.5085° N, 0.1272° W",
+      mgrs: "30U XC 99298 11962",
+      status: "Engaged",
+      members: ["Bravo-1", "Bravo-2", "Bravo-3", "Bravo-4"],
+      heading: "180°",
+    },
+    6: {
+      type: "Team",
+      name: "Charlie Team",
+      callsign: "CHARLIE-6",
+      coords: "51.5088° N, 0.1285° W",
+      mgrs: "30U XC 99278 11970",
+      status: "Moving",
+      members: ["Charlie-1", "Charlie-2", "Charlie-3"],
+      heading: "090°",
+    },
+    7: {
+      type: "Team",
+      name: "Echo Team",
+      callsign: "ECHO-6",
+      coords: "51.5095° N, 0.1295° W",
+      mgrs: "30U XC 99258 11985",
+      status: "Standby",
+      members: ["Echo-1", "Echo-2"],
+      heading: "315°",
+    },
+    8: {
+      type: "Team",
+      name: "Foxtrot Team",
+      callsign: "FOXTROT-6",
+      coords: "51.5098° N, 0.1310° W",
+      mgrs: "30U XC 99235 11992",
+      status: "Moving",
+      members: ["Foxtrot-1", "Foxtrot-2", "Foxtrot-3"],
+      heading: "000°",
+    },
+    9: {
+      type: "Objective",
+      name: "OBJ Charlie",
+      designation: "CHARLIE",
+      coords: "51.5102° N, 0.1260° W",
+      mgrs: "30U XC 99320 12001",
+      status: "Secure",
+      priority: "Medium",
+      timeLimit: "20:00",
+    },
+    10: {
+      type: "HQ",
+      name: "Enemy HQ",
+      callsign: "HOSTILE-1",
+      coords: "51.5105° N, 0.1245° W",
+      mgrs: "30U XC 99342 12008",
+      status: "Active",
+      threat: "High",
+      personnel: "Unknown",
+    },
+  };
+
+  // Selected marker state
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
+  const handleMarkerClick = (markerId, e) => {
+    e.stopPropagation();
+    setSelectedMarker(selectedMarker === markerId ? null : markerId);
+  };
+
+  const closePopup = () => {
+    setSelectedMarker(null);
+  };
+
+  // Real-time UTC clock state
+  const [utcTime, setUtcTime] = useState("00:00:00");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = String(now.getUTCHours()).padStart(2, "0");
+      const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+      const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+      setUtcTime(`${hours}:${minutes}:${seconds}`);
+    };
+
+    // Update immediately on mount
+    updateTime();
+
+    // Update every second
+    const interval = setInterval(updateTime, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Custom cursor mouse tracking
+  useEffect(() => {
+    const cursor = customCursorRef.current;
+    if (!cursor) return;
+
+    const moveCursor = (e) => {
+      gsap.to(cursor, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.15,
+        ease: "power2.out",
+      });
+    };
+
+    window.addEventListener("mousemove", moveCursor);
+
+    return () => window.removeEventListener("mousemove", moveCursor);
+  }, []);
 
   useGSAP(
     () => {
@@ -59,6 +216,7 @@ export default function Home() {
       const geofence = geofenceRef.current;
       const playerMarker = playerMarkerRef.current;
       const tacticalHud = tacticalHudRef.current;
+      const customCursor = customCursorRef.current;
 
       const heroContentHeight = heroContent.offsetHeight;
       const viewportHeight = window.innerHeight;
@@ -72,13 +230,17 @@ export default function Home() {
       ScrollTrigger.create({
         trigger: ".hero",
         start: "top top",
-        end: `+=${window.innerHeight * 6}px`,
+        end: `+=${window.innerHeight * 6.02}px`,
         pin: true,
         pinSpacing: true,
         scrub: 1,
         onUpdate: (self) => {
           gsap.set(progressBar, {
             "--progress": self.progress,
+          });
+
+          gsap.set(customCursor, {
+            "--cursor-progress": self.progress,
           });
 
           gsap.set(heroContent, {
@@ -580,7 +742,15 @@ export default function Home() {
   return (
     <>
       <ReactLenis root />
-      <div ref={containerRef}>
+      {/* Custom Cursor */}
+      <div className="custom-cursor" ref={customCursorRef}>
+        <svg className="cursor-progress-ring" viewBox="0 0 100 100">
+          <circle className="cursor-progress-bg" cx="50" cy="50" r="45" />
+          <circle className="cursor-progress-fill" cx="50" cy="50" r="45" />
+        </svg>
+        <span className="cursor-text">SCROLL</span>
+      </div>
+      <div ref={containerRef} onClick={closePopup}>
         <section className="hero">
           {/* HUD Corner Brackets */}
           <div className="hud-corners" ref={hudCornersRef}>
@@ -634,55 +804,148 @@ export default function Home() {
             <img src="/grid-overlay.svg" alt="" />
           </div>
 
-          <div className="marker marker-1" ref={marker1Ref}>
+          <div className={`marker marker-1 ${selectedMarker === 1 ? 'marker--selected' : ''}`} ref={marker1Ref} onClick={(e) => handleMarkerClick(1, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">HQ Active</p>
           </div>
 
-          <div className="marker marker-2" ref={marker2Ref}>
+          <div className={`marker marker-2 ${selectedMarker === 2 ? 'marker--selected' : ''}`} ref={marker2Ref} onClick={(e) => handleMarkerClick(2, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Alpha Squad</p>
           </div>
 
-          <div className="marker marker-4" ref={marker4Ref}>
+          <div className={`marker marker-4 ${selectedMarker === 4 ? 'marker--selected' : ''}`} ref={marker4Ref} onClick={(e) => handleMarkerClick(4, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Delta Team</p>
           </div>
 
-          <div className="marker marker-5" ref={marker5Ref}>
+          <div className={`marker marker-5 ${selectedMarker === 5 ? 'marker--selected' : ''}`} ref={marker5Ref} onClick={(e) => handleMarkerClick(5, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Bravo Team</p>
           </div>
 
-          <div className="marker marker-6" ref={marker6Ref}>
+          <div className={`marker marker-6 ${selectedMarker === 6 ? 'marker--selected' : ''}`} ref={marker6Ref} onClick={(e) => handleMarkerClick(6, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Charlie Team</p>
           </div>
 
-          <div className="marker marker-7" ref={marker7Ref}>
+          <div className={`marker marker-7 ${selectedMarker === 7 ? 'marker--selected' : ''}`} ref={marker7Ref} onClick={(e) => handleMarkerClick(7, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Echo Team</p>
           </div>
 
-          <div className="marker marker-8" ref={marker8Ref}>
+          <div className={`marker marker-8 ${selectedMarker === 8 ? 'marker--selected' : ''}`} ref={marker8Ref} onClick={(e) => handleMarkerClick(8, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Foxtrot Team</p>
           </div>
 
-          <div className="marker marker-3" ref={marker3Ref}>
+          <div className={`marker marker-3 ${selectedMarker === 3 ? 'marker--selected' : ''}`} ref={marker3Ref} onClick={(e) => handleMarkerClick(3, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">OBJ Bravo</p>
           </div>
 
-          <div className="marker marker-9" ref={marker9Ref}>
+          <div className={`marker marker-9 ${selectedMarker === 9 ? 'marker--selected' : ''}`} ref={marker9Ref} onClick={(e) => handleMarkerClick(9, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">OBJ Charlie</p>
           </div>
 
-          <div className="marker marker-10" ref={marker10Ref}>
+          <div className={`marker marker-10 ${selectedMarker === 10 ? 'marker--selected' : ''}`} ref={marker10Ref} onClick={(e) => handleMarkerClick(10, e)}>
             <span className="marker-icon"></span>
             <p className="marker-label">Enemy HQ</p>
           </div>
+
+          {/* CoT Popup */}
+          {selectedMarker && (
+            <div className="cot-popup" onClick={(e) => e.stopPropagation()}>
+              <div className="cot-popup-header">
+                <span className={`cot-popup-type cot-popup-type--${markerData[selectedMarker].type.toLowerCase()}`}>
+                  {markerData[selectedMarker].type}
+                </span>
+                <h3 className="cot-popup-title">{markerData[selectedMarker].name}</h3>
+                <button className="cot-popup-close" onClick={closePopup}>×</button>
+              </div>
+
+              <div className="cot-popup-content">
+                <div className="cot-popup-section">
+                  <span className="cot-popup-label">Callsign</span>
+                  <span className="cot-popup-value">{markerData[selectedMarker].callsign}</span>
+                </div>
+
+                <div className="cot-popup-section">
+                  <span className="cot-popup-label">Coordinates</span>
+                  <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].coords}</span>
+                </div>
+
+                <div className="cot-popup-section">
+                  <span className="cot-popup-label">MGRS</span>
+                  <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].mgrs}</span>
+                </div>
+
+                <div className="cot-popup-section">
+                  <span className="cot-popup-label">Status</span>
+                  <span className={`cot-popup-value cot-popup-status cot-popup-status--${markerData[selectedMarker].status.toLowerCase()}`}>
+                    {markerData[selectedMarker].status}
+                  </span>
+                </div>
+
+                {markerData[selectedMarker].members && (
+                  <div className="cot-popup-section">
+                    <span className="cot-popup-label">Members</span>
+                    <span className="cot-popup-value">{markerData[selectedMarker].members.join(", ")}</span>
+                  </div>
+                )}
+
+                {markerData[selectedMarker].heading && (
+                  <div className="cot-popup-section">
+                    <span className="cot-popup-label">Heading</span>
+                    <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].heading}</span>
+                  </div>
+                )}
+
+                {markerData[selectedMarker].priority && (
+                  <div className="cot-popup-section">
+                    <span className="cot-popup-label">Priority</span>
+                    <span className={`cot-popup-value cot-popup-priority cot-popup-priority--${markerData[selectedMarker].priority.toLowerCase()}`}>
+                      {markerData[selectedMarker].priority}
+                    </span>
+                  </div>
+                )}
+
+                {markerData[selectedMarker].timeLimit && (
+                  <div className="cot-popup-section">
+                    <span className="cot-popup-label">Time Limit</span>
+                    <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].timeLimit}</span>
+                  </div>
+                )}
+
+                {markerData[selectedMarker].frequency && (
+                  <div className="cot-popup-section">
+                    <span className="cot-popup-label">Frequency</span>
+                    <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].frequency}</span>
+                  </div>
+                )}
+
+                {markerData[selectedMarker].threat && (
+                  <div className="cot-popup-section">
+                    <span className="cot-popup-label">Threat Level</span>
+                    <span className="cot-popup-value cot-popup-threat">{markerData[selectedMarker].threat}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="cot-popup-actions">
+                <button className="cot-action cot-action--primary">
+                  <span>Navigate To</span>
+                </button>
+                <button className="cot-action">
+                  <span>Share CoT</span>
+                </button>
+                <button className="cot-action">
+                  <span>Set Waypoint</span>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Player position marker */}
           <div className="player-marker" ref={playerMarkerRef}>
@@ -701,8 +964,8 @@ export default function Home() {
                 <span className="tactical-hud-value">OP Nightfall</span>
               </div>
               <div className="tactical-hud-item tactical-hud-timer">
-                <span className="tactical-hud-label">Time</span>
-                <span className="tactical-hud-value">01:24:38</span>
+                <span className="tactical-hud-label">UTC</span>
+                <span className="tactical-hud-value">{utcTime}</span>
               </div>
               <div className="tactical-hud-item">
                 <span className="tactical-hud-label">Team</span>
