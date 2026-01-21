@@ -123,14 +123,12 @@ h2 {
 .hero-content h1,
 .hero-content h2 {
   display: inline-block;
-}
-
-/* Hide headings until typewriter triggers (except first one) */
-.hero-content h2 {
   opacity: 0;
 }
 
+.hero-content h1.typewriter,
 .hero-content h2.typewriter,
+.hero-content h1.typewriter--no-cursor,
 .hero-content h2.typewriter--no-cursor {
   opacity: 1;
 }

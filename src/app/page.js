@@ -219,6 +219,23 @@ export default function Home() {
     return () => window.removeEventListener("mousemove", moveCursor);
   }, []);
 
+  // Trigger first heading typewriter animation on page load
+  useEffect(() => {
+    const heading = heading1Ref.current;
+    if (heading) {
+      // Small delay to ensure page is rendered
+      setTimeout(() => {
+        headingsAnimated.current[0] = true;
+        heading.classList.add("typewriter");
+        // Remove cursor after animation completes
+        setTimeout(() => {
+          heading.classList.remove("typewriter");
+          heading.classList.add("typewriter--no-cursor");
+        }, 1200);
+      }, 100);
+    }
+  }, []);
+
   useGSAP(
     () => {
       const heroContent = heroContentRef.current;
@@ -832,7 +849,7 @@ export default function Home() {
             heading5Ref,
             heading6Ref,
           ];
-          const triggerPoints = [0.02, 0.17, 0.33, 0.50, 0.67, 0.83];
+          const triggerPoints = [0.02, 0.10, 0.33, 0.50, 0.67, 0.83];
 
           triggerPoints.forEach((trigger, index) => {
             if (self.progress >= trigger && !headingsAnimated.current[index]) {
