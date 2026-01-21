@@ -1,0 +1,87 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tactical Grid Overlay for MILSIM.AI -->
+
+  <!-- Main grid lines - Vertical -->
+  <line x1="0" y1="0" x2="0" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="150" y1="0" x2="150" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="300" y1="0" x2="300" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="450" y1="0" x2="450" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="600" y1="0" x2="600" y2="800" stroke="white" stroke-width="2" opacity="0.5"/>
+  <line x1="750" y1="0" x2="750" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="900" y1="0" x2="900" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="1050" y1="0" x2="1050" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="1200" y1="0" x2="1200" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+
+  <!-- Main grid lines - Horizontal -->
+  <line x1="0" y1="0" x2="1200" y2="0" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="100" x2="1200" y2="100" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="200" x2="1200" y2="200" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="300" x2="1200" y2="300" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="400" x2="1200" y2="400" stroke="white" stroke-width="2" opacity="0.5"/>
+  <line x1="0" y1="500" x2="1200" y2="500" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="600" x2="1200" y2="600" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="700" x2="1200" y2="700" stroke="white" stroke-width="1" opacity="0.3"/>
+  <line x1="0" y1="800" x2="1200" y2="800" stroke="white" stroke-width="1" opacity="0.3"/>
+
+  <!-- Sub-grid lines - Vertical (finer detail) -->
+  <line x1="75" y1="0" x2="75" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="225" y1="0" x2="225" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="375" y1="0" x2="375" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="525" y1="0" x2="525" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="675" y1="0" x2="675" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="825" y1="0" x2="825" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="975" y1="0" x2="975" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="1125" y1="0" x2="1125" y2="800" stroke="white" stroke-width="0.5" opacity="0.15"/>
+
+  <!-- Sub-grid lines - Horizontal (finer detail) -->
+  <line x1="0" y1="50" x2="1200" y2="50" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="150" x2="1200" y2="150" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="250" x2="1200" y2="250" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="350" x2="1200" y2="350" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="450" x2="1200" y2="450" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="550" x2="1200" y2="550" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="650" x2="1200" y2="650" stroke="white" stroke-width="0.5" opacity="0.15"/>
+  <line x1="0" y1="750" x2="1200" y2="750" stroke="white" stroke-width="0.5" opacity="0.15"/>
+
+  <!-- Coordinate labels - Top (A-H) -->
+  <text x="75" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">A</text>
+  <text x="225" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">B</text>
+  <text x="375" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">C</text>
+  <text x="525" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">D</text>
+  <text x="675" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">E</text>
+  <text x="825" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">F</text>
+  <text x="975" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">G</text>
+  <text x="1125" y="25" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">H</text>
+
+  <!-- Coordinate labels - Left (1-8) -->
+  <text x="15" y="55" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">1</text>
+  <text x="15" y="155" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">2</text>
+  <text x="15" y="255" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">3</text>
+  <text x="15" y="355" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">4</text>
+  <text x="15" y="455" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">5</text>
+  <text x="15" y="555" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">6</text>
+  <text x="15" y="655" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">7</text>
+  <text x="15" y="755" fill="white" font-family="monospace" font-size="14" text-anchor="middle" opacity="0.6">8</text>
+
+  <!-- Center crosshair accent -->
+  <line x1="590" y1="400" x2="610" y2="400" stroke="white" stroke-width="2" opacity="0.8"/>
+  <line x1="600" y1="390" x2="600" y2="410" stroke="white" stroke-width="2" opacity="0.8"/>
+
+  <!-- Corner brackets -->
+  <path d="M 30 30 L 30 60 M 30 30 L 60 30" stroke="white" stroke-width="2" opacity="0.5"/>
+  <path d="M 1170 30 L 1170 60 M 1170 30 L 1140 30" stroke="white" stroke-width="2" opacity="0.5"/>
+  <path d="M 30 770 L 30 740 M 30 770 L 60 770" stroke="white" stroke-width="2" opacity="0.5"/>
+  <path d="M 1170 770 L 1170 740 M 1170 770 L 1140 770" stroke="white" stroke-width="2" opacity="0.5"/>
+
+  <!-- Scale markers on edges -->
+  <rect x="148" y="795" width="4" height="5" fill="white" opacity="0.4"/>
+  <rect x="298" y="795" width="4" height="5" fill="white" opacity="0.4"/>
+  <rect x="448" y="795" width="4" height="5" fill="white" opacity="0.4"/>
+  <rect x="598" y="795" width="4" height="5" fill="white" opacity="0.6"/>
+  <rect x="748" y="795" width="4" height="5" fill="white" opacity="0.4"/>
+  <rect x="898" y="795" width="4" height="5" fill="white" opacity="0.4"/>
+  <rect x="1048" y="795" width="4" height="5" fill="white" opacity="0.4"/>
+
+  <!-- Distance indicator text -->
+  <text x="600" y="790" fill="white" font-family="monospace" font-size="10" text-anchor="middle" opacity="0.5">100m</text>
+</svg>

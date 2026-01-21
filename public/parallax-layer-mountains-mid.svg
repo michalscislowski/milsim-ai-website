@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 500" preserveAspectRatio="xMidYMax slice">
+  <path d="M0 500V350l150-80 200 50 250-150 180 100 300-180 200 130 350-120 290 100V500z" fill="#0f3460"/>
+  <path d="M0 500V380l280-60 150 40 320-100 200 60 250-80 300 70 220-50 200 40V500z" fill="#1a1a2e" opacity="0.6"/>
+</svg>
