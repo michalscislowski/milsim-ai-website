@@ -621,9 +621,9 @@ export default function Home() {
           } else if (clampedProgress <= 0.75) {
             // Stay converged during tactical phases
             cornerProgress = 1;
-          } else if (clampedProgress <= 0.85) {
-            // Expand back out
-            cornerProgress = 1 - ease((clampedProgress - 0.75) / 0.1);
+          } else if (clampedProgress <= 0.82) {
+            // Expand back out - synced with tactical HUD expansion (75% to 82%)
+            cornerProgress = 1 - ease((clampedProgress - 0.75) / 0.07);
           } else {
             cornerProgress = 0;
           }
