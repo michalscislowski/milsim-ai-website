@@ -227,11 +227,11 @@ export default function Home() {
       setTimeout(() => {
         headingsAnimated.current[0] = true;
         heading.classList.add("typewriter");
-        // Remove cursor after animation completes
+        // Remove cursor after animation completes (1.2s animation + 200ms buffer)
         setTimeout(() => {
           heading.classList.remove("typewriter");
           heading.classList.add("typewriter--no-cursor");
-        }, 1200);
+        }, 1400);
       }, 100);
     }
   }, []);
@@ -857,11 +857,11 @@ export default function Home() {
               const heading = headingRefs[index].current;
               if (heading) {
                 heading.classList.add("typewriter");
-                // Remove cursor after animation completes
+                // Remove cursor after animation completes (1.2s animation + 200ms buffer)
                 setTimeout(() => {
                   heading.classList.remove("typewriter");
                   heading.classList.add("typewriter--no-cursor");
-                }, 1500);
+                }, 1400);
               }
             }
           });
