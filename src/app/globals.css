@@ -38,11 +38,6 @@ body {
   /* Prevent layout shift from address bar */
   min-height: 100%;
   overflow-x: hidden;
-  /* Account for browser chrome (address bar, bottom bar) using safe area insets */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
 }
 
 /* Custom Cursor */
@@ -134,8 +129,8 @@ section {
   width: 100%;
   /* Fallback chain for browser compatibility: dvh > svh > vh */
   height: 100vh;
-  height: 100svh;
   height: 100dvh;
+  height: 100svh;
   background-color: var(--dark);
   overflow: hidden;
 }
@@ -148,8 +143,8 @@ section {
   gap: 3rem;
   height: auto;
   min-height: 100vh;
-  min-height: 100svh;
   min-height: 100dvh;
+  min-height: 100svh;
   padding: 4rem 2rem;
   /* High z-index to cover fixed elements (geofence, markers) when scrolling past hero */
   position: relative;
@@ -260,8 +255,8 @@ section {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100svh;
   height: 100dvh;
+  height: 100svh;
   background-color: var(--dark);
   mask: linear-gradient(var(--light), var(--light)),
     url("/mask.svg") center/50% no-repeat;
@@ -837,8 +832,8 @@ section {
 .hero-content .hero-content-block {
   width: 100%;
   height: 100vh;
-  height: 100svh;
   height: 100dvh;
+  height: 100svh;
   padding: 4rem;
   display: flex;
 }
@@ -898,8 +893,8 @@ section {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100svh;
   height: 100dvh;
+  height: 100svh;
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -919,8 +914,8 @@ section {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100svh;
   height: 100dvh;
+  height: 100svh;
   pointer-events: none;
   z-index: 40; /* Below tactical HUD bars so corners don't overlap during expansion */
   --corner-inset-x: 0px;
