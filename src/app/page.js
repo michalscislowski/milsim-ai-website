@@ -751,11 +751,13 @@ export default function Home() {
           // On mobile, use fixed height instead of aspect-ratio to match mask edges
           const useAspectRatio = !isMobile && tacticalHudHeight === null;
           const mobileHudHeight = 70; // Approximate height to match jagged mask opening
+          // Use svh on mobile to account for address bar, vh on desktop
+          const heightUnit = isMobile ? "svh" : "vh";
 
           gsap.set(tacticalHud, {
             opacity: tacticalHudOpacity,
             width: `${tacticalHudWidth}%`,
-            height: tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : (isMobile ? `${mobileHudHeight}vh` : "auto"),
+            height: tacticalHudHeight !== null ? `${tacticalHudHeight}${heightUnit}` : (isMobile ? `${mobileHudHeight}svh` : "auto"),
             aspectRatio: useAspectRatio ? "1550 / 1050" : "auto",
             "--hud-radius": `${tacticalHudRadius}px`,
           });
