@@ -267,17 +267,23 @@ export default function Home() {
           // Phase 3 (40-70%): Core features revealed, markers appear sequentially
           // Phase 4 (70-80%): Mask closes, resaturation
           // Phase 5 (80-100%): Final state, CTA transition
+
+          // Use larger mask scale on mobile (portrait) to ensure it's fully off-screen
+          const isMobile = window.innerWidth <= 800;
+          const maxMaskScale = isMobile ? 6 : 2.5;
+          const maskScaleRange = maxMaskScale - 1;
+
           let heroMaskScale;
           let heroImgSaturation;
           let heroImgOverlayOpacity;
 
           if (self.progress <= 0.3) {
-            heroMaskScale = 2.5;
+            heroMaskScale = maxMaskScale;
             heroImgSaturation = 1;
             heroImgOverlayOpacity = 0.35;
           } else if (self.progress <= 0.4) {
             const phaseProgress = ease((self.progress - 0.3) / 0.1);
-            heroMaskScale = 2.5 - phaseProgress * 1.5;
+            heroMaskScale = maxMaskScale - phaseProgress * maskScaleRange;
             heroImgSaturation = 1 - phaseProgress;
             heroImgOverlayOpacity = 0.35 + phaseProgress * 0.35;
           } else if (self.progress <= 0.7) {
@@ -286,11 +292,11 @@ export default function Home() {
             heroImgOverlayOpacity = 0.7;
           } else if (self.progress <= 0.8) {
             const phaseProgress = ease((self.progress - 0.7) / 0.1);
-            heroMaskScale = 1 + phaseProgress * 1.5;
+            heroMaskScale = 1 + phaseProgress * maskScaleRange;
             heroImgSaturation = phaseProgress;
             heroImgOverlayOpacity = 0.7 - phaseProgress * 0.35;
           } else {
-            heroMaskScale = 2.5;
+            heroMaskScale = maxMaskScale;
             heroImgSaturation = 1;
             heroImgOverlayOpacity = 0.35;
           }
@@ -354,7 +360,7 @@ export default function Home() {
 
           // Marker 1 appears at progress ~0.33, when heroImgProgress = 0.5
           const marker1BaseOffset = 0.5 * heroImgMovedistance;
-          const marker1YOffset = currentBgOffset - marker1BaseOffset;
+          const marker1YOffset = self.progress >= 0.33 ? currentBgOffset - marker1BaseOffset : 0;
 
           gsap.set(marker1, {
             opacity: marker1Opacity,
@@ -377,8 +383,9 @@ export default function Home() {
           }
 
           // Marker 2 appears at progress ~0.66, when heroImgProgress = 0.5
+          // Only apply Y offset after marker appears to prevent jumping
           const marker2BaseOffset = 0.5 * heroImgMovedistance;
-          const marker2YOffset = currentBgOffset - marker2BaseOffset;
+          const marker2YOffset = self.progress >= 0.66 ? currentBgOffset - marker2BaseOffset : 0;
 
           gsap.set(marker2, {
             opacity: marker2Opacity,
@@ -398,7 +405,7 @@ export default function Home() {
 
           // Marker 3 appears at progress ~0.83, when heroImgProgress ≈ 0.7
           const marker3BaseOffset = 0.7 * heroImgMovedistance;
-          const marker3YOffset = currentBgOffset - marker3BaseOffset;
+          const marker3YOffset = self.progress >= 0.83 ? currentBgOffset - marker3BaseOffset : 0;
 
           gsap.set(marker3, {
             opacity: marker3Opacity,
@@ -416,9 +423,9 @@ export default function Home() {
             marker9Opacity = 1;
           }
 
-          // Marker 9 appears at progress ~0.85, when heroImgProgress ≈ 0.75
+          // Marker 9 appears at progress ~0.90, when heroImgProgress ≈ 0.75
           const marker9BaseOffset = 0.75 * heroImgMovedistance;
-          const marker9YOffset = currentBgOffset - marker9BaseOffset;
+          const marker9YOffset = self.progress >= 0.90 ? currentBgOffset - marker9BaseOffset : 0;
 
           gsap.set(marker9, {
             opacity: marker9Opacity,
@@ -438,7 +445,7 @@ export default function Home() {
 
           // Marker 4 appears at progress ~0.70, when heroImgProgress = 0.5
           const marker4BaseOffset = 0.5 * heroImgMovedistance;
-          const marker4YOffset = currentBgOffset - marker4BaseOffset;
+          const marker4YOffset = self.progress >= 0.70 ? currentBgOffset - marker4BaseOffset : 0;
 
           gsap.set(marker4, {
             opacity: marker4Opacity,
@@ -458,7 +465,7 @@ export default function Home() {
 
           // Marker 5 appears at progress ~0.73, when heroImgProgress ≈ 0.5
           const marker5BaseOffset = 0.5 * heroImgMovedistance;
-          const marker5YOffset = currentBgOffset - marker5BaseOffset;
+          const marker5YOffset = self.progress >= 0.73 ? currentBgOffset - marker5BaseOffset : 0;
 
           gsap.set(marker5, {
             opacity: marker5Opacity,
@@ -477,7 +484,7 @@ export default function Home() {
           }
 
           const marker6BaseOffset = 0.5 * heroImgMovedistance;
-          const marker6YOffset = currentBgOffset - marker6BaseOffset;
+          const marker6YOffset = self.progress >= 0.75 ? currentBgOffset - marker6BaseOffset : 0;
 
           gsap.set(marker6, {
             opacity: marker6Opacity,
@@ -496,7 +503,7 @@ export default function Home() {
           }
 
           const marker7BaseOffset = 0.5 * heroImgMovedistance;
-          const marker7YOffset = currentBgOffset - marker7BaseOffset;
+          const marker7YOffset = self.progress >= 0.77 ? currentBgOffset - marker7BaseOffset : 0;
 
           gsap.set(marker7, {
             opacity: marker7Opacity,
@@ -515,7 +522,7 @@ export default function Home() {
           }
 
           const marker8BaseOffset = 0.5 * heroImgMovedistance;
-          const marker8YOffset = currentBgOffset - marker8BaseOffset;
+          const marker8YOffset = self.progress >= 0.79 ? currentBgOffset - marker8BaseOffset : 0;
 
           gsap.set(marker8, {
             opacity: marker8Opacity,
@@ -559,7 +566,7 @@ export default function Home() {
 
           // Marker 10 appears at progress ~0.94, when heroImgProgress ≈ 0.9
           const marker10BaseOffset = 0.9 * heroImgMovedistance;
-          const marker10YOffset = currentBgOffset - marker10BaseOffset;
+          const marker10YOffset = self.progress >= 0.94 ? currentBgOffset - marker10BaseOffset : 0;
 
           gsap.set(marker10, {
             opacity: marker10Opacity,
@@ -583,8 +590,8 @@ export default function Home() {
           }
 
           // Calculate inset values (from edge position to converged position)
-          // Horizontal inset is larger to bring corners closer together width-wise
-          const maxInsetX = window.innerWidth * 0.38;
+          // On mobile, only converge vertically (no horizontal inset)
+          const maxInsetX = isMobile ? 0 : window.innerWidth * 0.38;
           const maxInsetY = window.innerHeight * 0.3;
           const currentInsetX = cornerProgress * maxInsetX;
           const currentInsetY = cornerProgress * maxInsetY;
@@ -630,31 +637,39 @@ export default function Home() {
 
           // Mask transition - crossfade from jagged to smartphone shape at Tactical HUD
           // Section 4 (Tactical HUD) is around 50% progress
-          // Using overlapping opacity to prevent blink (both stay higher longer)
+          // On mobile, skip smartphone mask and keep jagged mask visible
           let smartphoneMaskOpacity;
           let jaggedMaskOpacity;
-          if (self.progress <= 0.48) {
+
+          if (isMobile) {
+            // On mobile, keep jagged mask visible throughout
             smartphoneMaskOpacity = 0;
             jaggedMaskOpacity = 1;
-          } else if (self.progress <= 0.55) {
-            // Smartphone fades in while jagged stays at 1, then jagged quickly fades
-            const progress = (self.progress - 0.48) / 0.07;
-            smartphoneMaskOpacity = ease(progress);
-            // Jagged stays at 1 until smartphone is mostly visible, then drops
-            jaggedMaskOpacity = progress < 0.7 ? 1 : 1 - ease((progress - 0.7) / 0.3);
-          } else if (self.progress <= 0.70) {
-            // Stay as smartphone
-            smartphoneMaskOpacity = 1;
-            jaggedMaskOpacity = 0;
-          } else if (self.progress <= 0.77) {
-            // Jagged fades in while smartphone stays at 1, then smartphone quickly fades
-            const progress = (self.progress - 0.70) / 0.07;
-            jaggedMaskOpacity = ease(progress);
-            // Smartphone stays at 1 until jagged is mostly visible, then drops
-            smartphoneMaskOpacity = progress < 0.7 ? 1 : 1 - ease((progress - 0.7) / 0.3);
           } else {
-            smartphoneMaskOpacity = 0;
-            jaggedMaskOpacity = 1;
+            // Desktop: crossfade between jagged and smartphone masks
+            if (self.progress <= 0.48) {
+              smartphoneMaskOpacity = 0;
+              jaggedMaskOpacity = 1;
+            } else if (self.progress <= 0.55) {
+              // Smartphone fades in while jagged stays at 1, then jagged quickly fades
+              const progress = (self.progress - 0.48) / 0.07;
+              smartphoneMaskOpacity = ease(progress);
+              // Jagged stays at 1 until smartphone is mostly visible, then drops
+              jaggedMaskOpacity = progress < 0.7 ? 1 : 1 - ease((progress - 0.7) / 0.3);
+            } else if (self.progress <= 0.70) {
+              // Stay as smartphone
+              smartphoneMaskOpacity = 1;
+              jaggedMaskOpacity = 0;
+            } else if (self.progress <= 0.77) {
+              // Jagged fades in while smartphone stays at 1, then smartphone quickly fades
+              const progress = (self.progress - 0.70) / 0.07;
+              jaggedMaskOpacity = ease(progress);
+              // Smartphone stays at 1 until jagged is mostly visible, then drops
+              smartphoneMaskOpacity = progress < 0.7 ? 1 : 1 - ease((progress - 0.7) / 0.3);
+            } else {
+              smartphoneMaskOpacity = 0;
+              jaggedMaskOpacity = 1;
+            }
           }
 
           gsap.set(heroMask, {
@@ -678,7 +693,7 @@ export default function Home() {
 
           // Player marker appears at progress ~0.50, when heroImgProgress = 0.5
           const playerBaseOffset = 0.5 * heroImgMovedistance;
-          const playerYOffset = currentBgOffset - playerBaseOffset;
+          const playerYOffset = self.progress >= 0.50 ? currentBgOffset - playerBaseOffset : 0;
 
           gsap.set(playerMarker, {
             opacity: playerMarkerOpacity,
@@ -691,33 +706,38 @@ export default function Home() {
           let tacticalHudHeight;
           let tacticalHudRadius;
 
+          // On mobile, match the jagged mask (75% width), on desktop use smartphone mask (50% width)
+          const hudBaseWidth = isMobile ? 75 : 50;
+          const hudExpandRange = 100 - hudBaseWidth;
+
           if (self.progress <= 0.48) {
-            // Hidden before smartphone mask appears
+            // Hidden before mask transition
             tacticalHudOpacity = 0;
-            tacticalHudWidth = 50;
+            tacticalHudWidth = hudBaseWidth;
             tacticalHudHeight = null; // use aspect-ratio
-            tacticalHudRadius = 50;
+            tacticalHudRadius = isMobile ? 0 : 50;
           } else if (self.progress <= 0.55) {
-            // Fade in with smartphone mask
+            // Fade in with mask
             tacticalHudOpacity = ease((self.progress - 0.48) / 0.07);
-            tacticalHudWidth = 50;
+            tacticalHudWidth = hudBaseWidth;
             tacticalHudHeight = null;
-            tacticalHudRadius = 50;
+            tacticalHudRadius = isMobile ? 0 : 50;
           } else if (self.progress <= 0.75) {
             // Stay in mask position until mask starts fading
             tacticalHudOpacity = 1;
-            tacticalHudWidth = 50;
+            tacticalHudWidth = hudBaseWidth;
             tacticalHudHeight = null;
-            tacticalHudRadius = 50;
+            tacticalHudRadius = isMobile ? 0 : 50;
           } else if (self.progress <= 0.82) {
             // Expand to full screen as mask disappears
             const expandProgress = ease((self.progress - 0.75) / 0.07);
             tacticalHudOpacity = 1;
-            tacticalHudWidth = 50 + 50 * expandProgress;
-            // Start from aspect-ratio height (~34vh at 50% width) to 100vh
-            const startHeight = (50 * window.innerWidth / window.innerHeight) * (1050 / 1550);
+            tacticalHudWidth = hudBaseWidth + hudExpandRange * expandProgress;
+            // Start from mask height to 100vh
+            const mobileHudHeight = 70;
+            const startHeight = isMobile ? mobileHudHeight : (hudBaseWidth * window.innerWidth / window.innerHeight) * (1050 / 1550);
             tacticalHudHeight = startHeight + (100 - startHeight) * expandProgress;
-            tacticalHudRadius = 50 * (1 - expandProgress);
+            tacticalHudRadius = isMobile ? 0 : 50 * (1 - expandProgress);
           } else {
             // Stay expanded for rest of scroll
             tacticalHudOpacity = 1;
@@ -726,11 +746,15 @@ export default function Home() {
             tacticalHudRadius = 0;
           }
 
+          // On mobile, use fixed height instead of aspect-ratio to match mask edges
+          const useAspectRatio = !isMobile && tacticalHudHeight === null;
+          const mobileHudHeight = 70; // Approximate height to match jagged mask opening
+
           gsap.set(tacticalHud, {
             opacity: tacticalHudOpacity,
             width: `${tacticalHudWidth}%`,
-            height: tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : "auto",
-            aspectRatio: tacticalHudHeight !== null ? "auto" : "1550 / 1050",
+            height: tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : (isMobile ? `${mobileHudHeight}vh` : "auto"),
+            aspectRatio: useAspectRatio ? "1550 / 1050" : "auto",
             "--hud-radius": `${tacticalHudRadius}px`,
           });
         },

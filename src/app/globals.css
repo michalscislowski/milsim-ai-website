@@ -561,17 +561,8 @@ section {
 /* Clickable markers */
 .marker {
   cursor: none;
-  transition: transform 0.2s ease;
   z-index: 70;
   pointer-events: auto;
-}
-
-.marker:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-}
-
-.marker--selected {
-  transform: translate(-50%, -50%) scale(1.15);
 }
 
 /* CoT Popup */
@@ -1251,12 +1242,12 @@ section {
   }
 
   .marker-7 {
-    top: 21svh;
+    top: 24svh;
     left: 35vw;
   }
 
   .marker-8 {
-    top: 14svh;
+    top: 17svh;
     left: 25vw;
   }
 
@@ -1266,12 +1257,12 @@ section {
   }
 
   .marker-10 {
-    top: 22svh;
+    top: 28svh;
     left: 75vw;
   }
 
   .geofence-svg--enemy {
-    top: 28%;
+    top: 38%;
     left: 70%;
   }
 
@@ -1321,5 +1312,37 @@ section {
   .cta-button {
     width: 100%;
     text-align: center;
+  }
+
+  /* On mobile, HUD bars should be above everything */
+  .tactical-hud {
+    z-index: 80;
+  }
+
+  /* Hero content text should be above markers but below HUD bars */
+  .hero-content {
+    z-index: 75;
+  }
+
+  /* Player marker should be above HQ Active but below text */
+  .player-marker {
+    z-index: 72;
+  }
+
+  /* Geofences should be below text */
+  .geofence-svg {
+    z-index: 65;
+  }
+
+  /* Hide custom cursor on mobile */
+  .custom-cursor {
+    display: none;
+  }
+
+  /* Restore default cursor on mobile */
+  body,
+  a,
+  button {
+    cursor: auto;
   }
 }
