@@ -39,6 +39,15 @@ export default function Home() {
   const tacticalHudRef = useRef(null);
   const customCursorRef = useRef(null);
 
+  // Refs for typewriter headings
+  const heading1Ref = useRef(null);
+  const heading2Ref = useRef(null);
+  const heading3Ref = useRef(null);
+  const heading4Ref = useRef(null);
+  const heading5Ref = useRef(null);
+  const heading6Ref = useRef(null);
+  const headingsAnimated = useRef([false, false, false, false, false, false]);
+
   // Marker data for CoT popups
   const markerData = {
     1: {
@@ -812,6 +821,33 @@ export default function Home() {
             aspectRatio: useAspectRatio ? "1550 / 1050" : "auto",
             "--hud-radius": `${tacticalHudRadius}px`,
           });
+
+          // Typewriter animation triggers for each section
+          // Each section is ~16.67% of scroll (1/6)
+          const headingRefs = [
+            heading1Ref,
+            heading2Ref,
+            heading3Ref,
+            heading4Ref,
+            heading5Ref,
+            heading6Ref,
+          ];
+          const triggerPoints = [0.02, 0.17, 0.33, 0.50, 0.67, 0.83];
+
+          triggerPoints.forEach((trigger, index) => {
+            if (self.progress >= trigger && !headingsAnimated.current[index]) {
+              headingsAnimated.current[index] = true;
+              const heading = headingRefs[index].current;
+              if (heading) {
+                heading.classList.add("typewriter");
+                // Remove cursor after animation completes
+                setTimeout(() => {
+                  heading.classList.remove("typewriter");
+                  heading.classList.add("typewriter--no-cursor");
+                }, 1500);
+              }
+            }
+          });
         },
       });
     },
@@ -1075,7 +1111,7 @@ export default function Home() {
             {/* Section 1: Hero Branding */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h1>MILSIM.AI</h1>
+                <h1 ref={heading1Ref}>MILSIM.AI</h1>
                 <p>Command Your Battlefield</p>
               </div>
             </div>
@@ -1083,7 +1119,7 @@ export default function Home() {
             {/* Section 2: Event Command */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2>Event Command</h2>
+                <h2 ref={heading2Ref}>Event Command</h2>
                 <p>
                   Create and manage airsoft operations with full control.
                   From small skirmishes to large-scale milsim events,
@@ -1095,7 +1131,7 @@ export default function Home() {
             {/* Section 3: Geofenced Zones */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2>Geofenced Zones</h2>
+                <h2 ref={heading3Ref}>Geofenced Zones</h2>
                 <p>
                   Define operational boundaries with precision GPS.
                   Set spawn points, objectives, and restricted areas
@@ -1107,7 +1143,7 @@ export default function Home() {
             {/* Section 4: Tactical HUD */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2>Tactical HUD</h2>
+                <h2 ref={heading4Ref}>Tactical HUD</h2>
                 <p>
                   Real-time battlefield awareness at your fingertips.
                   Track objectives, team status, and mission timers
@@ -1119,7 +1155,7 @@ export default function Home() {
             {/* Section 5: Squad Tracking */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2>Squad Tracking</h2>
+                <h2 ref={heading5Ref}>Squad Tracking</h2>
                 <p>
                   Monitor allied positions across the field.
                   Coordinate movements, assign waypoints, and maintain
@@ -1131,7 +1167,7 @@ export default function Home() {
             {/* Section 6: Mission Objectives */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2>Mission Objectives</h2>
+                <h2 ref={heading6Ref}>Mission Objectives</h2>
                 <p>
                   Dynamic objectives that drive the action.
                   Capture points, extraction zones, and timed missions

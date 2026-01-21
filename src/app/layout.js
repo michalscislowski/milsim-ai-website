@@ -1,4 +1,17 @@
 import "./globals.css";
+import { Black_Ops_One, Quantico } from "next/font/google";
+
+const blackOpsOne = Black_Ops_One({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-military",
+});
+
+const quantico = Quantico({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-quantico",
+});
 
 export const metadata = {
   title: "MILSIM.AI | Command Your Battlefield",
@@ -14,7 +27,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${blackOpsOne.variable} ${quantico.variable}`}>
       <body>{children}</body>
     </html>
   );

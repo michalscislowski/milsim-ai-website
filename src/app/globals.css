@@ -102,6 +102,7 @@ img {
 
 h1,
 h2 {
+  font-family: var(--font-military), sans-serif;
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0.05em;
@@ -118,10 +119,55 @@ h2 {
   text-transform: uppercase;
 }
 
+/* Military briefing typewriter effect */
+.hero-content h1,
+.hero-content h2 {
+  display: inline-block;
+}
+
+/* Hide headings until typewriter triggers (except first one) */
+.hero-content h2 {
+  opacity: 0;
+}
+
+.hero-content h2.typewriter,
+.hero-content h2.typewriter--no-cursor {
+  opacity: 1;
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--hud-green);
+  width: 0;
+  animation: typing 1.2s steps(20, end) forwards, blink-caret 0.5s step-end infinite;
+}
+
+.typewriter--no-cursor {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid transparent;
+  width: 100%;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--hud-green); }
+}
+
 p {
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.4;
+}
+
+.hero-content p {
+  font-family: var(--font-quantico), sans-serif;
 }
 
 section {
