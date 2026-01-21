@@ -22,6 +22,9 @@
 html {
   /* Prevent pull-to-refresh and overscroll on mobile */
   overscroll-behavior: none;
+  /* Lock viewport height to prevent resize on mobile address bar changes */
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -29,9 +32,12 @@ body {
   background-color: var(--dark);
   color: var(--light);
   cursor: none;
-  /* Prevent pinch-zoom and double-tap zoom on mobile */
-  touch-action: pan-y;
+  /* Prevent double-tap zoom while allowing scroll */
+  touch-action: manipulation;
   -webkit-text-size-adjust: 100%;
+  /* Prevent layout shift from address bar */
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 /* Custom Cursor */
@@ -212,6 +218,10 @@ section {
   height: 200svh;
   --overlay-opacity: 0.35;
   will-change: transform;
+  /* Force GPU compositing for stable rendering on mobile */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .hero-img::after {

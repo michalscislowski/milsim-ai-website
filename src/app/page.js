@@ -259,6 +259,7 @@ export default function Home() {
 
           gsap.set(heroImg, {
             y: heroImgProgress * heroImgMovedistance,
+            z: 0, // Maintain GPU compositing
           });
 
           // Mask scale, saturation, overlay - adjusted for 6 sections
@@ -303,6 +304,7 @@ export default function Home() {
 
           gsap.set(heroMask, {
             scale: heroMaskScale,
+            z: 0, // Maintain GPU compositing
           });
 
           gsap.set(heroImgElement, {
