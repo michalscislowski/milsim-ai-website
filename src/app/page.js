@@ -150,25 +150,15 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [lockedViewportHeight, setLockedViewportHeight] = useState(null);
 
-  // Lock viewport dimensions on mount - this prevents issues with address bar changes
+  // Detect mobile and lock viewport on mount
   useEffect(() => {
     const mobile = getIsMobile();
     setIsMobile(mobile);
 
-    // Lock the viewport height at initialization using innerHeight
-    // This matches CSS vh units and won't change when browser chrome hides/shows
-    // CRITICAL: Use innerHeight, NOT visualViewport - visualViewport changes dynamically
+    // Lock the viewport height at initialization
+    // Used by ScrollTrigger for consistent scroll distance calculations
     const height = window.innerHeight;
     setLockedViewportHeight(height);
-
-    // Set CSS custom properties for consistent sizing across all elements
-    // These values are used instead of vh units on mobile to prevent shifts
-    document.documentElement.style.setProperty('--locked-vh', `${height}px`);
-    document.documentElement.style.setProperty('--locked-vh-unit', `${height / 100}px`);
-
-    // Also set hero-content height based on locked viewport
-    // 6.02 sections worth of scroll distance
-    document.documentElement.style.setProperty('--hero-content-height', `${height * 6.02}px`);
   }, []);
 
   const handleMarkerClick = (markerId, e) => {
@@ -805,11 +795,11 @@ export default function Home() {
 
           let hudHeightValue;
           if (isMobileLocked) {
-            // Use locked viewport height for consistent sizing across browsers
+            // Use percentage-based height on mobile for proper scaling with viewport changes
             if (tacticalHudHeight !== null) {
-              hudHeightValue = `${(tacticalHudHeight / 100) * viewportHeightLocked}px`;
+              hudHeightValue = `${tacticalHudHeight}%`;
             } else {
-              hudHeightValue = `${(mobileHudHeight / 100) * viewportHeightLocked}px`;
+              hudHeightValue = `${mobileHudHeight}%`;
             }
           } else {
             hudHeightValue = tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : "auto";

@@ -815,8 +815,7 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  /* On mobile, use locked height from JS; on desktop use vh */
-  height: var(--hero-content-height, 602vh);
+  height: 602vh;
   display: flex;
   flex-direction: column;
   will-change: transform;
@@ -885,8 +884,7 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  /* Use locked vh on mobile via CSS variable, fallback to 100vh */
-  height: var(--locked-vh, 100vh);
+  height: 100%;
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -1237,18 +1235,13 @@ section {
 
 @media (max-width: 800px) {
   /*
-   * MOBILE VIEWPORT FIX: Use locked viewport values to prevent shifts
-   * when browser chrome hides/shows. --locked-vh-unit is set by JavaScript
-   * to 1% of the initial viewport height and never changes.
+   * MOBILE VIEWPORT FIX: Use percentage-based positioning relative to
+   * the hero container instead of vh units. This ensures elements stay
+   * properly positioned regardless of browser chrome hiding/showing.
+   * Container heights use 100% to fill the viewport naturally.
    */
 
-  /* Hero section and masks use locked height */
-  section.hero {
-    height: var(--locked-vh, 100vh);
-  }
-
   .hero-mask {
-    height: var(--locked-vh, 100vh);
     mask: linear-gradient(var(--light), var(--light)),
       url("/mask.svg") center/75% no-repeat;
     -webkit-mask: linear-gradient(var(--light), var(--light)),
@@ -1258,7 +1251,6 @@ section {
   }
 
   .hero-mask--smartphone {
-    height: var(--locked-vh, 100vh);
     mask: linear-gradient(var(--light), var(--light)),
       url("/smartphone-mask.svg") center/75% no-repeat;
     -webkit-mask: linear-gradient(var(--light), var(--light)),
@@ -1266,99 +1258,92 @@ section {
   }
 
   .hero-grid-overlay {
-    /* Use locked 50vh for vertical centering */
-    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    /* Use percentage for vertical centering within hero */
+    top: 50%;
     width: 100%;
   }
 
-  /* All markers use locked vh for vertical positioning */
+  /* All markers use percentage for vertical positioning within hero */
   .marker-1 {
-    top: calc(var(--locked-vh-unit, 1vh) * 52.5);
-    left: 50vw;
+    top: 52.5%;
+    left: 50%;
   }
 
   .marker-2 {
-    top: calc(var(--locked-vh-unit, 1vh) * 45);
-    left: 70vw;
+    top: 45%;
+    left: 70%;
   }
 
   .marker-3 {
-    top: calc(var(--locked-vh-unit, 1vh) * 20);
-    left: 20vw;
+    top: 20%;
+    left: 20%;
   }
 
   .marker-4 {
-    top: calc(var(--locked-vh-unit, 1vh) * 42);
-    left: 35vw;
+    top: 42%;
+    left: 35%;
   }
 
   .marker-5 {
-    top: calc(var(--locked-vh-unit, 1vh) * 35);
-    left: 55vw;
+    top: 35%;
+    left: 55%;
   }
 
   .marker-6 {
-    top: calc(var(--locked-vh-unit, 1vh) * 28);
-    left: 45vw;
+    top: 28%;
+    left: 45%;
   }
 
   .marker-7 {
-    top: calc(var(--locked-vh-unit, 1vh) * 24);
-    left: 35vw;
+    top: 24%;
+    left: 35%;
   }
 
   .marker-8 {
-    top: calc(var(--locked-vh-unit, 1vh) * 17);
-    left: 25vw;
+    top: 17%;
+    left: 25%;
   }
 
   .marker-9 {
-    top: calc(var(--locked-vh-unit, 1vh) * 4);
-    left: 55vw;
+    top: 4%;
+    left: 55%;
   }
 
   .marker-10 {
-    top: calc(var(--locked-vh-unit, 1vh) * 28);
-    left: 75vw;
+    top: 28%;
+    left: 75%;
   }
 
-  /* Geofence positioning uses locked vh */
+  /* Geofence positioning uses percentage */
   .geofence-svg {
-    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    top: 50%;
     z-index: 65;
   }
 
   .geofence-svg--enemy {
-    top: calc(var(--locked-vh-unit, 1vh) * 38);
+    top: 38%;
     left: 70%;
   }
 
-  /* Player marker uses locked vh */
+  /* Player marker uses percentage */
   .player-marker {
-    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    top: 50%;
     z-index: 70;
   }
 
-  /* Tactical HUD uses locked vh */
+  /* Tactical HUD uses percentage */
   .tactical-hud {
-    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    top: 50%;
     z-index: 80;
   }
 
-  /* HUD corners use locked height */
-  .hud-corners {
-    height: var(--locked-vh, 100vh);
-  }
-
-  /* Scroll progress bar uses locked vh */
+  /* Scroll progress bar uses percentage */
   .hero-scroll-progress-bar {
-    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    top: 50%;
     right: 1rem;
   }
 
-  /* Hero content blocks use locked vh */
   .hero-content .hero-content-block {
-    height: var(--locked-vh, 100vh);
     padding: 1.5rem;
   }
 
