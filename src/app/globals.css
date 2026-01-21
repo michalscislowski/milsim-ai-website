@@ -1234,6 +1234,19 @@ section {
 }
 
 @media (max-width: 800px) {
+  /* Fixed black bar to cover area when browser bar hides on scroll */
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px; /* Typical mobile browser bar height */
+    background-color: var(--dark);
+    z-index: 9998; /* Below cursor, above everything else */
+    pointer-events: none;
+  }
+
   .hero-mask {
     mask: linear-gradient(var(--light), var(--light)),
       url("/mask.svg") center/75% no-repeat;
