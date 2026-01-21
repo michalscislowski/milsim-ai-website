@@ -1330,6 +1330,11 @@ section {
     padding: 1.5rem;
   }
 
+  /* First block has text at bottom - add padding to clear browser bar */
+  .hero-content .hero-content-block:nth-child(1) {
+    padding-bottom: 6rem;
+  }
+
   .hero-content .hero-content-copy {
     width: 75%;
   }
