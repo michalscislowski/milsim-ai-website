@@ -1339,6 +1339,11 @@ section {
     width: 75%;
   }
 
+  /* Use svh for corners so they stay within visible viewport when browser bar is shown */
+  .hud-corners {
+    height: 100svh;
+  }
+
   .hud-corner {
     width: 40px;
     height: 40px;
