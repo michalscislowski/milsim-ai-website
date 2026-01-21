@@ -127,10 +127,8 @@ p {
 section {
   position: relative;
   width: 100%;
-  /* Fallback chain for browser compatibility: dvh > svh > vh */
+  /* Use vh for consistency with JavaScript viewport calculations */
   height: 100vh;
-  height: 100dvh;
-  height: 100svh;
   background-color: var(--dark);
   overflow: hidden;
 }
@@ -143,8 +141,6 @@ section {
   gap: 3rem;
   height: auto;
   min-height: 100vh;
-  min-height: 100dvh;
-  min-height: 100svh;
   padding: 4rem 2rem;
   /* High z-index to cover fixed elements (geofence, markers) when scrolling past hero */
   position: relative;
@@ -224,7 +220,7 @@ section {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 200svh;
+  height: 200vh;
   --overlay-opacity: 0.35;
   will-change: transform;
   /* Force GPU compositing for stable rendering on mobile */
@@ -255,8 +251,6 @@ section {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100dvh;
-  height: 100svh;
   background-color: var(--dark);
   mask: linear-gradient(var(--light), var(--light)),
     url("/mask.svg") center/50% no-repeat;
@@ -281,7 +275,7 @@ section {
 
 .hero-grid-overlay {
   position: absolute;
-  top: 50svh;
+  top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 55%;
@@ -302,52 +296,52 @@ section {
 }
 
 .marker-1 {
-  top: 50svh;
+  top: 50vh;
   left: 50vw;
 }
 
 .marker-2 {
-  top: 35svh;
+  top: 35vh;
   left: 60vw;
 }
 
 .marker-3 {
-  top: 18svh;
+  top: 18vh;
   left: 25vw;
 }
 
 .marker-4 {
-  top: 40svh;
+  top: 40vh;
   left: 40vw;
 }
 
 .marker-5 {
-  top: 32svh;
+  top: 32vh;
   left: 52vw;
 }
 
 .marker-6 {
-  top: 25svh;
+  top: 25vh;
   left: 44vw;
 }
 
 .marker-7 {
-  top: 18svh;
+  top: 18vh;
   left: 36vw;
 }
 
 .marker-8 {
-  top: 12svh;
+  top: 12vh;
   left: 28vw;
 }
 
 .marker-9 {
-  top: 8svh;
+  top: 8vh;
   left: 48vw;
 }
 
 .marker-10 {
-  top: 12svh;
+  top: 12vh;
   left: 64vw;
 }
 
@@ -821,7 +815,7 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  height: 602svh;
+  height: 602vh;
   display: flex;
   flex-direction: column;
   will-change: transform;
@@ -832,8 +826,6 @@ section {
 .hero-content .hero-content-block {
   width: 100%;
   height: 100vh;
-  height: 100dvh;
-  height: 100svh;
   padding: 4rem;
   display: flex;
 }
@@ -864,7 +856,7 @@ section {
 
 .hero-scroll-progress-bar {
   position: absolute;
-  top: 50svh;
+  top: 50vh;
   right: 2rem;
   transform: translateY(-50%);
   width: 0.1rem;
@@ -893,8 +885,6 @@ section {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100dvh;
-  height: 100svh;
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -914,8 +904,6 @@ section {
   left: 0;
   width: 100%;
   height: 100vh;
-  height: 100dvh;
-  height: 100svh;
   pointer-events: none;
   z-index: 40; /* Below tactical HUD bars so corners don't overlap during expansion */
   --corner-inset-x: 0px;
@@ -968,7 +956,7 @@ section {
 /* Fixed positioning causes lag/snap issues on mobile browsers */
 .geofence-svg {
   position: absolute;
-  top: 50svh;
+  top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%) translateZ(0);
   width: min(45vw, 40vh);
@@ -1010,7 +998,7 @@ section {
 
 /* Enemy Geofence - Red variant */
 .geofence-svg--enemy {
-  top: 25svh;
+  top: 25vh;
   left: 65%;
   width: min(30vw, 25vh);
   height: min(25vw, 22vh);
@@ -1031,7 +1019,7 @@ section {
 /* Using position: absolute inside pinned hero to prevent mobile scroll jank */
 .player-marker {
   position: absolute;
-  top: 50svh;
+  top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%) translateZ(0);
   display: flex;
@@ -1083,7 +1071,7 @@ section {
 /* Using position: absolute inside pinned hero to prevent mobile scroll jank */
 .tactical-hud {
   position: absolute;
-  top: 50svh;
+  top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%) translateZ(0);
   display: flex;
@@ -1267,57 +1255,57 @@ section {
   }
 
   .marker-1 {
-    top: 52.5svh;
+    top: 52.5vh;
     left: 50vw;
   }
 
   .marker-2 {
-    top: 45svh;
+    top: 45vh;
     left: 70vw;
   }
 
   .marker-3 {
-    top: 20svh;
+    top: 20vh;
     left: 20vw;
   }
 
   .marker-4 {
-    top: 42svh;
+    top: 42vh;
     left: 35vw;
   }
 
   .marker-5 {
-    top: 35svh;
+    top: 35vh;
     left: 55vw;
   }
 
   .marker-6 {
-    top: 28svh;
+    top: 28vh;
     left: 45vw;
   }
 
   .marker-7 {
-    top: 24svh;
+    top: 24vh;
     left: 35vw;
   }
 
   .marker-8 {
-    top: 17svh;
+    top: 17vh;
     left: 25vw;
   }
 
   .marker-9 {
-    top: 4svh;
+    top: 4vh;
     left: 55vw;
   }
 
   .marker-10 {
-    top: 28svh;
+    top: 28vh;
     left: 75vw;
   }
 
   .geofence-svg--enemy {
-    top: 38svh;
+    top: 38vh;
     left: 70%;
   }
 
