@@ -254,6 +254,12 @@ export default function Home() {
 
       const ease = (x) => x * x * (3 - 2 * x);
 
+      // Initialize corners to their starting position (at edges, not converged)
+      gsap.set(hudCorners, {
+        "--corner-inset-x": "0px",
+        "--corner-inset-y": "0px",
+      });
+
       ScrollTrigger.create({
         trigger: ".hero",
         start: "top top",
@@ -603,19 +609,29 @@ export default function Home() {
 
           // HUD Corners animation - converge toward center during section 1->2
           // Then stay converged during tactical phases, expand back at end
+          // Clamp progress to prevent issues with overscroll at top
+          const clampedProgress = Math.max(0, Math.min(1, self.progress));
+
           let cornerProgress;
-          if (self.progress <= 0.16) {
-            // Section 1 to 2: corners converge inward
-            cornerProgress = ease(self.progress / 0.16);
-          } else if (self.progress <= 0.75) {
+          // Add dead zone at very beginning - corners stay at edges until 1% progress
+          // This prevents any visual glitches from overscroll bounce at top
+          if (clampedProgress <= 0.01) {
+            cornerProgress = 0;
+          } else if (clampedProgress <= 0.16) {
+            // Section 1 to 2: corners converge inward (starting from 1% progress)
+            cornerProgress = ease((clampedProgress - 0.01) / 0.15);
+          } else if (clampedProgress <= 0.75) {
             // Stay converged during tactical phases
             cornerProgress = 1;
-          } else if (self.progress <= 0.85) {
+          } else if (clampedProgress <= 0.85) {
             // Expand back out
-            cornerProgress = 1 - ease((self.progress - 0.75) / 0.1);
+            cornerProgress = 1 - ease((clampedProgress - 0.75) / 0.1);
           } else {
             cornerProgress = 0;
           }
+
+          // Ensure cornerProgress is always valid (0-1)
+          cornerProgress = Math.max(0, Math.min(1, cornerProgress));
 
           // Calculate inset values (from edge position to converged position)
           // On mobile, only converge vertically (no horizontal inset)
