@@ -1453,9 +1453,9 @@ section {
     position: relative;
   }
 
-  /* Hero content text should be above markers but below HUD bars */
+  /* Hero content text should be above HUD bars on mobile */
   .hero-content {
-    z-index: 75;
+    z-index: 90;
   }
 
   /* All markers should be below HUD bars */
