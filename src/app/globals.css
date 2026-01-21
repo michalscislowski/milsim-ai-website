@@ -950,9 +950,11 @@ section {
 }
 
 /* Geofence Polygon */
+/* Using position: absolute inside pinned hero section to prevent mobile scroll jank */
+/* Fixed positioning causes lag/snap issues on mobile browsers */
 .geofence-svg {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 50svh;
   left: 50%;
   transform: translate(-50%, -50%) translateZ(0);
   width: min(45vw, 40vh);
@@ -961,8 +963,8 @@ section {
   pointer-events: none;
   opacity: 0;
   --geofence-progress: 0;
-  /* Force GPU compositing to prevent mobile scroll jank */
-  will-change: opacity;
+  /* Force GPU compositing */
+  will-change: opacity, transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
@@ -994,7 +996,7 @@ section {
 
 /* Enemy Geofence - Red variant */
 .geofence-svg--enemy {
-  top: 25%;
+  top: 25svh;
   left: 65%;
   width: min(30vw, 25vh);
   height: min(25vw, 22vh);
@@ -1012,9 +1014,10 @@ section {
 }
 
 /* Player Position Marker */
+/* Using position: absolute inside pinned hero to prevent mobile scroll jank */
 .player-marker {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 50svh;
   left: 50%;
   transform: translate(-50%, -50%) translateZ(0);
   display: flex;
@@ -1023,8 +1026,8 @@ section {
   gap: 0.5rem;
   opacity: 0;
   z-index: 45;
-  /* Force GPU compositing to prevent mobile scroll jank */
-  will-change: opacity;
+  /* Force GPU compositing */
+  will-change: opacity, transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   pointer-events: none;
@@ -1299,7 +1302,7 @@ section {
   }
 
   .geofence-svg--enemy {
-    top: 38%;
+    top: 38svh;
     left: 70%;
   }
 
