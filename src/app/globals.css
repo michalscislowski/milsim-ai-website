@@ -815,7 +815,8 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  height: 602vh;
+  /* On mobile, use locked height from JS; on desktop use vh */
+  height: var(--hero-content-height, 602vh);
   display: flex;
   flex-direction: column;
   will-change: transform;
@@ -884,7 +885,8 @@ section {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  /* Use locked vh on mobile via CSS variable, fallback to 100vh */
+  height: var(--locked-vh, 100vh);
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -1234,7 +1236,19 @@ section {
 }
 
 @media (max-width: 800px) {
+  /*
+   * MOBILE VIEWPORT FIX: Use locked viewport values to prevent shifts
+   * when browser chrome hides/shows. --locked-vh-unit is set by JavaScript
+   * to 1% of the initial viewport height and never changes.
+   */
+
+  /* Hero section and masks use locked height */
+  section.hero {
+    height: var(--locked-vh, 100vh);
+  }
+
   .hero-mask {
+    height: var(--locked-vh, 100vh);
     mask: linear-gradient(var(--light), var(--light)),
       url("/mask.svg") center/75% no-repeat;
     -webkit-mask: linear-gradient(var(--light), var(--light)),
@@ -1244,6 +1258,7 @@ section {
   }
 
   .hero-mask--smartphone {
+    height: var(--locked-vh, 100vh);
     mask: linear-gradient(var(--light), var(--light)),
       url("/smartphone-mask.svg") center/75% no-repeat;
     -webkit-mask: linear-gradient(var(--light), var(--light)),
@@ -1251,74 +1266,104 @@ section {
   }
 
   .hero-grid-overlay {
+    /* Use locked 50vh for vertical centering */
+    top: calc(var(--locked-vh-unit, 1vh) * 50);
     width: 100%;
   }
 
+  /* All markers use locked vh for vertical positioning */
   .marker-1 {
-    top: 52.5vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 52.5);
     left: 50vw;
   }
 
   .marker-2 {
-    top: 45vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 45);
     left: 70vw;
   }
 
   .marker-3 {
-    top: 20vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 20);
     left: 20vw;
   }
 
   .marker-4 {
-    top: 42vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 42);
     left: 35vw;
   }
 
   .marker-5 {
-    top: 35vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 35);
     left: 55vw;
   }
 
   .marker-6 {
-    top: 28vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 28);
     left: 45vw;
   }
 
   .marker-7 {
-    top: 24vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 24);
     left: 35vw;
   }
 
   .marker-8 {
-    top: 17vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 17);
     left: 25vw;
   }
 
   .marker-9 {
-    top: 4vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 4);
     left: 55vw;
   }
 
   .marker-10 {
-    top: 28vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 28);
     left: 75vw;
   }
 
+  /* Geofence positioning uses locked vh */
+  .geofence-svg {
+    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    z-index: 65;
+  }
+
   .geofence-svg--enemy {
-    top: 38vh;
+    top: calc(var(--locked-vh-unit, 1vh) * 38);
     left: 70%;
   }
 
+  /* Player marker uses locked vh */
+  .player-marker {
+    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    z-index: 70;
+  }
+
+  /* Tactical HUD uses locked vh */
+  .tactical-hud {
+    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    z-index: 80;
+  }
+
+  /* HUD corners use locked height */
+  .hud-corners {
+    height: var(--locked-vh, 100vh);
+  }
+
+  /* Scroll progress bar uses locked vh */
+  .hero-scroll-progress-bar {
+    top: calc(var(--locked-vh-unit, 1vh) * 50);
+    right: 1rem;
+  }
+
+  /* Hero content blocks use locked vh */
   .hero-content .hero-content-block {
+    height: var(--locked-vh, 100vh);
     padding: 1.5rem;
   }
 
   .hero-content .hero-content-copy {
     width: 75%;
-  }
-
-  .hero-scroll-progress-bar {
-    right: 1rem;
   }
 
   .hud-corner {
@@ -1357,11 +1402,6 @@ section {
     text-align: center;
   }
 
-  /* On mobile, HUD bars should be above everything */
-  .tactical-hud {
-    z-index: 80;
-  }
-
   .tactical-hud-top,
   .tactical-hud-bottom {
     z-index: 85;
@@ -1376,16 +1416,6 @@ section {
   /* All markers should be below HUD bars */
   .marker {
     z-index: 68 !important;
-  }
-
-  /* Player marker should be above other markers but below text */
-  .player-marker {
-    z-index: 70;
-  }
-
-  /* Geofences should be below markers */
-  .geofence-svg {
-    z-index: 65;
   }
 
   /* Hide custom cursor on mobile */

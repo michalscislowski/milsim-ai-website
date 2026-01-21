@@ -155,14 +155,20 @@ export default function Home() {
     const mobile = getIsMobile();
     setIsMobile(mobile);
 
-    // Lock the viewport height at initialization
-    // Use visualViewport if available (more accurate), otherwise innerHeight
-    const height = window.visualViewport?.height || window.innerHeight;
+    // Lock the viewport height at initialization using innerHeight
+    // This matches CSS vh units and won't change when browser chrome hides/shows
+    // CRITICAL: Use innerHeight, NOT visualViewport - visualViewport changes dynamically
+    const height = window.innerHeight;
     setLockedViewportHeight(height);
 
-    // Set CSS custom property for consistent sizing across all elements
+    // Set CSS custom properties for consistent sizing across all elements
+    // These values are used instead of vh units on mobile to prevent shifts
     document.documentElement.style.setProperty('--locked-vh', `${height}px`);
     document.documentElement.style.setProperty('--locked-vh-unit', `${height / 100}px`);
+
+    // Also set hero-content height based on locked viewport
+    // 6.02 sections worth of scroll distance
+    document.documentElement.style.setProperty('--hero-content-height', `${height * 6.02}px`);
   }, []);
 
   const handleMarkerClick = (markerId, e) => {
@@ -243,7 +249,8 @@ export default function Home() {
       // LOCK all dimensions at initialization to prevent cross-browser inconsistencies
       // These values won't change during the session, avoiding issues with address bar changes
       const isMobileLocked = window.innerWidth <= 800;
-      const viewportHeightLocked = window.visualViewport?.height || window.innerHeight;
+      // Use innerHeight for consistency with vh units in CSS
+      const viewportHeightLocked = window.innerHeight;
       const viewportWidthLocked = window.innerWidth;
 
       const heroContentHeight = heroContent.offsetHeight;
@@ -260,10 +267,14 @@ export default function Home() {
         "--corner-inset-y": "0px",
       });
 
+      // Scroll distance: 6.02 viewport heights (6 sections + small buffer)
+      // Now that CSS uses locked vh values, we can use the same multiplier everywhere
+      const scrollMultiplier = 6.02;
+
       ScrollTrigger.create({
         trigger: ".hero",
         start: "top top",
-        end: `+=${viewportHeightLocked * 6.02}px`,
+        end: `+=${viewportHeightLocked * scrollMultiplier}px`,
         pin: true,
         pinSpacing: true,
         scrub: 1,
