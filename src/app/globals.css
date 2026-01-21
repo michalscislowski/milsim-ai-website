@@ -245,7 +245,7 @@ section {
 }
 
 .hero-mask {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -274,7 +274,7 @@ section {
 
 .hero-grid-overlay {
   position: absolute;
-  top: 50%;
+  top: 50svh;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 55%;
@@ -855,7 +855,7 @@ section {
 
 .hero-scroll-progress-bar {
   position: absolute;
-  top: 50%;
+  top: 50svh;
   right: 2rem;
   transform: translateY(-50%);
   width: 0.1rem;
@@ -879,11 +879,11 @@ section {
 /* Tactical HUD Scanline Overlay */
 .hero::before {
   content: "";
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100svh;
   background: repeating-linear-gradient(
     0deg,
     transparent,
@@ -896,17 +896,18 @@ section {
 }
 
 /* HUD Corner Brackets */
+/* Using position: absolute inside pinned hero to prevent mobile scroll jank */
 .hud-corners {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100svh;
   pointer-events: none;
   z-index: 99;
   --corner-inset-x: 0px;
   --corner-inset-y: 0px;
-  /* Force GPU compositing to prevent mobile scroll jank */
+  /* Force GPU compositing */
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -1066,9 +1067,10 @@ section {
 }
 
 /* Tactical HUD Overlay */
+/* Using position: absolute inside pinned hero to prevent mobile scroll jank */
 .tactical-hud {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 50svh;
   left: 50%;
   transform: translate(-50%, -50%) translateZ(0);
   display: flex;
