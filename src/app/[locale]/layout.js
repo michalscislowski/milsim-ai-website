@@ -78,8 +78,6 @@ export default async function LocaleLayout({ children, params }) {
       <head>
         <link rel="icon" type="image/svg+xml" href="/black_favicon.svg" media="(prefers-color-scheme: light)" />
         <link rel="icon" type="image/svg+xml" href="/white_favicon.svg" media="(prefers-color-scheme: dark)" />
-        <link rel="icon" type="image/x-icon" href="/black_favicon.ico" media="(prefers-color-scheme: light)" />
-        <link rel="icon" type="image/x-icon" href="/white_favicon.ico" media="(prefers-color-scheme: dark)" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="preload" href="/hero-img.webp" as="image" type="image/webp" />
