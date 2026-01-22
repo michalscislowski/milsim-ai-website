@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Validation Report | Milsim.AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0c0f;
+            --bg-secondary: #12161c;
+            --bg-tertiary: #1a1f28;
+            --accent-primary: #c4a000;
+            --accent-secondary: #8b7500;
+            --accent-glow: rgba(196, 160, 0, 0.3);
+            --tactical-green: #2d5a3d;
+            --tactical-green-light: #3d7a52;
+            --text-primary: #e8e6e0;
+            --text-secondary: #9a9890;
+            --text-muted: #5a5850;
+            --border-color: #2a2f38;
+            --danger: #c44040;
+            --success: #40c470;
+            --info: #4080c4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(196, 160, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(196, 160, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 12, 15, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-links a.active {
+            color: var(--accent-primary);
+        }
+
+        .main {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 100px 2rem 4rem;
+        }
+
+        .doc-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .doc-classification {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--danger);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--danger);
+            margin-bottom: 1.5rem;
+        }
+
+        .doc-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .doc-subtitle {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .doc-meta {
+            display: flex;
+            gap: 2rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .doc-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-meta strong {
+            color: var(--text-secondary);
+        }
+
+        .exec-summary {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--accent-secondary);
+            border-left: 3px solid var(--accent-primary);
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .exec-summary::before {
+            content: 'EXECUTIVE SUMMARY';
+            position: absolute;
+            top: -0.6rem;
+            left: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent-primary);
+            background: var(--bg-primary);
+            padding: 0 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .exec-summary p {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .exec-summary strong {
+            color: var(--accent-primary);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            background: rgba(196, 160, 0, 0.1);
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--accent-secondary);
+        }
+
+        h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--accent-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.5rem;
+        }
+
+        li::marker {
+            color: var(--accent-primary);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-primary);
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(196, 160, 0, 0.03);
+        }
+
+        td:first-child {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        tr.highlight td {
+            background: rgba(196, 160, 0, 0.08);
+            font-weight: 600;
+        }
+
+        tr.highlight td:first-child {
+            color: var(--accent-primary);
+        }
+
+        blockquote {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent-primary);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            font-style: normal;
+            color: var(--text-muted);
+        }
+
+        blockquote cite a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        blockquote cite a:hover {
+            color: var(--accent-primary);
+            text-decoration: underline;
+        }
+
+        /* TAM visual */
+        .tam-visual {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .tam-value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            line-height: 1;
+        }
+
+        .tam-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.5rem;
+        }
+
+        /* Market cards */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .market-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+        }
+
+        .market-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .market-card h4 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .market-cagr {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--success);
+            background: rgba(64, 196, 112, 0.1);
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--success);
+        }
+
+        .market-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .market-value {
+            text-align: center;
+        }
+
+        .market-value-num {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .market-value-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .market-value-projected .market-value-num {
+            color: var(--accent-primary);
+        }
+
+        /* Segment cards */
+        .segment-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .segment-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .segment-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            background: rgba(196, 160, 0, 0.1);
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--accent-secondary);
+        }
+
+        .segment-card h4 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .segment-profile {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Competitor analysis */
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .competitor-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+        }
+
+        .competitor-card h5 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .competitor-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .competitor-strengths {
+            color: var(--success);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .competitor-weaknesses {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Moat cards */
+        .moat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .moat-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--tactical-green);
+            padding: 1.5rem;
+        }
+
+        .moat-card h4 {
+            color: var(--tactical-green-light);
+            margin: 0 0 0.75rem;
+        }
+
+        .moat-card p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Validation evidence */
+        .evidence-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .evidence-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .evidence-date {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--info);
+            background: rgba(64, 128, 196, 0.1);
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--info);
+        }
+
+        .evidence-card h4 {
+            margin: 0;
+        }
+
+        /* Strava comparison */
+        .strava-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+        }
+
+        .strava-col h4 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .strava-col:first-child h4 {
+            color: #fc4c02;
+        }
+
+        .strava-col:last-child h4 {
+            color: var(--accent-primary);
+        }
+
+        .strava-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .strava-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .strava-stat-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        /* Value exchange box */
+        .value-exchange {
+            background: linear-gradient(135deg, rgba(196, 160, 0, 0.1), rgba(196, 160, 0, 0.05));
+            border: 1px solid var(--accent-secondary);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .value-exchange h4 {
+            color: var(--accent-primary);
+            margin: 0 0 1.5rem;
+            text-align: center;
+        }
+
+        .value-exchange-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .value-col h5 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .value-col ul {
+            margin: 0;
+            padding-left: 1rem;
+        }
+
+        .value-col li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .value-arrow {
+            font-size: 2rem;
+            color: var(--accent-primary);
+        }
+
+        /* GTM phases */
+        .gtm-timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .gtm-phase {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .gtm-phase::before {
+            content: attr(data-phase);
+            position: absolute;
+            left: -0.5rem;
+            top: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--bg-primary);
+            background: var(--accent-primary);
+            padding: 0.3rem 0.5rem;
+            transform: rotate(-90deg);
+            transform-origin: left center;
+        }
+
+        .gtm-phase h4 {
+            margin: 0 0 0.5rem;
+        }
+
+        .gtm-phase-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Risk table */
+        .risk-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 100px 2fr;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+            align-items: center;
+        }
+
+        .risk-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .risk-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .risk-badge.high {
+            background: rgba(196, 64, 64, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .risk-badge.medium {
+            background: rgba(196, 160, 0, 0.2);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+        }
+
+        .risk-badge.low {
+            background: rgba(64, 196, 112, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .risk-mitigation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Source links */
+        .source {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .source a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        .source a:hover {
+            color: var(--accent-primary);
+            text-decoration: underline;
+        }
+
+        /* Conclusion box */
+        .conclusion {
+            background: linear-gradient(135deg, rgba(45, 90, 61, 0.2), rgba(61, 122, 82, 0.1));
+            border: 1px solid var(--tactical-green);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .conclusion h3 {
+            color: var(--tactical-green-light);
+            margin-top: 0;
+        }
+
+        .conclusion-points {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .conclusion-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .conclusion-point-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--tactical-green-light);
+            background: rgba(45, 90, 61, 0.3);
+            padding: 0.2rem 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .conclusion-point p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .conclusion-statement {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--tactical-green);
+        }
+
+        .references {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .references h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .references ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .references li {
+            margin-bottom: 0.75rem;
+            padding: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .references a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        .references a:hover {
+            color: var(--accent-primary);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main {
+                padding: 80px 1rem 2rem;
+            }
+
+            .doc-title {
+                font-size: 1.8rem;
+            }
+
+            .doc-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .market-grid,
+            .moat-grid,
+            .competitor-grid,
+            .strava-comparison,
+            .value-exchange-grid,
+            .conclusion-points {
+                grid-template-columns: 1fr;
+            }
+
+            .value-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+
+            .risk-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media print {
+            body::before,
+            body::after,
+            .nav {
+                display: none;
+            }
+
+            .main {
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="pitchdeck.html" class="nav-logo">Milsim.AI <span>// Data Room</span></a>
+        <div class="nav-links">
+            <a href="01-problem-validation-report.html">Problem</a>
+            <a href="02-market-validation-report.html" class="active">Market</a>
+            <a href="03-investment-thesis-report.html">Thesis</a>
+            <a href="pitchdeck.html">Deck</a>
+            <a href="05-executive-summary.html">Summary</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <header class="doc-header">
+            <div class="doc-classification">Confidential - Investor Materials</div>
+            <h1 class="doc-title">Market Validation Report</h1>
+            <p class="doc-subtitle">Milsim.AI: Synchronized Multimodal Dataset Platform</p>
+            <div class="doc-meta">
+                <span><strong>Version:</strong> 1.0</span>
+                <span><strong>Date:</strong> January 2026</span>
+            </div>
+        </header>
+
+        <div class="exec-summary">
+            <p>Milsim.AI operates at the intersection of three rapidly growing markets: <strong>Defense AI ($35.8B by 2034)</strong>, <strong>Synthetic Data Generation ($6.5B by 2032)</strong>, and <strong>Military Simulation & Training ($19.6B by 2030)</strong>. Our unique position leveraging the $2.2B airsoft community creates a defensible data moat that addresses critical shortages in AI training data.</p>
+        </div>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2>Market Size Analysis</h2>
+            </div>
+
+            <h3>Total Addressable Market (TAM)</h3>
+
+            <div class="tam-visual">
+                <div class="tam-value">$78.4B+</div>
+                <div class="tam-label">Combined TAM by 2034</div>
+            </div>
+
+            <h4>Primary Markets</h4>
+
+            <div class="market-grid">
+                <div class="market-card">
+                    <div class="market-card-header">
+                        <h4>AI & Analytics in Military/Defense</h4>
+                        <span class="market-cagr">13.4% CAGR</span>
+                    </div>
+                    <div class="market-values">
+                        <div class="market-value">
+                            <div class="market-value-num">$10.4B</div>
+                            <div class="market-value-label">2024</div>
+                        </div>
+                        <div class="market-value market-value-projected">
+                            <div class="market-value-num">$35.8B</div>
+                            <div class="market-value-label">2034</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="market-card-header">
+                        <h4>Military Simulation & Training</h4>
+                        <span class="market-cagr">6.7% CAGR</span>
+                    </div>
+                    <div class="market-values">
+                        <div class="market-value">
+                            <div class="market-value-num">$14.1B</div>
+                            <div class="market-value-label">2024</div>
+                        </div>
+                        <div class="market-value market-value-projected">
+                            <div class="market-value-num">$19.6B</div>
+                            <div class="market-value-label">2030</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="market-card-header">
+                        <h4>AI Training Dataset Market</h4>
+                        <span class="market-cagr">24.9% CAGR</span>
+                    </div>
+                    <div class="market-values">
+                        <div class="market-value">
+                            <div class="market-value-num">$2.9B</div>
+                            <div class="market-value-label">2024</div>
+                        </div>
+                        <div class="market-value market-value-projected">
+                            <div class="market-value-num">$17.0B</div>
+                            <div class="market-value-label">2032</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="market-card-header">
+                        <h4>Synthetic Data Generation</h4>
+                        <span class="market-cagr">35.2% CAGR</span>
+                    </div>
+                    <div class="market-values">
+                        <div class="market-value">
+                            <div class="market-value-num">$310M</div>
+                            <div class="market-value-label">2024</div>
+                        </div>
+                        <div class="market-value market-value-projected">
+                            <div class="market-value-num">$6.5B</div>
+                            <div class="market-value-label">2032</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Serviceable Addressable Market (SAM)</h3>
+            <p>Focusing on our core offering—<strong>multimodal tactical/operational training data</strong>:</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Segment</th>
+                            <th>Est. Annual Spend</th>
+                            <th>Our Relevance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Defense AI Training Data</td>
+                            <td>$500M</td>
+                            <td>Primary target</td>
+                        </tr>
+                        <tr>
+                            <td>Robotics Multi-Agent Data</td>
+                            <td>$200M</td>
+                            <td>High relevance</td>
+                        </tr>
+                        <tr>
+                            <td>3D/4D Reconstruction Data</td>
+                            <td>$150M</td>
+                            <td>Direct application</td>
+                        </tr>
+                        <tr>
+                            <td>Military Simulation Content</td>
+                            <td>$300M</td>
+                            <td>Strong fit</td>
+                        </tr>
+                        <tr>
+                            <td>Game Dev Motion/AI Data</td>
+                            <td>$200M</td>
+                            <td>Secondary target</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>SAM Total</td>
+                            <td>$1.35B</td>
+                            <td>annually</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Serviceable Obtainable Market (SOM)</h3>
+
+            <div class="market-grid">
+                <div class="market-card">
+                    <div class="market-card-header">
+                        <h4>Year 1-3 Target</h4>
+                    </div>
+                    <p style="margin:0;color:var(--accent-primary);font-family:'Chakra Petch',sans-serif;font-size:1.5rem;font-weight:600;">$5-15M ARR</p>
+                    <ul style="margin-top:1rem;margin-bottom:0;">
+                        <li>10-30 enterprise customers</li>
+                        <li>Average contract: $200K-500K</li>
+                        <li>Focus: US, UK, Europe</li>
+                    </ul>
+                </div>
+                <div class="market-card">
+                    <div class="market-card-header">
+                        <h4>Year 4-5 Target</h4>
+                    </div>
+                    <p style="margin:0;color:var(--accent-primary);font-family:'Chakra Petch',sans-serif;font-size:1.5rem;font-weight:600;">$50-100M ARR</p>
+                    <ul style="margin-top:1rem;margin-bottom:0;">
+                        <li>100+ enterprise customers</li>
+                        <li>Expanded product offering</li>
+                        <li>International expansion</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2>Target Customer Segments</h2>
+            </div>
+
+            <div class="segment-card">
+                <div class="segment-header">
+                    <span class="segment-num">01</span>
+                    <h4>Defense AI Companies</h4>
+                </div>
+                <p class="segment-profile">Developing autonomous systems, drone swarms, or AI decision support. Well-funded startups or defense contractors needing real-world multi-agent tactical data.</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Valuation</th>
+                                <th>Revenue</th>
+                                <th>Primary Need</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Anduril</td>
+                                <td>$30.5B</td>
+                                <td>$1B (2024)</td>
+                                <td>Autonomous systems training</td>
+                            </tr>
+                            <tr>
+                                <td>Shield AI</td>
+                                <td>$5.6B</td>
+                                <td>$300M</td>
+                                <td>AI pilot training data</td>
+                            </tr>
+                            <tr>
+                                <td>Helsing</td>
+                                <td>~$5B</td>
+                                <td>N/A</td>
+                                <td>European defense AI</td>
+                            </tr>
+                            <tr>
+                                <td>Palantir</td>
+                                <td>$50B+</td>
+                                <td>$2.2B</td>
+                                <td>Tactical decision support</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Budget Indicators</h4>
+                <ul>
+                    <li>Anduril doubled revenue to <strong>$1B in 2024</strong></li>
+                    <li>U.S. DoD allocated <strong>$1.8B for AI in FY2025</strong> (+63.6% YoY)</li>
+                    <li><strong>$3B</strong> invested in defense tech startups in 2024 (+11% YoY)</li>
+                </ul>
+
+                <h4>Buying Behavior</h4>
+                <ul>
+                    <li>Long sales cycles (6-12 months)</li>
+                    <li>Procurement through defense contracts or direct licensing</li>
+                    <li>High emphasis on data provenance and ethical sourcing</li>
+                    <li>Willing to pay premium for unique, high-quality data</li>
+                </ul>
+            </div>
+
+            <div class="segment-card">
+                <div class="segment-header">
+                    <span class="segment-num">02</span>
+                    <h4>Robotics & Embodied AI Companies</h4>
+                </div>
+                <p class="segment-profile">Building general-purpose robots or autonomous systems. Need diverse real-world manipulation and navigation data for training multi-modal foundation models.</p>
+
+                <blockquote>
+                    "Training robots to operate in the real world means investing in the right kind of data and the right workflows to label it."
+                    <cite>- <a href="https://labelstud.io/blog/the-rise-of-real-world-robotics-and-the-data-behind-it/">Label Studio</a></cite>
+                </blockquote>
+
+                <h4>Key Players</h4>
+                <ul>
+                    <li>Boston Dynamics</li>
+                    <li>Figure AI</li>
+                    <li>1X Technologies</li>
+                    <li>Agility Robotics</li>
+                    <li>Generalist AI (building "largest manipulation dataset ever")</li>
+                </ul>
+
+                <h4>Data Requirements</h4>
+                <ul>
+                    <li>Multi-view synchronized video</li>
+                    <li>Sensor fusion (IMU, GPS, audio)</li>
+                    <li>Human-object interaction scenarios</li>
+                    <li>Diverse environments and lighting</li>
+                </ul>
+            </div>
+
+            <div class="segment-card">
+                <div class="segment-header">
+                    <span class="segment-num">03</span>
+                    <h4>Military Simulation & Training Companies</h4>
+                </div>
+                <p class="segment-profile">Provide simulation systems to defense departments. Build virtual training environments. Need realistic scenario content and behavior models.</p>
+
+                <p><strong>Market Size:</strong> $14.1B (2024) &rarr; $19.6B (2030)</p>
+
+                <h4>Key Drivers</h4>
+                <ul>
+                    <li>41% growth attributed to defense modernization programs</li>
+                    <li>33% from demand for synthetic training environments</li>
+                    <li>Integration of AI/ML for simulation realism</li>
+                </ul>
+
+                <h4>Key Players</h4>
+                <ul>
+                    <li>CAE Inc.</li>
+                    <li>Lockheed Martin Training Solutions</li>
+                    <li>Raytheon (Collins Aerospace)</li>
+                    <li>BAE Systems</li>
+                    <li>L3Harris Technologies</li>
+                </ul>
+            </div>
+
+            <div class="segment-card">
+                <div class="segment-header">
+                    <span class="segment-num">04</span>
+                    <h4>Game Development Studios</h4>
+                </div>
+                <p class="segment-profile">AAA studios needing motion capture and AI training data. Studios building military/tactical games. AI NPC behavior development teams.</p>
+
+                <blockquote>
+                    "By using a huge quantity of MOCAP data, Ubisoft can teach the system what animation goes with which context... generating it on the fly."
+                    <cite>- <a href="https://www.ubisoft.com/en-us/studio/laforge/news/6xXL85Q3bF2vEj76xmnmIu/introducing-learned-motion-matching">Ubisoft La Forge</a></cite>
+                </blockquote>
+
+                <ul>
+                    <li>Activision, EA, Ubisoft all investing in AI for game development</li>
+                    <li>Motion capture data in high demand</li>
+                    <li>SAG-AFTRA protections increasing costs for human mo-cap</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2>Competitive Analysis</h2>
+            </div>
+
+            <h3>Direct Competitors (Data Providers)</h3>
+
+            <div class="competitor-grid">
+                <div class="competitor-card">
+                    <h5>Scale AI</h5>
+                    <p>General AI data labeling</p>
+                    <div class="competitor-strengths">+ $14B valuation, defense contracts</div>
+                    <div class="competitor-weaknesses">- Doesn't collect, only labels</div>
+                </div>
+                <div class="competitor-card">
+                    <h5>Appen</h5>
+                    <p>Crowd-sourced labeling</p>
+                    <div class="competitor-strengths">+ Large workforce</div>
+                    <div class="competitor-weaknesses">- No multi-agent tactical data</div>
+                </div>
+                <div class="competitor-card">
+                    <h5>Labelbox</h5>
+                    <p>Data labeling platform</p>
+                    <div class="competitor-strengths">+ Strong tooling</div>
+                    <div class="competitor-weaknesses">- Doesn't provide raw data</div>
+                </div>
+                <div class="competitor-card">
+                    <h5>Rendered.ai</h5>
+                    <p>Synthetic data</p>
+                    <div class="competitor-strengths">+ Scalable, configurable</div>
+                    <div class="competitor-weaknesses">- Domain gap issues</div>
+                </div>
+            </div>
+
+            <h3>Our Competitive Moat</h3>
+
+            <div class="moat-grid">
+                <div class="moat-card">
+                    <h4>1. Community Network Effect</h4>
+                    <p>$2.2B global airsoft market with millions of active players. Self-selected tactical enthusiasts with intrinsic motivation to participate. As platform grows: events become more attractive, data becomes more valuable, community becomes stickier.</p>
+                </div>
+                <div class="moat-card">
+                    <h4>2. Synchronization Technology</h4>
+                    <p>GPS atomic clock precision (nanoseconds). QR code timestamp verification. Multi-device sensor fusion. No other approach achieves this at scale.</p>
+                </div>
+                <div class="moat-card">
+                    <h4>3. Ethical Data Sourcing</h4>
+                    <p>Explicit opt-in consent from all participants. Clear data rights and transparent practices. No scraped or questionable content. Regulatory compliance built-in.</p>
+                </div>
+                <div class="moat-card">
+                    <h4>4. Scale Economics</h4>
+                    <p>Participants provide their own equipment. Events happen regardless (we add data capture). Marginal cost per participant approaches zero at scale.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2>Market Validation Evidence</h2>
+            </div>
+
+            <h3>Demand Signals</h3>
+
+            <div class="evidence-card">
+                <div class="evidence-header">
+                    <span class="evidence-date">March 2025</span>
+                    <h4>NVIDIA's Open Dataset Initiative</h4>
+                </div>
+                <blockquote>
+                    "NVIDIA released an open dataset comprising thousands of hours of multi-camera video at unprecedented diversity, scale and geography."
+                    <cite>- <a href="https://blogs.nvidia.com/blog/open-physical-ai-dataset/">NVIDIA Blog</a></cite>
+                </blockquote>
+                <p><strong>Implication:</strong> Major tech companies are creating datasets because they don't exist—demonstrating critical unmet need.</p>
+            </div>
+
+            <div class="evidence-card">
+                <div class="evidence-header">
+                    <span class="evidence-date">Nov 2025</span>
+                    <h4>Generalist AI's Data Collection Effort</h4>
+                </div>
+                <blockquote>
+                    "Constructing the largest and most diverse real-world manipulation dataset ever built, including every manipulation task humans can think of."
+                    <cite>- <a href="https://generalistai.com/blog/nov-04-2025-GEN-0">Generalist AI</a></cite>
+                </blockquote>
+                <p><strong>Implication:</strong> Well-funded startups investing heavily in proprietary data collection.</p>
+            </div>
+
+            <div class="evidence-card">
+                <div class="evidence-header">
+                    <span class="evidence-date">March 2025</span>
+                    <h4>NVIDIA Acquires Gretel</h4>
+                </div>
+                <p>Gretel, a synthetic data company, was acquired by NVIDIA and folded into their AI services.</p>
+                <p><strong>Implication:</strong> Data is strategic enough to warrant major acquisitions.</p>
+            </div>
+
+            <h3>Pricing Benchmarks</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Market Price</th>
+                            <th>Our Cost Advantage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Video footage</td>
+                            <td>$1-4/minute</td>
+                            <td>Captured at events for free</td>
+                        </tr>
+                        <tr>
+                            <td>Data annotation</td>
+                            <td>$1-5/item</td>
+                            <td>Community-assisted labeling</td>
+                        </tr>
+                        <tr>
+                            <td>Motion capture</td>
+                            <td>$500-2000/hour studio</td>
+                            <td>Included in gameplay</td>
+                        </tr>
+                        <tr>
+                            <td>Multi-view sync video</td>
+                            <td>$5000+/hour</td>
+                            <td>Unique offering</td>
+                        </tr>
+                        <tr>
+                            <td>Complete datasets</td>
+                            <td>$1K-50K</td>
+                            <td>Scalable production</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2>User Acquisition Market: Airsoft/Milsim</h2>
+            </div>
+
+            <h3>Market Overview</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Global Market Size</td>
+                            <td>$2.2B (2024)</td>
+                            <td>IMARC</td>
+                        </tr>
+                        <tr>
+                            <td>Projected Size</td>
+                            <td>$4.5B (2034)</td>
+                            <td>GMInsights</td>
+                        </tr>
+                        <tr>
+                            <td>CAGR</td>
+                            <td>7.8%</td>
+                            <td>Multiple sources</td>
+                        </tr>
+                        <tr>
+                            <td>US Market Share</td>
+                            <td>~$680M (79% of NA)</td>
+                            <td>GMInsights</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <blockquote>
+                "In Asia and North America, multiday milsim events draw thousands of players, often with complex storylines and live actor inclusion."
+                <cite>- <a href="https://www.gminsights.com/industry-analysis/airsoft-gun-market">GMInsights</a></cite>
+            </blockquote>
+
+            <h3>Comparable Platform: Strava</h3>
+
+            <div class="strava-comparison">
+                <div class="strava-col">
+                    <h4>Strava (Fitness)</h4>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Users</span>
+                        <span class="strava-stat-value">150M+ registered</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Monthly Growth</span>
+                        <span class="strava-stat-value">2M new users</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Revenue Model</span>
+                        <span class="strava-stat-value">Freemium subscription</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Revenue</span>
+                        <span class="strava-stat-value">$300M+ (2024)</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Valuation</span>
+                        <span class="strava-stat-value">$2.2B</span>
+                    </div>
+                </div>
+                <div class="strava-col">
+                    <h4>Milsim.AI (Tactical)</h4>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Users</span>
+                        <span class="strava-stat-value">Millions globally (airsoft)</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Growth Driver</span>
+                        <span class="strava-stat-value">$2.2B market @ 7.8% CAGR</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Revenue Model</span>
+                        <span class="strava-stat-value">Free + B2B data licensing</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Revenue</span>
+                        <span class="strava-stat-value">TBD</span>
+                    </div>
+                    <div class="strava-stat">
+                        <span class="strava-stat-label">Valuation</span>
+                        <span class="strava-stat-value">N/A</span>
+                    </div>
+                </div>
+            </div>
+
+            <p><strong>Key Strava Success Factors Applicable to Us:</strong></p>
+            <ul>
+                <li>Community & social features (clubs, challenges)</li>
+                <li>Platform-agnostic approach (works with any equipment)</li>
+                <li>Asset-light model (users provide hardware)</li>
+                <li>Strong engagement through gamification</li>
+            </ul>
+
+            <p><strong>Key Difference:</strong> Unlike Strava's consumer subscription model, we monetize through B2B data licensing. Users get premium features free in exchange for contributing data (video uploads), creating a direct value exchange that maximizes data collection while eliminating consumer revenue friction.</p>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">06</span>
+                <h2>Go-to-Market Strategy</h2>
+            </div>
+
+            <div class="gtm-timeline">
+                <div class="gtm-phase" data-phase="01">
+                    <h4>Phase 1: Community Building</h4>
+                    <div class="gtm-phase-meta">Months 1-12 | Target: 10,000 active users, 50+ events</div>
+
+                    <h4>Channels</h4>
+                    <ul>
+                        <li>Partner with major milsim event organizers</li>
+                        <li>Reddit r/airsoft, r/MilSim communities</li>
+                        <li>YouTube airsoft content creators</li>
+                        <li>Direct outreach to milsim teams</li>
+                    </ul>
+
+                    <div class="value-exchange">
+                        <h4>The Data-for-Features Exchange</h4>
+                        <div class="value-exchange-grid">
+                            <div class="value-col">
+                                <h5>Users Get (Free)</h5>
+                                <ul>
+                                    <li>Tactical HUD with real-time positions</li>
+                                    <li>GPS tracking and objectives</li>
+                                    <li>Social features & event discovery</li>
+                                    <li><strong>Upload video &rarr;</strong> Deep analytics</li>
+                                    <li>Performance heatmaps & AI insights</li>
+                                    <li>Multi-perspective replay</li>
+                                </ul>
+                            </div>
+                            <div class="value-arrow">&harr;</div>
+                            <div class="value-col">
+                                <h5>We Get</h5>
+                                <ul>
+                                    <li>GPS + sensor data streams</li>
+                                    <li>Synchronized video footage</li>
+                                    <li>Audio recordings</li>
+                                    <li>Multimodal tactical datasets</li>
+                                    <li>Community-assisted labeling</li>
+                                    <li>Diverse scenario content</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gtm-phase" data-phase="02">
+                    <h4>Phase 2: Data Product Development</h4>
+                    <div class="gtm-phase-meta">Months 6-18 | Target: 100+ hours synchronized multi-agent data</div>
+                    <ul>
+                        <li>Refine capture methodology</li>
+                        <li>Build data processing pipeline</li>
+                        <li>Create labeling/annotation workflows</li>
+                        <li>Establish data quality standards</li>
+                    </ul>
+                </div>
+
+                <div class="gtm-phase" data-phase="03">
+                    <h4>Phase 3: Enterprise Sales</h4>
+                    <div class="gtm-phase-meta">Months 12-24 | Target: 5-10 enterprise customers, $2-5M ARR</div>
+                    <ul>
+                        <li>Direct sales to defense AI companies</li>
+                        <li>Partnership with defense contractors</li>
+                        <li>Research licensing to universities</li>
+                        <li>Pilot programs with robotics companies</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">07</span>
+                <h2>Financial Projections</h2>
+            </div>
+
+            <h3>Revenue Model</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stream</th>
+                            <th>Year 1</th>
+                            <th>Year 3</th>
+                            <th>Year 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Licensing</td>
+                            <td>$500K</td>
+                            <td>$6M</td>
+                            <td>$30M</td>
+                        </tr>
+                        <tr>
+                            <td>Event Services</td>
+                            <td>$50K</td>
+                            <td>$500K</td>
+                            <td>$2M</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Total</td>
+                            <td>$550K</td>
+                            <td>$6.5M</td>
+                            <td>$32M</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Note:</strong> No consumer subscription revenue. Premium features are free to users in exchange for data contribution (video uploads). This maximizes data collection velocity and removes friction from user growth.</p>
+
+            <h3>Assumptions</h3>
+            <ul>
+                <li>Average data license: $200K-500K/year per enterprise customer</li>
+                <li>Event services: $500-2,000 per event for professional data capture setup</li>
+                <li>20% YoY growth in enterprise customers after initial traction</li>
+                <li>Video upload rate increases as premium features improve</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">08</span>
+                <h2>Risks and Mitigations</h2>
+            </div>
+
+            <div class="risk-row">
+                <span class="risk-name">Slow user adoption</span>
+                <span class="risk-badge medium">Medium</span>
+                <span class="risk-badge high">High Impact</span>
+                <span class="risk-mitigation">Partner with established events, offer compelling free tier</span>
+            </div>
+
+            <div class="risk-row">
+                <span class="risk-name">Data quality issues</span>
+                <span class="risk-badge medium">Medium</span>
+                <span class="risk-badge high">High Impact</span>
+                <span class="risk-mitigation">Strict capture standards, automated QC</span>
+            </div>
+
+            <div class="risk-row">
+                <span class="risk-name">Customer concentration</span>
+                <span class="risk-badge high">High</span>
+                <span class="risk-badge medium">Medium Impact</span>
+                <span class="risk-mitigation">Diversify across segments</span>
+            </div>
+
+            <div class="risk-row">
+                <span class="risk-name">Regulatory changes</span>
+                <span class="risk-badge low">Low</span>
+                <span class="risk-badge medium">Medium Impact</span>
+                <span class="risk-mitigation">Proactive compliance, ethical data practices</span>
+            </div>
+
+            <div class="risk-row">
+                <span class="risk-name">Competition</span>
+                <span class="risk-badge medium">Medium</span>
+                <span class="risk-badge medium">Medium Impact</span>
+                <span class="risk-mitigation">Build community moat, unique data offering</span>
+            </div>
+        </section>
+
+        <div class="conclusion">
+            <h3>Conclusion</h3>
+            <p>The market validation is strong across multiple dimensions:</p>
+
+            <div class="conclusion-points">
+                <div class="conclusion-point">
+                    <span class="conclusion-point-num">01</span>
+                    <p><strong>Large and growing markets:</strong> TAM of $78B+ across target segments</p>
+                </div>
+                <div class="conclusion-point">
+                    <span class="conclusion-point-num">02</span>
+                    <p><strong>Clear demand signals:</strong> Major companies investing heavily in data acquisition</p>
+                </div>
+                <div class="conclusion-point">
+                    <span class="conclusion-point-num">03</span>
+                    <p><strong>Favorable pricing:</strong> Premium prices for unique, high-quality data</p>
+                </div>
+                <div class="conclusion-point">
+                    <span class="conclusion-point-num">04</span>
+                    <p><strong>Accessible user base:</strong> $2.2B airsoft market with millions of active players</p>
+                </div>
+                <div class="conclusion-point">
+                    <span class="conclusion-point-num">05</span>
+                    <p><strong>Proven platform model:</strong> Strava demonstrates viability; our B2B model is cleaner</p>
+                </div>
+            </div>
+
+            <p class="conclusion-statement">Milsim.AI is positioned to capture significant value by connecting an underserved data need with an engaged, motivated community.</p>
+        </div>
+
+        <section class="references">
+            <h2>References</h2>
+            <ul>
+                <li><a href="https://www.gminsights.com/industry-analysis/ai-and-analytics-in-military-and-defense-market">GMInsights - AI in Military & Defense</a></li>
+                <li><a href="https://www.globenewswire.com/news-release/2026/01/21/3222592/28124/en/Military-Simulation-and-Training-Research-Report-2026-19-58-Bn-Market-Opportunities-Trends-Competitive-Landscape-Strategies-and-Forecasts-2020-2025-2025-2030F-2035F.html">GlobeNewswire - Military Simulation Market</a></li>
+                <li><a href="https://www.gminsights.com/industry-analysis/synthetic-data-generation-market">GMInsights - Synthetic Data Market</a></li>
+                <li><a href="https://www.fortunebusinessinsights.com/ai-training-dataset-market-109241">Fortune Business Insights - AI Training Dataset Market</a></li>
+                <li><a href="https://www.gminsights.com/industry-analysis/airsoft-gun-market">GMInsights - Airsoft Gun Market</a></li>
+                <li><a href="https://fortune.com/2025/06/05/anduril-palmer-luckey-funding-30-billion-valuation-founders-fund/">Fortune - Anduril Funding</a></li>
+                <li><a href="https://shield.ai/shield-ai-raises-240m-at-5-3b-valuation-to-scale-hivemind-enterprise-an-ai-powered-autonomy-developer-platform/">Shield AI Announcement</a></li>
+                <li><a href="https://www.businessofapps.com/data/strava-statistics/">Business of Apps - Strava Statistics</a></li>
+                <li><a href="https://blogs.nvidia.com/blog/open-physical-ai-dataset/">NVIDIA Blog - Physical AI Dataset</a></li>
+                <li><a href="https://generalistai.com/blog/nov-04-2025-GEN-0">Generalist AI - GEN-0</a></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

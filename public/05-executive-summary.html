@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Summary | Milsim.AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0c0f;
+            --bg-secondary: #12161c;
+            --bg-tertiary: #1a1f28;
+            --accent-primary: #c4a000;
+            --accent-secondary: #8b7500;
+            --accent-glow: rgba(196, 160, 0, 0.3);
+            --tactical-green: #2d5a3d;
+            --tactical-green-light: #3d7a52;
+            --text-primary: #e8e6e0;
+            --text-secondary: #9a9890;
+            --text-muted: #5a5850;
+            --border-color: #2a2f38;
+            --danger: #c44040;
+            --success: #40c470;
+            --info: #4080c4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(196, 160, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(196, 160, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 12, 15, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-links a.active {
+            color: var(--accent-primary);
+        }
+
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 2rem 4rem;
+        }
+
+        /* Hero header */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--accent-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-meta strong {
+            color: var(--text-secondary);
+        }
+
+        /* Overview box */
+        .overview {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--accent-primary);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .overview::before {
+            content: 'COMPANY OVERVIEW';
+            position: absolute;
+            top: -0.6rem;
+            left: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent-primary);
+            background: var(--bg-primary);
+            padding: 0 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .overview p {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .overview strong {
+            color: var(--accent-primary);
+        }
+
+        /* Section styling */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 1.2rem;
+            background: var(--accent-primary);
+        }
+
+        h3 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--accent-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            margin: 0.75rem 0 1rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        li::marker {
+            color: var(--accent-primary);
+        }
+
+        /* Problem cards */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .problem-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--danger);
+            padding: 1rem 1.25rem;
+        }
+
+        .problem-card strong {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .problem-card p {
+            font-size: 0.85rem;
+            margin: 0.5rem 0 0;
+            color: var(--text-muted);
+        }
+
+        /* Solution grid */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .solution-col {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .solution-col h3 {
+            margin: 0 0 1rem;
+            font-size: 1rem;
+        }
+
+        .solution-col:first-child {
+            border-left: 3px solid var(--info);
+        }
+
+        .solution-col:first-child h3 {
+            color: var(--info);
+        }
+
+        .solution-col:last-child {
+            border-left: 3px solid var(--success);
+        }
+
+        .solution-col:last-child h3 {
+            color: var(--success);
+        }
+
+        .solution-col ul {
+            margin: 0;
+        }
+
+        .solution-col li {
+            font-size: 0.9rem;
+        }
+
+        /* Innovation box */
+        .innovation {
+            background: rgba(196, 160, 0, 0.08);
+            border: 1px solid var(--accent-secondary);
+            padding: 1.25rem 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .innovation-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .innovation p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Market stats */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .market-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .market-value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .market-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .market-cagr {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--success);
+        }
+
+        /* TAM callout */
+        .tam-callout {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--accent-primary);
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .tam-value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .tam-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Timing bullets */
+        .timing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .timing-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-secondary);
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .timing-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            flex-shrink: 0;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-primary);
+            background: var(--bg-secondary);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:first-child {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Advantages */
+        .advantage-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .advantage-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border: 1px solid var(--tactical-green);
+            padding: 1.25rem;
+        }
+
+        .advantage-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--tactical-green-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .advantage-card h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--tactical-green-light);
+            margin: 0.5rem 0;
+        }
+
+        .advantage-card p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: var(--text-muted);
+        }
+
+        /* Customers */
+        .customer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .customer-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+        }
+
+        .customer-section h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .customer-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+        }
+
+        .customer-item:last-child {
+            border-bottom: none;
+        }
+
+        .customer-item span:first-child {
+            color: var(--text-primary);
+        }
+
+        .customer-item span:last-child {
+            color: var(--text-muted);
+        }
+
+        /* Projections mini */
+        .projections-mini {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .proj-year {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: center;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .proj-year:last-child {
+            border-right: none;
+        }
+
+        .proj-year.highlight {
+            background: rgba(64, 196, 112, 0.1);
+        }
+
+        .proj-year-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .proj-year-value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0.5rem 0 0.25rem;
+        }
+
+        .proj-year.highlight .proj-year-value {
+            color: var(--success);
+        }
+
+        .proj-year-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Traction milestones */
+        .milestone-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .milestone {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-secondary);
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .milestone-check {
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.7rem;
+            color: var(--accent-primary);
+        }
+
+        /* Use of funds */
+        .funds-bar {
+            display: flex;
+            height: 40px;
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .funds-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+
+        .funds-segment:nth-child(1) {
+            width: 50%;
+            background: var(--accent-primary);
+        }
+
+        .funds-segment:nth-child(2) {
+            width: 20%;
+            background: var(--tactical-green-light);
+        }
+
+        .funds-segment:nth-child(3) {
+            width: 15%;
+            background: var(--info);
+        }
+
+        .funds-segment:nth-child(4) {
+            width: 15%;
+            background: var(--text-muted);
+        }
+
+        .funds-legend {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .funds-legend span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .funds-legend span::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+        }
+
+        .funds-legend span:nth-child(1)::before { background: var(--accent-primary); }
+        .funds-legend span:nth-child(2)::before { background: var(--tactical-green-light); }
+        .funds-legend span:nth-child(3)::before { background: var(--info); }
+        .funds-legend span:nth-child(4)::before { background: var(--text-muted); }
+
+        /* Team */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .team-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.25rem;
+        }
+
+        .team-card h4 {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .team-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Exit potential */
+        .exit-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .exit-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .exit-card h4 {
+            font-size: 0.8rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .exit-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Return callout */
+        .return-callout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .return-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .return-box.bull {
+            border-color: var(--success);
+            background: rgba(64, 196, 112, 0.05);
+        }
+
+        .return-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .return-box.bull .return-label {
+            color: var(--success);
+        }
+
+        .return-value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin: 0.5rem 0;
+        }
+
+        .return-box.bull .return-value {
+            color: var(--success);
+        }
+
+        .return-detail {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, rgba(45, 90, 61, 0.3), rgba(61, 122, 82, 0.2));
+            border: 1px solid var(--tactical-green);
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .cta h3 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.5rem;
+            color: var(--tactical-green-light);
+            margin: 0 0 1rem;
+        }
+
+        .cta p {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Why now / why us */
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .why-col {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .why-col h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .why-col ol {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .why-col li {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* References */
+        .references {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .references h2 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .references ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            column-count: 2;
+            column-gap: 2rem;
+        }
+
+        .references li {
+            margin-bottom: 0.5rem;
+            padding: 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .references a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        .references a:hover {
+            color: var(--accent-primary);
+            text-decoration: underline;
+        }
+
+        /* Contact */
+        .contact {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact h3 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact p {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main {
+                padding: 80px 1rem 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .problem-grid,
+            .solution-grid,
+            .market-grid,
+            .timing-grid,
+            .advantage-grid,
+            .customer-grid,
+            .milestone-list,
+            .team-grid,
+            .exit-grid,
+            .return-callout,
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projections-mini {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .proj-year:nth-child(4),
+            .proj-year:nth-child(5) {
+                display: none;
+            }
+
+            .funds-legend {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .references ul {
+                column-count: 1;
+            }
+        }
+
+        @media print {
+            body::before,
+            body::after,
+            .nav {
+                display: none;
+            }
+
+            .main {
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="pitchdeck.html" class="nav-logo">Milsim.AI <span>// Data Room</span></a>
+        <div class="nav-links">
+            <a href="01-problem-validation-report.html">Problem</a>
+            <a href="02-market-validation-report.html">Market</a>
+            <a href="03-investment-thesis-report.html">Thesis</a>
+            <a href="pitchdeck.html">Deck</a>
+            <a href="05-executive-summary.html" class="active">Summary</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <header class="hero">
+            <div class="hero-badge">Executive Summary</div>
+            <h1 class="hero-title">Milsim.AI</h1>
+            <p class="hero-subtitle">Synchronized Multimodal Datasets for AI Training</p>
+            <div class="hero-meta">
+                <span><strong>Date:</strong> January 2026</span>
+                <span><strong>Seed Round:</strong> $2.5M</span>
+            </div>
+        </header>
+
+        <div class="overview">
+            <p>Milsim.AI is building the <strong>"Strava for Airsoft"</strong>—a community platform for the global milsim/airsoft community that generates premium AI training data as a byproduct of user engagement. By equipping players with a tactical HUD app and leveraging GPS atomic clock synchronization, we capture perfectly-aligned multimodal datasets (video, audio, GPS, sensors) from large-scale tactical operations that are impossible to obtain elsewhere.</p>
+        </div>
+
+        <section class="section">
+            <h2>The Problem</h2>
+
+            <p>The <strong>$78B+ embodied AI industry</strong> faces a critical data bottleneck:</p>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <strong>Defense AI companies</strong>
+                    <p>Cannot access real military operational data (classified)</p>
+                </div>
+                <div class="problem-card">
+                    <strong>Robotics companies</strong>
+                    <p>Cannot scale multi-agent data collection (prohibitively expensive)</p>
+                </div>
+                <div class="problem-card">
+                    <strong>Simulation companies</strong>
+                    <p>Face domain gaps between synthetic and real data</p>
+                </div>
+                <div class="problem-card">
+                    <strong>3D/4D AI researchers</strong>
+                    <p>Lack synchronized multi-view tactical footage</p>
+                </div>
+            </div>
+
+            <p>Current solutions fail: real military exercise data is classified and unavailable, military exercises cost $1-10M+ each, and synthetic data doesn't transfer to real-world performance. Meanwhile, video training data commands $1-4/minute, and AI training data costs have become "a price tag only Big Tech can afford" (TechCrunch).</p>
+        </section>
+
+        <section class="section">
+            <h2>The Solution</h2>
+
+            <div class="solution-grid">
+                <div class="solution-col">
+                    <h3>For Airsoft Players</h3>
+                    <ul>
+                        <li>Tactical HUD displaying teammate positions, objectives, and communications</li>
+                        <li>GPS tracking and post-game replay analytics</li>
+                        <li>Event discovery and team management</li>
+                        <li>Social features and community engagement</li>
+                    </ul>
+                </div>
+                <div class="solution-col">
+                    <h3>For AI Companies</h3>
+                    <ul>
+                        <li>Synchronized multimodal datasets from 100+ participant tactical scenarios</li>
+                        <li>Video (4K/60fps) + Audio + GPS + Accelerometer/Gyroscope + Compass</li>
+                        <li>Frame-perfect alignment using GPS atomic clock precision (nanoseconds)</li>
+                        <li>Ethically sourced with explicit consent</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="innovation">
+                <div class="innovation-label">The Innovation</div>
+                <p>GPS satellites maintain atomic clocks with nanosecond accuracy. At 60fps, each frame spans 16.67ms—well within synchronization tolerance. Our platform embeds GPS timestamps into QR codes displayed on player HUDs, enabling post-hoc verification and perfect multi-device alignment.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Market Opportunity</h2>
+
+            <div class="tam-callout">
+                <div class="tam-value">$78B+</div>
+                <div class="tam-label">Total Addressable Market by 2034</div>
+            </div>
+
+            <div class="market-grid">
+                <div class="market-card">
+                    <div class="market-value">$35.8B</div>
+                    <div class="market-label">AI in Military & Defense</div>
+                    <div class="market-cagr">13.4% CAGR</div>
+                </div>
+                <div class="market-card">
+                    <div class="market-value">$19.6B</div>
+                    <div class="market-label">Military Simulation</div>
+                    <div class="market-cagr">6.7% CAGR</div>
+                </div>
+                <div class="market-card">
+                    <div class="market-value">$17.0B</div>
+                    <div class="market-label">AI Training Data</div>
+                    <div class="market-cagr">24.9% CAGR</div>
+                </div>
+                <div class="market-card">
+                    <div class="market-value">$6.5B</div>
+                    <div class="market-label">Synthetic Data</div>
+                    <div class="market-cagr">35.2% CAGR</div>
+                </div>
+            </div>
+
+            <h3>Market Timing</h3>
+
+            <div class="timing-grid">
+                <div class="timing-item">U.S. DoD AI budget: $1.8B in FY2025 (+63.6% YoY)</div>
+                <div class="timing-item">Anduril valuation doubled to $30.5B in 2024</div>
+                <div class="timing-item">Shield AI raised $540M at $5.6B valuation</div>
+                <div class="timing-item">$3B invested in defense tech startups in 2024</div>
+            </div>
+
+            <h3>User Acquisition Market: Airsoft/Milsim</h3>
+            <ul>
+                <li>Global market: <strong>$2.2B (2024)</strong>, growing at 7.8% CAGR</li>
+                <li>Millions of active players globally across a fragmented market</li>
+                <li>Thousands of milsim events annually with complex multi-day scenarios</li>
+                <li>Players already own cameras and smartphones; events happen organically</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Business Model</h2>
+
+            <h3>Data-for-Features Exchange (Consumer Side)</h3>
+            <p><strong>No subscription fees.</strong> Users get premium features free in exchange for data contribution:</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User Action</th>
+                            <th>Features Unlocked</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Create account</td>
+                            <td>Basic HUD, GPS tracking, social features</td>
+                        </tr>
+                        <tr>
+                            <td>Upload video</td>
+                            <td>Advanced analytics, performance heatmaps, AI insights</td>
+                        </tr>
+                        <tr>
+                            <td>Participate in events</td>
+                            <td>Multi-perspective replay, team coordination stats</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Revenue: Enterprise Data Licensing (B2B Side)</h3>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Annual Price</th>
+                            <th>Target Customer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Research</td>
+                            <td>$25-50K</td>
+                            <td>Universities, early-stage startups</td>
+                        </tr>
+                        <tr>
+                            <td>Professional</td>
+                            <td>$150-300K</td>
+                            <td>Mid-size AI companies</td>
+                        </tr>
+                        <tr>
+                            <td>Enterprise</td>
+                            <td>$500K-2M</td>
+                            <td>Defense primes, tech giants</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Unit Economics</h3>
+            <ul>
+                <li>Data collection cost: <strong>&lt;$100/hour</strong> (vs. $5,000+ traditional)</li>
+                <li>Data value: <strong>$5,000+/hour</strong> (based on comparable licensing)</li>
+                <li>Gross margin: <strong>85%+</strong></li>
+                <li>LTV:CAC: <strong>5:1+</strong></li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Competitive Advantages</h2>
+
+            <div class="advantage-grid">
+                <div class="advantage-card">
+                    <div class="advantage-num">01</div>
+                    <h4>Community Network Effect</h4>
+                    <p>More users &rarr; More events &rarr; More data &rarr; Better product &rarr; More users. Strava proved this model: 150M users, $2.2B valuation.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-num">02</div>
+                    <h4>Synchronization Technology</h4>
+                    <p>GPS atomic clock precision enables nanosecond-accurate alignment across hundreds of devices—no competitor can match at scale.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-num">03</div>
+                    <h4>Ethical Data Moat</h4>
+                    <p>Explicit consent model and clear data provenance provides compliance certainty that scraped data cannot.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-num">04</div>
+                    <h4>Capital Efficiency</h4>
+                    <p>Military exercises cost $1-10M+ and produce classified data. Milsim replicates scenarios at &lt;$10K per event—commercially available.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Target Customers</h2>
+
+            <div class="customer-grid">
+                <div class="customer-section">
+                    <h4>Primary: Defense AI Companies</h4>
+                    <div class="customer-item">
+                        <span>Anduril</span>
+                        <span>$30.5B valuation</span>
+                    </div>
+                    <div class="customer-item">
+                        <span>Shield AI</span>
+                        <span>$5.6B valuation</span>
+                    </div>
+                    <div class="customer-item">
+                        <span>Palantir</span>
+                        <span>$50B+ valuation</span>
+                    </div>
+                    <div class="customer-item">
+                        <span>Helsing</span>
+                        <span>~$5B valuation</span>
+                    </div>
+                </div>
+                <div class="customer-section">
+                    <h4>Secondary: Robotics & Simulation</h4>
+                    <div class="customer-item">
+                        <span>Figure AI, Boston Dynamics</span>
+                        <span>Robotics</span>
+                    </div>
+                    <div class="customer-item">
+                        <span>CAE, L3Harris</span>
+                        <span>Simulation</span>
+                    </div>
+                    <div class="customer-item">
+                        <span>Ubisoft, EA</span>
+                        <span>Gaming</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Financial Projections</h2>
+
+            <div class="projections-mini">
+                <div class="proj-year">
+                    <div class="proj-year-label">Year 1</div>
+                    <div class="proj-year-value">$550K</div>
+                    <div class="proj-year-sub">10K users</div>
+                </div>
+                <div class="proj-year">
+                    <div class="proj-year-label">Year 2</div>
+                    <div class="proj-year-value">$2.7M</div>
+                    <div class="proj-year-sub">50K users</div>
+                </div>
+                <div class="proj-year highlight">
+                    <div class="proj-year-label">Year 3</div>
+                    <div class="proj-year-value">$8M</div>
+                    <div class="proj-year-sub">Profitable</div>
+                </div>
+                <div class="proj-year">
+                    <div class="proj-year-label">Year 4</div>
+                    <div class="proj-year-value">$20M</div>
+                    <div class="proj-year-sub">400K users</div>
+                </div>
+                <div class="proj-year">
+                    <div class="proj-year-label">Year 5</div>
+                    <div class="proj-year-value">$47M</div>
+                    <div class="proj-year-sub">1M users</div>
+                </div>
+            </div>
+
+            <p style="text-align:center;color:var(--success);font-weight:600;margin-top:1rem;">Path to profitability: Year 3</p>
+        </section>
+
+        <section class="section">
+            <h2>Traction & Milestones</h2>
+
+            <h3>With Seed Funding ($2.5M) — 18-Month Targets</h3>
+
+            <div class="milestone-list">
+                <div class="milestone">
+                    <span class="milestone-check">&check;</span>
+                    Launch production platform with tactical HUD
+                </div>
+                <div class="milestone">
+                    <span class="milestone-check">&check;</span>
+                    Acquire 10,000 active users
+                </div>
+                <div class="milestone">
+                    <span class="milestone-check">&check;</span>
+                    Sign 3 pilot enterprise customers ($200K+ ACV)
+                </div>
+                <div class="milestone">
+                    <span class="milestone-check">&check;</span>
+                    Collect 500+ hours synchronized data
+                </div>
+                <div class="milestone">
+                    <span class="milestone-check">&check;</span>
+                    Position for $10M Series A
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Use of Funds</h2>
+
+            <div class="funds-bar">
+                <div class="funds-segment">Engineering 50%</div>
+                <div class="funds-segment">Community 20%</div>
+                <div class="funds-segment">Data 15%</div>
+                <div class="funds-segment">G&A 15%</div>
+            </div>
+            <div class="funds-legend">
+                <span>Engineering $1.25M</span>
+                <span>Community $500K</span>
+                <span>Data Ops $375K</span>
+                <span>G&A $375K</span>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Team</h2>
+
+            <h3>Seeking</h3>
+            <div class="team-grid">
+                <div class="team-card">
+                    <h4>CTO</h4>
+                    <p>Mobile/sensor/ML background</p>
+                </div>
+                <div class="team-card">
+                    <h4>Head of Data</h4>
+                    <p>ML pipeline experience</p>
+                </div>
+                <div class="team-card">
+                    <h4>Head of Community</h4>
+                    <p>Gaming/fitness platform experience</p>
+                </div>
+                <div class="team-card">
+                    <h4>Head of Sales</h4>
+                    <p>Enterprise/defense sales experience</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Exit Potential</h2>
+
+            <h3>Strategic Acquirers</h3>
+            <div class="exit-grid">
+                <div class="exit-card">
+                    <h4>Defense Primes</h4>
+                    <p>Lockheed, Raytheon, BAE</p>
+                </div>
+                <div class="exit-card">
+                    <h4>Defense Tech</h4>
+                    <p>Anduril, Palantir, Shield AI</p>
+                </div>
+                <div class="exit-card">
+                    <h4>Tech Giants</h4>
+                    <p>NVIDIA, Google, Meta</p>
+                </div>
+                <div class="exit-card">
+                    <h4>Data Companies</h4>
+                    <p>Scale AI, Appen</p>
+                </div>
+            </div>
+
+            <h3>Return Potential</h3>
+            <div class="return-callout">
+                <div class="return-box">
+                    <div class="return-label">Base Case (10x Revenue)</div>
+                    <div class="return-value">~50x</div>
+                    <div class="return-detail">$470M exit</div>
+                </div>
+                <div class="return-box bull">
+                    <div class="return-label">Bull Case (15x Revenue)</div>
+                    <div class="return-value">~100x</div>
+                    <div class="return-detail">$1B+ exit</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Investment Opportunity</h2>
+
+            <div class="cta">
+                <h3>Seeking: $2.5M Seed Round</h3>
+                <p>Instrument: SAFE or priced equity</p>
+            </div>
+
+            <div class="why-grid">
+                <div class="why-col">
+                    <h4>Why Now</h4>
+                    <ol>
+                        <li>Defense AI budgets at historic highs</li>
+                        <li>Embodied AI emerging as next frontier</li>
+                        <li>Data scarcity is the #1 bottleneck</li>
+                        <li>Ethical sourcing becoming mandatory</li>
+                        <li>Community platform model proven (Strava)</li>
+                    </ol>
+                </div>
+                <div class="why-col">
+                    <h4>Why Us</h4>
+                    <ol>
+                        <li>Unique access to $2.2B market of motivated data collectors</li>
+                        <li>Technical innovation enabling perfect synchronization</li>
+                        <li>First mover in tactical multimodal data</li>
+                        <li>Capital-efficient, scalable model</li>
+                        <li>Multiple exit paths to significant returns</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <div class="contact">
+            <h3>Milsim.AI</h3>
+            <p>Synchronized Multimodal Datasets for AI Training</p>
+        </div>
+
+        <section class="references">
+            <h2>Key Sources</h2>
+            <ul>
+                <li><a href="https://www.gminsights.com/industry-analysis/ai-and-analytics-in-military-and-defense-market">GMInsights - AI in Military & Defense</a></li>
+                <li><a href="https://www.globenewswire.com/news-release/2026/01/21/3222592/28124/en/Military-Simulation-and-Training-Research-Report-2026-19-58-Bn-Market-Opportunities-Trends-Competitive-Landscape-Strategies-and-Forecasts-2020-2025-2025-2030F-2035F.html">GlobeNewswire - Military Simulation</a></li>
+                <li><a href="https://www.fortunebusinessinsights.com/ai-training-dataset-market-109241">Fortune Business Insights - AI Training</a></li>
+                <li><a href="https://www.gminsights.com/industry-analysis/synthetic-data-generation-market">GMInsights - Synthetic Data</a></li>
+                <li><a href="https://fortune.com/2025/06/05/anduril-palmer-luckey-funding-30-billion-valuation-founders-fund/">Fortune - Anduril $30.5B</a></li>
+                <li><a href="https://shield.ai/shield-ai-raises-240m-at-5-3b-valuation-to-scale-hivemind-enterprise-an-ai-powered-autonomy-developer-platform/">Shield AI - $5.6B</a></li>
+                <li><a href="https://www.gminsights.com/industry-analysis/airsoft-gun-market">GMInsights - Airsoft Market</a></li>
+                <li><a href="https://www.businessofapps.com/data/strava-statistics/">Business of Apps - Strava</a></li>
+                <li><a href="https://techcrunch.com/2024/06/01/ai-training-data-has-a-price-tag-that-only-big-tech-can-afford/">TechCrunch - AI Training Data</a></li>
+                <li><a href="https://www.theaioptimist.com/p/the-5m-ai-video-licensing-wave-why">AI Optimist - Video Licensing</a></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

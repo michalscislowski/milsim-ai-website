@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Black_Ops_One, Quantico } from "next/font/google";
+import Menu from "@/components/Menu";
 
 const blackOpsOne = Black_Ops_One({
   weight: "400",
@@ -28,7 +29,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${blackOpsOne.variable} ${quantico.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Menu />
+        {children}
+      </body>
     </html>
   );
 }
