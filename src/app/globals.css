@@ -303,9 +303,10 @@ section {
     url("/mask.svg") center/50% no-repeat;
   mask-composite: subtract;
   -webkit-mask-composite: subtract;
-  will-change: transform;
+  will-change: transform, opacity;
   pointer-events: none;
-  transform: scale(2.5);
+  transform: scale(2.5) translateZ(0);
+  backface-visibility: hidden;
 }
 
 .hero-mask--smartphone {
@@ -317,6 +318,9 @@ section {
   -webkit-mask-composite: subtract;
   opacity: 0;
   z-index: 1;
+  will-change: opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .hero-grid-overlay {
@@ -1299,7 +1303,7 @@ section {
       url("/mask.svg") center/75% no-repeat;
     mask-composite: subtract;
     -webkit-mask-composite: subtract;
-    transform: scale(6);
+    transform: scale(6) translateZ(0);
   }
 
   .hero-mask--smartphone {

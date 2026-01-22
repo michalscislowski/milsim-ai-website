@@ -715,26 +715,24 @@ export default function Home() {
             smartphoneMaskOpacity = 0;
             jaggedMaskOpacity = 1;
           } else {
-            // Desktop: crossfade between jagged and smartphone masks
+            // Desktop: smooth crossfade between jagged and smartphone masks
             if (self.progress <= 0.48) {
               smartphoneMaskOpacity = 0;
               jaggedMaskOpacity = 1;
             } else if (self.progress <= 0.55) {
-              // Smartphone fades in while jagged stays at 1, then jagged quickly fades
-              const progress = (self.progress - 0.48) / 0.07;
-              smartphoneMaskOpacity = ease(progress);
-              // Jagged stays at 1 until smartphone is mostly visible, then drops
-              jaggedMaskOpacity = progress < 0.7 ? 1 : 1 - ease((progress - 0.7) / 0.3);
+              // Smooth crossfade: jagged fades out as smartphone fades in
+              const progress = ease((self.progress - 0.48) / 0.07);
+              smartphoneMaskOpacity = progress;
+              jaggedMaskOpacity = 1 - progress;
             } else if (self.progress <= 0.70) {
               // Stay as smartphone
               smartphoneMaskOpacity = 1;
               jaggedMaskOpacity = 0;
             } else if (self.progress <= 0.77) {
-              // Jagged fades in while smartphone stays at 1, then smartphone quickly fades
-              const progress = (self.progress - 0.70) / 0.07;
-              jaggedMaskOpacity = ease(progress);
-              // Smartphone stays at 1 until jagged is mostly visible, then drops
-              smartphoneMaskOpacity = progress < 0.7 ? 1 : 1 - ease((progress - 0.7) / 0.3);
+              // Smooth crossfade back: smartphone fades out as jagged fades in
+              const progress = ease((self.progress - 0.70) / 0.07);
+              jaggedMaskOpacity = progress;
+              smartphoneMaskOpacity = 1 - progress;
             } else {
               smartphoneMaskOpacity = 0;
               jaggedMaskOpacity = 1;
