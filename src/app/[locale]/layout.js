@@ -28,22 +28,34 @@ export async function generateMetadata({ params }) {
 
   const title = messages.metadata?.title || "MILSIM.AI | Command Your Battlefield";
   const description = messages.metadata?.description || "Tactical airsoft community platform with real-time battlefield awareness";
+  const ogAlt = messages.metadata?.ogAlt || "MILSIM.AI - Command Your Battlefield";
+  const ogLocale = locale === "pl" ? "pl_PL" : "en_US";
+  const alternateLocale = locale === "pl" ? "en_US" : "pl_PL";
 
   return {
     title,
     description,
     metadataBase: new URL("https://milsim.ai"),
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        en: "/en",
+        pl: "/pl",
+      },
+    },
     openGraph: {
       title,
       description,
-      url: "https://milsim.ai",
+      url: `https://milsim.ai/${locale}`,
       siteName: "MILSIM.AI",
+      locale: ogLocale,
+      alternateLocale,
       images: [
         {
           url: "/milsima-open-graph.webp",
           width: 1200,
           height: 630,
-          alt: "MILSIM.AI - Command Your Battlefield",
+          alt: ogAlt,
         },
       ],
       type: "website",
