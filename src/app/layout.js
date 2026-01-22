@@ -50,6 +50,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${blackOpsOne.variable} ${quantico.variable}`}>
+      <head>
+        <link rel="preload" href="/hero-img.webp" as="image" type="image/webp" />
+        <link rel="preload" href="/mask.svg" as="image" type="image/svg+xml" />
+      </head>
       <body>
         <Menu />
         {children}

@@ -925,7 +925,7 @@ export default function Home() {
           </svg>
 
           <div className="hero-img" ref={heroImgRef}>
-            <img ref={heroImgElementRef} src="/hero-img.jpg" alt="" />
+            <img ref={heroImgElementRef} src="/hero-img.webp" alt="" />
           </div>
 
           <div className="hero-mask" ref={heroMaskRef}></div>
