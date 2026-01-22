@@ -4248,8 +4248,8 @@ section {
 /* Language Switcher */
 .language-switcher {
   position: fixed;
-  top: 1.5rem;
-  right: 6rem;
+  top: calc(1.5rem + 3px);
+  right: 7.5rem;
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -4257,19 +4257,21 @@ section {
   font-family: "DM Mono", monospace;
   font-size: 0.7rem;
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  line-height: 1;
 }
 
 .language-switcher-btn {
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.4);
-  padding: 0.25rem 0.35rem;
+  padding: 0;
   cursor: none;
   transition: color 0.3s ease, opacity 0.3s ease;
   font-family: inherit;
   font-size: inherit;
   letter-spacing: inherit;
+  line-height: 1;
 }
 
 .language-switcher-btn:hover {
@@ -4431,7 +4433,7 @@ section {
 
   .language-switcher {
     top: 1rem;
-    right: 4.5rem;
+    right: 5.5rem;
     font-size: 0.6rem;
   }
 
