@@ -4432,7 +4432,7 @@ section {
   }
 
   .language-switcher {
-    top: 1rem;
+    top: calc(1rem + 3px);
     right: 5.5rem;
     font-size: 0.6rem;
   }
