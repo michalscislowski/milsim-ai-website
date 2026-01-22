@@ -305,6 +305,7 @@ section {
   -webkit-mask-composite: subtract;
   will-change: transform;
   pointer-events: none;
+  transform: scale(2.5);
 }
 
 .hero-mask--smartphone {
@@ -1298,6 +1299,7 @@ section {
       url("/mask.svg") center/75% no-repeat;
     mask-composite: subtract;
     -webkit-mask-composite: subtract;
+    transform: scale(6);
   }
 
   .hero-mask--smartphone {
