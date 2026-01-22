@@ -338,6 +338,7 @@ section {
   align-items: center;
   gap: 1rem;
   will-change: opacity;
+  opacity: 0;
 }
 
 .marker-1 {
