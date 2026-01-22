@@ -307,13 +307,15 @@ section {
   pointer-events: none;
   transform: scale(2.5) translateZ(0);
   backface-visibility: hidden;
+  contain: layout paint;
+  isolation: isolate;
 }
 
 .hero-mask--smartphone {
   mask: linear-gradient(var(--light), var(--light)),
-    url("/smartphone-mask.svg") center/50% no-repeat;
+    url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTU1MCIgaGVpZ2h0PSIxMDUwIiB2aWV3Qm94PSIwIDAgMTU1MCAxMDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxNTUwIiBoZWlnaHQ9IjEwNTAiIHJ4PSIxMDAiIHJ5PSIxMDAiIGZpbGw9IiNEOUQ5RDkiLz48L3N2Zz4=") center/50% no-repeat;
   -webkit-mask: linear-gradient(var(--light), var(--light)),
-    url("/smartphone-mask.svg") center/50% no-repeat;
+    url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTU1MCIgaGVpZ2h0PSIxMDUwIiB2aWV3Qm94PSIwIDAgMTU1MCAxMDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxNTUwIiBoZWlnaHQ9IjEwNTAiIHJ4PSIxMDAiIHJ5PSIxMDAiIGZpbGw9IiNEOUQ5RDkiLz48L3N2Zz4=") center/50% no-repeat;
   mask-composite: subtract;
   -webkit-mask-composite: subtract;
   opacity: 0;
@@ -321,6 +323,8 @@ section {
   will-change: opacity;
   backface-visibility: hidden;
   transform: translateZ(0);
+  contain: layout paint;
+  isolation: isolate;
 }
 
 .hero-grid-overlay {
