@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prezentacja Pitch Deck | Milsim.AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0c0f;
+            --bg-secondary: #12161c;
+            --bg-tertiary: #1a1f28;
+            --accent-primary: #c4a000;
+            --accent-secondary: #8b7500;
+            --accent-glow: rgba(196, 160, 0, 0.3);
+            --tactical-green: #2d5a3d;
+            --tactical-green-light: #3d7a52;
+            --text-primary: #e8e6e0;
+            --text-secondary: #9a9890;
+            --text-muted: #5a5850;
+            --border-color: #2a2f38;
+            --danger: #c44040;
+            --success: #40c470;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Scan line overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 12, 15, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .nav-logo span {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slide-counter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .slide-counter .current {
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:disabled:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Slides container */
+        .slides-container {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(50px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-50px);
+        }
+
+        /* Slide header */
+        .slide-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .slide-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .slide-label::before {
+            content: '//';
+            color: var(--text-muted);
+        }
+
+        .slide-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-primary);
+        }
+
+        .slide-title .highlight {
+            color: var(--accent-primary);
+        }
+
+        .slide-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+            font-weight: 300;
+        }
+
+        .slide-intro {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 1.25rem;
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        .slide-intro strong {
+            color: var(--accent-primary);
+        }
+
+        /* Content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .content-grid.two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .content-grid.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-primary);
+        }
+
+        .card-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-content li {
+            padding: 0.4rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .card-content li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+
+        /* Data boxes */
+        .data-box {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .data-box::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .data-value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            line-height: 1;
+        }
+
+        .data-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.5rem;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--accent-primary);
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: rgba(196, 160, 0, 0.05);
+        }
+
+        td:first-child {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Quote */
+        .quote {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .quote-source {
+            font-style: normal;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+        }
+
+        /* Process flow */
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem 0;
+        }
+
+        .process-step {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: relative;
+            flex: 1;
+            max-width: 250px;
+        }
+
+        .process-step-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .process-step-items {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .process-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        /* Metrics grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .timeline-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-secondary);
+        }
+
+        .timeline-item.highlight::before {
+            background: var(--accent-primary);
+        }
+
+        .timeline-year {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-content {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .timeline-revenue {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--success);
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        /* Title slide special */
+        .slide.title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(196, 160, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(45, 90, 61, 0.1) 0%, transparent 50%),
+                var(--bg-primary);
+        }
+
+        .title-slide .main-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title-slide .tagline {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .title-slide .mission {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-secondary);
+            padding: 1rem 2rem;
+            display: inline-block;
+            margin-bottom: 3rem;
+        }
+
+        .title-slide .seed-badge {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .title-slide .seed-badge span {
+            color: var(--accent-primary);
+        }
+
+        /* CTA slide */
+        .cta-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-amount {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-label {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .cta-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .cta-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .cta-point .icon {
+            color: var(--accent-primary);
+            font-size: 1.25rem;
+        }
+
+        /* Contact slide */
+        .contact-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .contact-cta {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .contact-company {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Moat visualization */
+        .moat-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .moat-number {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            min-width: 40px;
+        }
+
+        .moat-content h4 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .moat-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Network effect visualization */
+        .network-flow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--accent-primary);
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Comparison table */
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            margin-bottom: 1px;
+        }
+
+        .comparison-cell {
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+        }
+
+        .comparison-cell.traditional {
+            border-right: 2px solid var(--danger);
+            color: var(--text-muted);
+        }
+
+        .comparison-cell.ours {
+            border-left: 2px solid var(--success);
+            color: var(--text-primary);
+        }
+
+        .comparison-header {
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-tertiary);
+        }
+
+        .comparison-header.traditional {
+            color: var(--danger);
+        }
+
+        .comparison-header.ours {
+            color: var(--success);
+        }
+
+        /* Milestones checklist */
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .milestone-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-size: 0.8rem;
+        }
+
+        .milestone-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Slide thumbnails nav */
+        .slide-nav {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .slide-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--border-color);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--accent-primary);
+            width: 24px;
+        }
+
+        .slide-dot:hover {
+            background: var(--accent-secondary);
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 2rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .keyboard-hint kbd {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.25rem 0.5rem;
+            margin-right: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 2rem;
+            }
+
+            .content-grid.two-col,
+            .content-grid.three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-flow {
+                flex-direction: column;
+            }
+
+            .process-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .slide {
+                padding: 1.5rem;
+            }
+
+            .timeline {
+                grid-template-columns: 1fr;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide.active .slide-header,
+        .slide.active .card,
+        .slide.active .data-box,
+        .slide.active .table-container,
+        .slide.active .quote,
+        .slide.active .process-step,
+        .slide.active .timeline-item,
+        .slide.active .moat-item {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .slide.active .card:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .card:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .card:nth-child(3) { animation-delay: 0.3s; }
+        .slide.active .card:nth-child(4) { animation-delay: 0.4s; }
+
+        .slide.active .data-box:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .data-box:nth-child(2) { animation-delay: 0.15s; }
+        .slide.active .data-box:nth-child(3) { animation-delay: 0.2s; }
+        .slide.active .data-box:nth-child(4) { animation-delay: 0.25s; }
+
+        .slide.active .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .slide.active .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .slide.active .moat-item:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .moat-item:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .moat-item:nth-child(3) { animation-delay: 0.3s; }
+        .slide.active .moat-item:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">Milsim<span>.AI</span></div>
+        <div class="nav-controls">
+            <div class="slide-counter">
+                <span class="current">01</span> / <span class="total">17</span>
+            </div>
+            <button class="nav-btn" id="prevBtn" aria-label="Poprzedni slajd">&#8592;</button>
+            <button class="nav-btn" id="nextBtn" aria-label="Następny slajd">&#8594;</button>
+        </div>
+    </nav>
+
+    <!-- Progress bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slides -->
+    <div class="slides-container">
+
+        <!-- Slide 1: Title -->
+        <section class="slide title-slide active" data-slide="1">
+            <div class="main-title">MILSIM.AI</div>
+            <div class="tagline">Strava dla Airsoftu, która zasila AI dla obronności</div>
+            <div class="mission">Budujemy największy na świecie zsynchronizowany, multimodalny zbiór danych taktycznych</div>
+            <div class="seed-badge">Runda Seed: <span>$2.5M</span></div>
+        </section>
+
+        <!-- Slide 2: The Problem -->
+        <section class="slide" data-slide="2">
+            <div class="slide-header">
+                <div class="slide-label">Problem</div>
+                <h1 class="slide-title">AI w świecie rzeczywistym potrzebuje <span class="highlight">danych z rzeczywistego świata</span></h1>
+                <p class="slide-subtitle">Branża Embodied AI warta $78 mld ma problem z danymi</p>
+                <p class="slide-intro"><strong>Dane syntetyczne zawodzą w rzeczywistości.</strong> AI dla obronności, robotyka i systemy autonomiczne trenowane na symulowanych danych napotykają ścianę przy wdrożeniu — to tak zwana „luka sim-to-real". Dane treningowe z rzeczywistego świata są kluczowe, aby ją zamknąć, ale nie istnieją na skalę.</p>
+            </div>
+            <div class="content-grid two-col">
+                <div>
+                    <div class="card">
+                        <div class="card-title">Firmy AI dla obronności</div>
+                        <div class="card-content">
+                            Potrzebują wieloagentowych danych taktycznych<br>
+                            <span style="color: var(--danger);">&#8594; Nagrania wojskowe są utajnione</span>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 1rem;">
+                        <div class="card-title">Firmy robotyczne</div>
+                        <div class="card-content">
+                            Potrzebują danych o koordynacji w rzeczywistości<br>
+                            <span style="color: var(--danger);">&#8594; Laboratoria nie skalują się do 100+ agentów</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <div class="card-title">Firmy symulacyjne</div>
+                        <div class="card-content">
+                            Potrzebują realistycznych modeli zachowań<br>
+                            <span style="color: var(--danger);">&#8594; Dane syntetyczne mają krytyczne luki domenowe</span>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 1rem;">
+                        <div class="card-title">AI 3D/4D</div>
+                        <div class="card-content">
+                            Potrzebuje zsynchronizowanego wielowidokowego wideo<br>
+                            <span style="color: var(--danger);">&#8594; Skoordynowane nagrywanie na skalę jest niemożliwe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="quote">
+                „Dane treningowe dla AI mają cenę, na którą stać tylko Big Tech"
+                <div class="quote-source">— TechCrunch</div>
+            </div>
+        </section>
+
+        <!-- Slide 3: The Solution -->
+        <section class="slide" data-slide="3">
+            <div class="slide-header">
+                <div class="slide-label">Rozwiązanie</div>
+                <h1 class="slide-title">Zamień graczy airsoftowych w <span class="highlight">zbieraczy danych AI</span></h1>
+                <p class="slide-subtitle">Platforma dwustronna</p>
+            </div>
+            <div class="content-grid two-col">
+                <div class="card">
+                    <div class="card-title">Dla graczy</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Taktyczny HUD pokazujący współgraczy, cele, komunikację</li>
+                            <li>Śledzenie GPS i powtórki po grze</li>
+                            <li>Funkcje społecznościowe i zarządzanie wydarzeniami</li>
+                            <li>Centralna platforma dla społeczności airsoftowej</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Dla firm AI</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Zsynchronizowane zbiory danych multimodalnych</li>
+                            <li>Wideo + Audio + GPS + Sensory</li>
+                            <li>Wieloagentowe scenariusze taktyczne</li>
+                            <li>100+ uczestników na wydarzenie</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="quote" style="border-left-color: var(--success);">
+                <strong>Magia:</strong> Zegary atomowe GPS zapewniają synchronizację z dokładnością do nanosekund. Kody QR w HUD weryfikują idealne wyrównanie klatek na wszystkich urządzeniach.
+            </div>
+        </section>
+
+        <!-- Slide 4: How It Works -->
+        <section class="slide" data-slide="4">
+            <div class="slide-header">
+                <div class="slide-label">Jak to działa</div>
+                <h1 class="slide-title">Od gry do <span class="highlight">zbioru danych</span></h1>
+            </div>
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="process-step-title">Przechwytywanie</div>
+                    <div class="process-step-items">
+                        Kamery na hełmach<br>
+                        Sensory smartfonów<br>
+                        Dane GPS + IMU<br>
+                        Nagrywanie audio
+                    </div>
+                </div>
+                <div class="process-arrow">&#8594;</div>
+                <div class="process-step">
+                    <div class="process-step-title">Przetwarzanie</div>
+                    <div class="process-step-items">
+                        Synchronizacja GPS<br>
+                        Wyrównanie wielowidokowe<br>
+                        Auto-adnotacja<br>
+                        Kontrola jakości
+                    </div>
+                </div>
+                <div class="process-arrow">&#8594;</div>
+                <div class="process-step">
+                    <div class="process-step-title">Dostarczanie</div>
+                    <div class="process-step-items">
+                        Oznaczone zbiory danych<br>
+                        Dostęp API<br>
+                        Niestandardowe formaty<br>
+                        Gotowe do badań
+                    </div>
+                </div>
+            </div>
+            <div class="slide-header" style="margin-top: 2rem; margin-bottom: 1rem;">
+                <p class="slide-subtitle">Dane zbierane na wydarzenie</p>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Modalność</th>
+                            <th>Wolumen</th>
+                            <th>Jakość</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Wideo 4K</td>
+                            <td>500+ godzin (wielowidokowe)</td>
+                            <td>POV z hełmu, 60fps</td>
+                        </tr>
+                        <tr>
+                            <td>Audio</td>
+                            <td>500+ godzin</td>
+                            <td>Kierunkowe, komunikacja</td>
+                        </tr>
+                        <tr>
+                            <td>GPS</td>
+                            <td>Miliony punktów</td>
+                            <td>Dokładność poniżej metra</td>
+                        </tr>
+                        <tr>
+                            <td>IMU/Sensory</td>
+                            <td>Ciągłe strumienie</td>
+                            <td>Akcelerometr, żyroskop, kompas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Slide 5: Market Opportunity -->
+        <section class="slide" data-slide="5">
+            <div class="slide-header">
+                <div class="slide-label">Możliwość rynkowa</div>
+                <h1 class="slide-title"><span class="highlight">$78 mld+</span> Całkowity rynek docelowy</h1>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rynek</th>
+                            <th>2024</th>
+                            <th>2030+</th>
+                            <th>CAGR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AI dla obronności</td>
+                            <td>$10,4 mld</td>
+                            <td>$35,8 mld</td>
+                            <td style="color: var(--success);">13,4%</td>
+                        </tr>
+                        <tr>
+                            <td>Symulacje wojskowe</td>
+                            <td>$14,1 mld</td>
+                            <td>$19,6 mld</td>
+                            <td style="color: var(--success);">6,7%</td>
+                        </tr>
+                        <tr>
+                            <td>Dane treningowe AI</td>
+                            <td>$2,9 mld</td>
+                            <td>$17,0 mld</td>
+                            <td style="color: var(--success);">24,9%</td>
+                        </tr>
+                        <tr>
+                            <td>Dane syntetyczne</td>
+                            <td>$310 mln</td>
+                            <td>$6,5 mld</td>
+                            <td style="color: var(--success);">35,2%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="slide-header" style="margin-top: 2rem; margin-bottom: 1rem;">
+                <p class="slide-subtitle">Dlaczego teraz?</p>
+            </div>
+            <div class="metrics-grid">
+                <div class="data-box">
+                    <div class="data-value">+63,6%</div>
+                    <div class="data-label">Budżet AI DoD rok do roku</div>
+                </div>
+                <div class="data-box">
+                    <div class="data-value">$1 mld</div>
+                    <div class="data-label">Przychody Anduril 2024</div>
+                </div>
+                <div class="data-box">
+                    <div class="data-value">$3 mld</div>
+                    <div class="data-label">VC obronności 2024</div>
+                </div>
+                <div class="data-box">
+                    <div class="data-value">$1-4</div>
+                    <div class="data-label">Za minutę danych wideo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: The User Base -->
+        <section class="slide" data-slide="6">
+            <div class="slide-header">
+                <div class="slide-label">Baza użytkowników</div>
+                <h1 class="slide-title">Rynek zbieraczy danych wart <span class="highlight">$2,2 mld</span></h1>
+                <p class="slide-subtitle">Rynek Airsoft/Milsim</p>
+            </div>
+            <div class="content-grid two-col">
+                <div>
+                    <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="data-box">
+                            <div class="data-value">$2,2 mld</div>
+                            <div class="data-label">Rynek globalny 2024</div>
+                        </div>
+                        <div class="data-box">
+                            <div class="data-value">7,8%</div>
+                            <div class="data-label">CAGR</div>
+                        </div>
+                        <div class="data-box">
+                            <div class="data-value">$680 mln</div>
+                            <div class="data-label">Rynek USA</div>
+                        </div>
+                        <div class="data-box">
+                            <div class="data-value">1000+</div>
+                            <div class="data-label">Wydarzeń rocznie</div>
+                        </div>
+                    </div>
+                    <div class="quote" style="margin-top: 1.5rem;">
+                        „Wielodniowe wydarzenia milsim przyciągają tysiące graczy, często ze złożonymi fabułami i udziałem aktorów na żywo"
+                        <div class="quote-source">— GMInsights</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Już posiadają</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Kamery sportowe (GoPro itp.)</li>
+                            <li>Smartfony z sensorami</li>
+                            <li>Sprzęt i wyposażenie taktyczne</li>
+                            <li>Motywację do uczestnictwa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Target Customers -->
+        <section class="slide" data-slide="7">
+            <div class="slide-header">
+                <div class="slide-label">Docelowi klienci</div>
+                <h1 class="slide-title">Kto <span class="highlight">płaci</span> za te dane?</h1>
+            </div>
+            <div class="content-grid three-col">
+                <div class="card">
+                    <div class="card-title">Poziom 1: AI dla obronności</div>
+                    <div class="card-content" style="margin-bottom: 1rem;">
+                        <strong style="color: var(--accent-primary);">$500 tys.-2 mln/rok</strong>
+                    </div>
+                    <div class="table-container">
+                        <table style="font-size: 0.8rem;">
+                            <thead>
+                                <tr>
+                                    <th>Firma</th>
+                                    <th>Wycena</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Anduril</td>
+                                    <td>$30,5 mld</td>
+                                </tr>
+                                <tr>
+                                    <td>Shield AI</td>
+                                    <td>$5,6 mld</td>
+                                </tr>
+                                <tr>
+                                    <td>Palantir</td>
+                                    <td>$50 mld+</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Poziom 2: Robotyka</div>
+                    <div class="card-content" style="margin-bottom: 1rem;">
+                        <strong style="color: var(--accent-primary);">$150-300 tys./rok</strong>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Figure AI, Boston Dynamics</li>
+                            <li>Koordynacja wieloagentowa</li>
+                            <li>Dane treningowe z rzeczywistości</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Poziom 3: Symulacje i gry</div>
+                    <div class="card-content" style="margin-bottom: 1rem;">
+                        <strong style="color: var(--accent-primary);">$50-150 tys./rok</strong>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Alternatywa dla motion capture</li>
+                            <li>Modele zachowań NPC</li>
+                            <li>Zawartość scenariuszy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-header" style="margin-top: 2rem; margin-bottom: 1rem;">
+                <p class="slide-subtitle">Jak wyceniane są dane treningowe AI</p>
+            </div>
+            <div class="table-container">
+                <table style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Czynnik cenowy</th>
+                            <th>Stawka rynkowa</th>
+                            <th>Nasza przewaga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Wolumen</strong></td>
+                            <td>$1-4 za minutę wideo</td>
+                            <td>500+ godzin na wydarzenie</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modalność</strong></td>
+                            <td>Multimodalne = premia 2-5x</td>
+                            <td>Wideo + Audio + GPS + IMU zsynchronizowane</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Synchronizacja</strong></td>
+                            <td>Sync wielowidokowy = premia 10x+</td>
+                            <td>Wyrównanie zegarami atomowymi GPS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rzadkość scenariusza</strong></td>
+                            <td>Taktyczne = 5-10x ponad zwykłe nagrania</td>
+                            <td>Operacje wojskowe niedostępne gdzie indziej</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="quote" style="margin-top: 1rem; border-left-color: var(--success);">
+                <strong>Przykład:</strong> 100 graczy × 4 godziny × $2/min = $48 tys. bazowo → z premią za sync (5x) i premią taktyczną (3x) = <strong style="color: var(--accent-primary);">$720 tys. potencjalnej wartości na duże wydarzenie</strong>
+            </div>
+        </section>
+
+        <!-- Slide 8: Business Model -->
+        <section class="slide" data-slide="8">
+            <div class="slide-header">
+                <div class="slide-label">Model biznesowy</div>
+                <h1 class="slide-title">Data-as-a-Service <span class="highlight">(Czyste B2B)</span></h1>
+            </div>
+            <div class="content-grid two-col">
+                <div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1rem;">Wymiana wartości</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Użytkownicy otrzymują (za darmo)</th>
+                                    <th>My otrzymujemy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Taktyczny HUD i pozycje</td>
+                                    <td>Dane GPS + sensory</td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="color: var(--accent-primary);">Prześlij wideo &#8594;</strong> Analityka</td>
+                                    <td>Materiał wideo</td>
+                                </tr>
+                                <tr>
+                                    <td>Mapy cieplne wydajności</td>
+                                    <td>Zbiory danych multimodalnych</td>
+                                </tr>
+                                <tr>
+                                    <td>Powtórka wieloperspektywiczna</td>
+                                    <td>Zsynchronizowane nagrania</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--success); font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem;">
+                        Bez subskrypcji. Funkcje premium odblokowywane za wkład danych.
+                    </p>
+                </div>
+                <div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1rem;">Licencjonowanie danych dla przedsiębiorstw</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Poziom</th>
+                                    <th>Cena roczna</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Research</td>
+                                    <td>$25-50 tys.</td>
+                                </tr>
+                                <tr>
+                                    <td>Professional</td>
+                                    <td>$150-300 tys.</td>
+                                </tr>
+                                <tr>
+                                    <td>Enterprise</td>
+                                    <td>$500 tys.-2 mln</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin: 1.5rem 0 0.5rem;">Milsim vs ćwiczenia wojskowe</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">Dane, których chce AI dla obronności, pochodzą z prawdziwych operacji wojskowych — ale są <strong style="color: var(--danger);">utajnione</strong>.</p>
+                    <div class="table-container">
+                        <table style="font-size: 0.8rem;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th style="color: var(--danger);">Ćwiczenia wojskowe</th>
+                                    <th style="color: var(--success);">Milsim.AI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Koszt</td>
+                                    <td style="color: var(--danger);">$1-10 mln+ za ćwiczenie</td>
+                                    <td style="color: var(--success);">&lt;$10 tys. (nasze koszty)</td>
+                                </tr>
+                                <tr>
+                                    <td>Dostęp do danych</td>
+                                    <td style="color: var(--text-muted);">Utajnione, zastrzeżone</td>
+                                    <td style="color: var(--text-primary);">Dostępne komercyjnie</td>
+                                </tr>
+                                <tr>
+                                    <td>Scenariusze</td>
+                                    <td style="color: var(--text-muted);">Autentyczne operacje taktyczne</td>
+                                    <td style="color: var(--text-primary);">Realistyczne repliki</td>
+                                </tr>
+                                <tr>
+                                    <td>Częstotliwość</td>
+                                    <td style="color: var(--text-muted);">Ograniczona (budżet)</td>
+                                    <td style="color: var(--text-primary);">Co tydzień, na całym świecie</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top: 0.75rem; color: var(--accent-primary); font-size: 0.8rem; font-family: 'IBM Plex Mono', monospace;">
+                        Dane klasy wojskowej, dostępne komercyjnie, za 1/1000 ceny
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Competitive Advantage -->
+        <section class="slide" data-slide="9">
+            <div class="slide-header">
+                <div class="slide-label">Przewaga konkurencyjna</div>
+                <h1 class="slide-title">Fosy, które <span class="highlight">narastają</span> z czasem</h1>
+            </div>
+            <div class="content-grid two-col">
+                <div>
+                    <div class="moat-item">
+                        <div class="moat-number">01</div>
+                        <div class="moat-content">
+                            <h4>Efekt sieciowy społeczności</h4>
+                            <p>Więcej użytkowników &#8594; Więcej wydarzeń &#8594; Więcej danych &#8594; Lepszy produkt &#8594; Więcej użytkowników</p>
+                            <p style="margin-top: 0.5rem; color: var(--accent-primary);">Strava to udowodniła: 150 mln użytkowników, wycena $2,2 mld</p>
+                        </div>
+                    </div>
+                    <div class="moat-item">
+                        <div class="moat-number">02</div>
+                        <div class="moat-content">
+                            <h4>Technologia synchronizacji</h4>
+                            <p>Zegar atomowy GPS: precyzja nanosekundowa. Weryfikacja znaczników czasowych QR. Żaden konkurent nie dorówna jakością.</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="moat-item">
+                        <div class="moat-number">03</div>
+                        <div class="moat-content">
+                            <h4>Etyczna fosa danych</h4>
+                            <p>Wyraźna zgoda wszystkich uczestników. Czyste prawa do danych. Wbudowana zgodność regulacyjna.</p>
+                        </div>
+                    </div>
+                    <div class="moat-item">
+                        <div class="moat-number">04</div>
+                        <div class="moat-content">
+                            <h4>Efektywność kapitałowa</h4>
+                            <div class="comparison-row" style="margin-top: 0.75rem;">
+                                <div class="comparison-header traditional">Ćwiczenia wojskowe</div>
+                                <div class="comparison-header ours">Milsim.AI</div>
+                            </div>
+                            <div class="comparison-row">
+                                <div class="comparison-cell traditional">$1-10 mln za ćwiczenie</div>
+                                <div class="comparison-cell ours">&lt;$10 tys. nasz koszt</div>
+                            </div>
+                            <div class="comparison-row">
+                                <div class="comparison-cell traditional">Dane są utajnione</div>
+                                <div class="comparison-cell ours">Dane są komercyjne</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Traction & Roadmap -->
+        <section class="slide" data-slide="10">
+            <div class="slide-header">
+                <div class="slide-label">Trakcja i mapa drogowa</div>
+                <h1 class="slide-title">Droga do <span class="highlight">pozycji lidera rynku</span></h1>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">Rok 1</div>
+                    <div class="timeline-content">
+                        Uruchomienie platformy MVP<br>
+                        10 tys. aktywnych użytkowników<br>
+                        3 pilotażowych klientów enterprise<br>
+                        500+ godzin zsynchronizowanych danych
+                    </div>
+                    <div class="timeline-revenue">$550 tys. przychodów</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">Rok 2</div>
+                    <div class="timeline-content">
+                        50 tys. aktywnych użytkowników<br>
+                        10 klientów enterprise<br>
+                        Ekspansja międzynarodowa
+                    </div>
+                    <div class="timeline-revenue">$2,7 mln przychodów</div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-year">Rok 3</div>
+                    <div class="timeline-content">
+                        150 tys. aktywnych użytkowników<br>
+                        25 klientów enterprise<br>
+                        Rentowność platformy
+                    </div>
+                    <div class="timeline-revenue">$8 mln przychodów</div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-year">Rok 5</div>
+                    <div class="timeline-content">
+                        1 mln+ aktywnych użytkowników<br>
+                        100 klientów enterprise<br>
+                        Lider rynku
+                    </div>
+                    <div class="timeline-revenue">$47 mln przychodów<br><span style="font-size: 0.9rem;">$20 mln EBITDA</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Financial Projections -->
+        <section class="slide" data-slide="11">
+            <div class="slide-header">
+                <div class="slide-label">Projekcje finansowe</div>
+                <h1 class="slide-title">Droga do rentowności w <span class="highlight">roku 3</span></h1>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rok</th>
+                            <th>Przychody</th>
+                            <th>Marża brutto</th>
+                            <th>EBITDA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rok 1</td>
+                            <td>$550 tys.</td>
+                            <td>$400 tys.</td>
+                            <td style="color: var(--danger);">-$1,1 mln</td>
+                        </tr>
+                        <tr>
+                            <td>Rok 2</td>
+                            <td>$2,7 mln</td>
+                            <td>$2,2 mln</td>
+                            <td style="color: var(--danger);">-$800 tys.</td>
+                        </tr>
+                        <tr style="background: rgba(196, 160, 0, 0.1);">
+                            <td><strong>Rok 3</strong></td>
+                            <td><strong>$8 mln</strong></td>
+                            <td><strong>$6,8 mln</strong></td>
+                            <td style="color: var(--success);"><strong>$1,8 mln</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Rok 4</td>
+                            <td>$20 mln</td>
+                            <td>$17 mln</td>
+                            <td style="color: var(--success);">$7 mln</td>
+                        </tr>
+                        <tr>
+                            <td>Rok 5</td>
+                            <td>$47 mln</td>
+                            <td>$40 mln</td>
+                            <td style="color: var(--success);">$20 mln</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="metrics-grid" style="margin-top: 2rem;">
+                <div class="data-box">
+                    <div class="data-value">5:1+</div>
+                    <div class="data-label">LTV:CAC</div>
+                </div>
+                <div class="data-box">
+                    <div class="data-value">85%</div>
+                    <div class="data-label">Marża brutto</div>
+                </div>
+                <div class="data-box">
+                    <div class="data-value">50%+</div>
+                    <div class="data-label">Wskaźnik przesyłania wideo</div>
+                </div>
+                <div class="data-box">
+                    <div class="data-value">Rok 3</div>
+                    <div class="data-label">Próg rentowności</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 12: The Team -->
+        <section class="slide" data-slide="12">
+            <div class="slide-header">
+                <div class="slide-label">Zespół</div>
+                <h1 class="slide-title">Kluczowe rekrutacje <span class="highlight">(finansowane)</span></h1>
+            </div>
+            <div class="content-grid two-col">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rola</th>
+                                <th>Dlaczego kluczowa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CTO</td>
+                                <td>Architektura platformy, technologia sync</td>
+                            </tr>
+                            <tr>
+                                <td>Head of Data</td>
+                                <td>Pipeline ML, systemy jakości</td>
+                            </tr>
+                            <tr>
+                                <td>Head of Community</td>
+                                <td>Wzrost użytkowników, partnerstwa</td>
+                            </tr>
+                            <tr>
+                                <td>Head of Sales</td>
+                                <td>Pozyskiwanie klientów enterprise</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">Idealny profil</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>Głębokie więzi ze społecznością airsoft/milsim</li>
+                            <li>Tło techniczne (mobile, ML, sensory)</li>
+                            <li>Doświadczenie w defense tech lub produktach danych</li>
+                            <li>Doświadczenie w realizacji w startupach</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 13: Use of Funds -->
+        <section class="slide" data-slide="13">
+            <div class="slide-header">
+                <div class="slide-label">Wykorzystanie środków</div>
+                <h1 class="slide-title"><span class="highlight">$2,5 mln</span> Runda Seed</h1>
+            </div>
+            <div class="content-grid two-col">
+                <div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1rem;">Alokacja</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kategoria</th>
+                                    <th>Kwota</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Inżynieria</td>
+                                    <td>$1,25 mln</td>
+                                    <td>50%</td>
+                                </tr>
+                                <tr>
+                                    <td>Wzrost społeczności</td>
+                                    <td>$500 tys.</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>Operacje danych</td>
+                                    <td>$375 tys.</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>G&A</td>
+                                    <td>$375 tys.</td>
+                                    <td>15%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1rem;">Kamienie milowe na 18 miesięcy</h3>
+                    <div class="milestone-item">
+                        <div class="milestone-checkbox">&#10003;</div>
+                        <div class="milestone-text">Uruchomienie platformy produkcyjnej</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-checkbox">&#10003;</div>
+                        <div class="milestone-text">10 tys. aktywnych użytkowników</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-checkbox">&#10003;</div>
+                        <div class="milestone-text">3 płacących klientów enterprise</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-checkbox">&#10003;</div>
+                        <div class="milestone-text">500+ godzin zsynchronizowanych danych</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-checkbox">&#10003;</div>
+                        <div class="milestone-text">Gotowość do Series A (cel $10 mln)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 14: Why This Wins -->
+        <section class="slide" data-slide="14">
+            <div class="slide-header">
+                <div class="slide-label">Dlaczego to wygrywa</div>
+                <h1 class="slide-title">Idealna <span class="highlight">konwergencja</span></h1>
+            </div>
+            <div class="content-grid two-col">
+                <div class="card">
+                    <div class="card-title">Wiatry w plecy</div>
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>Budżety AI dla obronności</strong> na rekordowych poziomach</li>
+                            <li><strong>Embodied AI</strong> to kolejna granica</li>
+                            <li><strong>Niedobór danych</strong> to główne wąskie gardło</li>
+                            <li><strong>Etyczne pozyskiwanie</strong> staje się obowiązkowe</li>
+                            <li><strong>Platformy społecznościowe</strong> sprawdzone na skalę (Strava)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Nasze niesprawiedliwe przewagi</div>
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>Rynek $2,2 mld</strong> zmotywowanych zbieraczy danych</li>
+                            <li><strong>Technologia</strong> umożliwiająca idealną synchronizację</li>
+                            <li><strong>Niszowy fokus</strong> tworzy wyspecjalizowaną ekspertyzę</li>
+                            <li><strong>Pierwszy gracz</strong> w taktycznych danych multimodalnych</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 15: Exit Potential -->
+        <section class="slide" data-slide="15">
+            <div class="slide-header">
+                <div class="slide-label">Potencjał wyjścia</div>
+                <h1 class="slide-title">Wiele ścieżek do <span class="highlight">znaczących zwrotów</span></h1>
+            </div>
+            <div class="content-grid two-col">
+                <div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1rem;">Strategiczni nabywcy</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Typ</th>
+                                    <th>Przykłady</th>
+                                    <th>Uzasadnienie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Główni gracze obronności</td>
+                                    <td>Lockheed, Raytheon</td>
+                                    <td>Dane treningowe</td>
+                                </tr>
+                                <tr>
+                                    <td>Defense Tech</td>
+                                    <td>Anduril, Palantir</td>
+                                    <td>Przewaga danych</td>
+                                </tr>
+                                <tr>
+                                    <td>Giganci tech</td>
+                                    <td>NVIDIA, Google</td>
+                                    <td>Embodied AI</td>
+                                </tr>
+                                <tr>
+                                    <td>Firmy danych</td>
+                                    <td>Scale AI</td>
+                                    <td>Rozszerzenie produktu</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1rem;">Porównywalne wyceny</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Firma</th>
+                                    <th>Wycena</th>
+                                    <th>Mnożnik</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Palantir</td>
+                                    <td>$50 mld+</td>
+                                    <td>20x</td>
+                                </tr>
+                                <tr>
+                                    <td>Strava</td>
+                                    <td>$2,2 mld</td>
+                                    <td>7x</td>
+                                </tr>
+                                <tr>
+                                    <td>Scale AI</td>
+                                    <td>$14 mld</td>
+                                    <td>N/A</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 1.5rem;">
+                        <div class="data-box">
+                            <div class="data-value" style="font-size: 1.8rem;">$470 mln</div>
+                            <div class="data-label">Scenariusz bazowy (10x)</div>
+                            <div style="font-size: 0.75rem; color: var(--success); margin-top: 0.5rem;">~50x zwrot z seed</div>
+                        </div>
+                        <div class="data-box">
+                            <div class="data-value" style="font-size: 1.8rem;">$1 mld+</div>
+                            <div class="data-label">Scenariusz optymistyczny (15x)</div>
+                            <div style="font-size: 0.75rem; color: var(--success); margin-top: 0.5rem;">~100x zwrot z seed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 16: The Ask -->
+        <section class="slide" data-slide="16">
+            <div class="slide-header">
+                <div class="slide-label">Prośba</div>
+                <h1 class="slide-title"><span class="highlight">$2,5 mln</span> Runda Seed</h1>
+            </div>
+            <div class="cta-content">
+                <div class="content-grid two-col" style="text-align: left; margin-bottom: 2rem;">
+                    <div class="card">
+                        <div class="card-title">Warunki</div>
+                        <div class="card-content">
+                            <ul>
+                                <li>Wielkość rundy: <strong style="color: var(--accent-primary);">$2,5 mln</strong></li>
+                                <li>Instrument: SAFE lub runda wyceniona</li>
+                                <li>Przeznaczenie: Produkt, zespół, pierwsi klienci</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Co budujemy</div>
+                        <div class="card-content">
+                            <p><strong style="color: var(--accent-primary);">Największy na świecie zsynchronizowany, multimodalny zbiór danych taktycznych</strong></p>
+                            <p style="margin-top: 0.5rem;">— zasilany przez globalną społeczność airsoftową</p>
+                        </div>
+                    </div>
+                </div>
+                <h3 style="font-family: 'Chakra Petch', sans-serif; color: var(--text-primary); margin-bottom: 1.5rem;">Dlaczego współpracować z nami</h3>
+                <div class="cta-points">
+                    <div class="cta-point">
+                        <span class="icon">&#10003;</span>
+                        <span>Ogromny rynek z wyraźnym popytem</span>
+                    </div>
+                    <div class="cta-point">
+                        <span class="icon">&#10003;</span>
+                        <span>Unikalne, obronne podejście</span>
+                    </div>
+                    <div class="cta-point">
+                        <span class="icon">&#10003;</span>
+                        <span>Model efektywny kapitałowo</span>
+                    </div>
+                    <div class="cta-point">
+                        <span class="icon">&#10003;</span>
+                        <span>Wiele ścieżek wyjścia</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 17: Contact -->
+        <section class="slide" data-slide="17">
+            <div class="contact-content">
+                <div class="contact-cta">Zbudujmy razem przyszłość danych treningowych AI</div>
+                <div class="contact-company">MILSIM.AI</div>
+                <div class="contact-tagline">Zsynchronizowane zbiory danych multimodalnych do treningu AI</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Slide navigation dots -->
+    <div class="slide-nav" id="slideNav"></div>
+
+    <!-- Keyboard hint -->
+    <div class="keyboard-hint">
+        <span><kbd>&#8592;</kbd><kbd>&#8594;</kbd> Nawigacja</span>
+        <span><kbd>F</kbd> Pełny ekran</span>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const slideNav = document.getElementById('slideNav');
+        const currentSlideEl = document.querySelector('.slide-counter .current');
+        const totalSlideEl = document.querySelector('.slide-counter .total');
+
+        let currentSlide = 1;
+
+        // Initialize
+        totalSlideEl.textContent = totalSlides.toString().padStart(2, '0');
+
+        // Create navigation dots
+        for (let i = 1; i <= totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'slide-dot' + (i === 1 ? ' active' : '');
+            dot.setAttribute('aria-label', `Przejdź do slajdu ${i}`);
+            dot.addEventListener('click', () => goToSlide(i));
+            slideNav.appendChild(dot);
+        }
+
+        function updateUI() {
+            // Update counter
+            currentSlideEl.textContent = currentSlide.toString().padStart(2, '0');
+
+            // Update progress bar
+            const progress = (currentSlide / totalSlides) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update buttons
+            prevBtn.disabled = currentSlide === 1;
+            nextBtn.disabled = currentSlide === totalSlides;
+
+            // Update dots
+            document.querySelectorAll('.slide-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index + 1 === currentSlide);
+            });
+
+            // Update slides
+            slides.forEach((slide, index) => {
+                const slideNum = index + 1;
+                slide.classList.remove('active', 'prev');
+
+                if (slideNum === currentSlide) {
+                    slide.classList.add('active');
+                } else if (slideNum < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+        }
+
+        function goToSlide(num) {
+            if (num >= 1 && num <= totalSlides) {
+                currentSlide = num;
+                updateUI();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                e.preventDefault();
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    document.documentElement.requestFullscreen();
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(1);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(totalSlides);
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }, false);
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>

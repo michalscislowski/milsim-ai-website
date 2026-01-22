@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "MILSIM.AI | Dowódź Swoim Polem Bitwy",
+    "description": "Taktyczna platforma społeczności airsoftowej ze świadomością pola bitwy w czasie rzeczywistym"
+  },
+  "nav": {
+    "menu": "MENU",
+    "navigation": "NAWIGACJA",
+    "problemValidation": "Raport Walidacji Problemu",
+    "marketValidation": "Raport Walidacji Rynku",
+    "investmentThesis": "Teza Inwestycyjna",
+    "pitchDeck": "Prezentacja",
+    "executiveSummary": "Podsumowanie Wykonawcze"
+  },
+  "hero": {
+    "title": "MILSIM.AI",
+    "subtitle": "Dowódź Swoim Polem Bitwy"
+  },
+  "eventCommand": {
+    "title": "Dowodzenie Wydarzeniem",
+    "description": "Twórz i zarządzaj operacjami airsoftowymi z pełną kontrolą. Od małych potyczek po wielkie wydarzenia milsim, dowódź każdym aspektem misji."
+  },
+  "geofencedZones": {
+    "title": "Strefy Geofence",
+    "description": "Wyznaczaj granice operacyjne z precyzyjnym GPS. Ustaw punkty odradzania, cele i strefy zastrzeżone z dokładnością do metra."
+  },
+  "tacticalHud": {
+    "title": "Taktyczny HUD",
+    "description": "Świadomość pola bitwy w czasie rzeczywistym na wyciągnięcie ręki. Śledź cele, status drużyny i timery misji w intuicyjnym wyświetlaczu."
+  },
+  "squadTracking": {
+    "title": "Śledzenie Drużyny",
+    "description": "Monitoruj pozycje sojuszników na polu. Koordynuj ruchy, przypisuj punkty nawigacyjne i utrzymuj taktyczną spójność w czasie rzeczywistym."
+  },
+  "missionObjectives": {
+    "title": "Cele Misji",
+    "description": "Dynamiczne cele napędzające akcję. Punkty do zdobycia, strefy ewakuacji i misje czasowe angażują każdego operatora."
+  },
+  "outro": {
+    "title": "Gotowy do Dowodzenia?",
+    "description": "Dołącz do tysięcy operatorów używających MILSIM.AI, aby podnieść swoje doświadczenie airsoftowe. Planuj misje, śledź drużyny i dominuj na polu bitwy.",
+    "joinButton": "Dołącz do Operacji",
+    "downloadButton": "Pobierz Aplikację"
+  },
+  "hud": {
+    "mission": "Misja",
+    "missionValue": "OP Nightfall",
+    "utc": "UTC",
+    "team": "Drużyna",
+    "teamValue": "4/4 Aktywnych",
+    "objective": "Cel",
+    "objectiveValue": "Zabezpiecz Punkt B",
+    "distance": "Dystans"
+  },
+  "player": {
+    "yourPosition": "Twoja Pozycja"
+  },
+  "cot": {
+    "callsign": "Znak Wywoławczy",
+    "coordinates": "Współrzędne",
+    "mgrs": "MGRS",
+    "status": "Status",
+    "members": "Członkowie",
+    "heading": "Kierunek",
+    "priority": "Priorytet",
+    "timeLimit": "Limit Czasu",
+    "frequency": "Częstotliwość",
+    "threatLevel": "Poziom Zagrożenia",
+    "navigateTo": "Nawiguj Do",
+    "shareCot": "Udostępnij CoT",
+    "setWaypoint": "Ustaw Punkt"
+  },
+  "markers": {
+    "hqActive": "Sztab Aktywny",
+    "alphaSquad": "Oddział Alpha",
+    "deltaTeam": "Drużyna Delta",
+    "bravoTeam": "Drużyna Bravo",
+    "charlieTeam": "Drużyna Charlie",
+    "echoTeam": "Drużyna Echo",
+    "foxtrotTeam": "Drużyna Foxtrot",
+    "objBravo": "CEL Bravo",
+    "objCharlie": "CEL Charlie",
+    "enemyHq": "Sztab Wroga"
+  },
+  "status": {
+    "operational": "Operacyjny",
+    "moving": "W Ruchu",
+    "contested": "Sporny",
+    "holding": "Utrzymuje",
+    "engaged": "W Walce",
+    "standby": "Gotowość",
+    "secure": "Zabezpieczony",
+    "active": "Aktywny"
+  },
+  "cursor": {
+    "scroll": "PRZEWIŃ"
+  }
+}

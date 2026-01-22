@@ -4245,6 +4245,45 @@ section {
   color: var(--light);
 }
 
+/* Language Switcher */
+.language-switcher {
+  position: fixed;
+  top: 1.5rem;
+  right: 6rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: "DM Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+.language-switcher-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0.25rem 0.35rem;
+  cursor: none;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.language-switcher-btn:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.language-switcher-btn--active {
+  color: var(--light);
+}
+
+.language-switcher-divider {
+  color: rgba(255, 255, 255, 0.2);
+}
+
 /* Menu Overlay */
 .menu-overlay {
   position: fixed;
@@ -4388,6 +4427,12 @@ section {
   .menu-button-icon {
     width: 14px;
     height: 14px;
+  }
+
+  .language-switcher {
+    top: 1rem;
+    right: 4.5rem;
+    font-size: 0.6rem;
   }
 
   .slide-menu {

@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { ReactLenis } from "lenis/react";
 import gsap from "gsap";
@@ -14,6 +15,8 @@ gsap.registerPlugin(ScrollTrigger);
 const getIsMobile = () => typeof window !== "undefined" && window.innerWidth <= 800;
 
 export default function Home() {
+  const t = useTranslations();
+
   const containerRef = useRef(null);
   const heroImgRef = useRef(null);
   const heroImgElementRef = useRef(null);
@@ -52,101 +55,101 @@ export default function Home() {
   const markerData = {
     1: {
       type: "HQ",
-      name: "HQ Active",
+      name: t("markers.hqActive"),
       callsign: "COMMAND-1",
       coords: "51.5074° N, 0.1278° W",
       mgrs: "30U XC 99287 11934",
-      status: "Operational",
+      status: t("status.operational"),
       frequency: "148.500 MHz",
       personnel: 12,
     },
     2: {
       type: "Team",
-      name: "Alpha Squad",
+      name: t("markers.alphaSquad"),
       callsign: "ALPHA-6",
       coords: "51.5082° N, 0.1265° W",
       mgrs: "30U XC 99312 11956",
-      status: "Moving",
+      status: t("status.moving"),
       members: ["Alpha-1", "Alpha-2", "Alpha-3", "Alpha-4"],
       heading: "045°",
     },
     3: {
       type: "Objective",
-      name: "OBJ Bravo",
+      name: t("markers.objBravo"),
       designation: "BRAVO",
       coords: "51.5091° N, 0.1301° W",
       mgrs: "30U XC 99245 11978",
-      status: "Contested",
+      status: t("status.contested"),
       priority: "High",
       timeLimit: "15:00",
     },
     4: {
       type: "Team",
-      name: "Delta Team",
+      name: t("markers.deltaTeam"),
       callsign: "DELTA-6",
       coords: "51.5078° N, 0.1290° W",
       mgrs: "30U XC 99267 11945",
-      status: "Holding",
+      status: t("status.holding"),
       members: ["Delta-1", "Delta-2", "Delta-3"],
       heading: "270°",
     },
     5: {
       type: "Team",
-      name: "Bravo Team",
+      name: t("markers.bravoTeam"),
       callsign: "BRAVO-6",
       coords: "51.5085° N, 0.1272° W",
       mgrs: "30U XC 99298 11962",
-      status: "Engaged",
+      status: t("status.engaged"),
       members: ["Bravo-1", "Bravo-2", "Bravo-3", "Bravo-4"],
       heading: "180°",
     },
     6: {
       type: "Team",
-      name: "Charlie Team",
+      name: t("markers.charlieTeam"),
       callsign: "CHARLIE-6",
       coords: "51.5088° N, 0.1285° W",
       mgrs: "30U XC 99278 11970",
-      status: "Moving",
+      status: t("status.moving"),
       members: ["Charlie-1", "Charlie-2", "Charlie-3"],
       heading: "090°",
     },
     7: {
       type: "Team",
-      name: "Echo Team",
+      name: t("markers.echoTeam"),
       callsign: "ECHO-6",
       coords: "51.5095° N, 0.1295° W",
       mgrs: "30U XC 99258 11985",
-      status: "Standby",
+      status: t("status.standby"),
       members: ["Echo-1", "Echo-2"],
       heading: "315°",
     },
     8: {
       type: "Team",
-      name: "Foxtrot Team",
+      name: t("markers.foxtrotTeam"),
       callsign: "FOXTROT-6",
       coords: "51.5098° N, 0.1310° W",
       mgrs: "30U XC 99235 11992",
-      status: "Moving",
+      status: t("status.moving"),
       members: ["Foxtrot-1", "Foxtrot-2", "Foxtrot-3"],
       heading: "000°",
     },
     9: {
       type: "Objective",
-      name: "OBJ Charlie",
+      name: t("markers.objCharlie"),
       designation: "CHARLIE",
       coords: "51.5102° N, 0.1260° W",
       mgrs: "30U XC 99320 12001",
-      status: "Secure",
+      status: t("status.secure"),
       priority: "Medium",
       timeLimit: "20:00",
     },
     10: {
       type: "HQ",
-      name: "Enemy HQ",
+      name: t("markers.enemyHq"),
       callsign: "HOSTILE-1",
       coords: "51.5105° N, 0.1245° W",
       mgrs: "30U XC 99342 12008",
-      status: "Active",
+      status: t("status.active"),
       threat: "High",
       personnel: "Unknown",
     },
@@ -855,7 +858,7 @@ export default function Home() {
           <circle className="cursor-progress-bg" cx="50" cy="50" r="45" />
           <circle className="cursor-progress-fill" cx="50" cy="50" r="45" />
         </svg>
-        <span className="cursor-text">SCROLL</span>
+        <span className="cursor-text">{t("cursor.scroll")}</span>
       </div>
       <div ref={containerRef} onClick={closePopup}>
         <section className="hero">
@@ -913,52 +916,52 @@ export default function Home() {
 
           <div className={`marker marker-1 ${selectedMarker === 1 ? 'marker--selected' : ''}`} ref={marker1Ref} onClick={(e) => handleMarkerClick(1, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">HQ Active</p>
+            <p className="marker-label">{t("markers.hqActive")}</p>
           </div>
 
           <div className={`marker marker-2 ${selectedMarker === 2 ? 'marker--selected' : ''}`} ref={marker2Ref} onClick={(e) => handleMarkerClick(2, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Alpha Squad</p>
+            <p className="marker-label">{t("markers.alphaSquad")}</p>
           </div>
 
           <div className={`marker marker-4 ${selectedMarker === 4 ? 'marker--selected' : ''}`} ref={marker4Ref} onClick={(e) => handleMarkerClick(4, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Delta Team</p>
+            <p className="marker-label">{t("markers.deltaTeam")}</p>
           </div>
 
           <div className={`marker marker-5 ${selectedMarker === 5 ? 'marker--selected' : ''}`} ref={marker5Ref} onClick={(e) => handleMarkerClick(5, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Bravo Team</p>
+            <p className="marker-label">{t("markers.bravoTeam")}</p>
           </div>
 
           <div className={`marker marker-6 ${selectedMarker === 6 ? 'marker--selected' : ''}`} ref={marker6Ref} onClick={(e) => handleMarkerClick(6, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Charlie Team</p>
+            <p className="marker-label">{t("markers.charlieTeam")}</p>
           </div>
 
           <div className={`marker marker-7 ${selectedMarker === 7 ? 'marker--selected' : ''}`} ref={marker7Ref} onClick={(e) => handleMarkerClick(7, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Echo Team</p>
+            <p className="marker-label">{t("markers.echoTeam")}</p>
           </div>
 
           <div className={`marker marker-8 ${selectedMarker === 8 ? 'marker--selected' : ''}`} ref={marker8Ref} onClick={(e) => handleMarkerClick(8, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Foxtrot Team</p>
+            <p className="marker-label">{t("markers.foxtrotTeam")}</p>
           </div>
 
           <div className={`marker marker-3 ${selectedMarker === 3 ? 'marker--selected' : ''}`} ref={marker3Ref} onClick={(e) => handleMarkerClick(3, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">OBJ Bravo</p>
+            <p className="marker-label">{t("markers.objBravo")}</p>
           </div>
 
           <div className={`marker marker-9 ${selectedMarker === 9 ? 'marker--selected' : ''}`} ref={marker9Ref} onClick={(e) => handleMarkerClick(9, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">OBJ Charlie</p>
+            <p className="marker-label">{t("markers.objCharlie")}</p>
           </div>
 
           <div className={`marker marker-10 ${selectedMarker === 10 ? 'marker--selected' : ''}`} ref={marker10Ref} onClick={(e) => handleMarkerClick(10, e)}>
             <span className="marker-icon"></span>
-            <p className="marker-label">Enemy HQ</p>
+            <p className="marker-label">{t("markers.enemyHq")}</p>
           </div>
 
           {/* CoT Popup */}
@@ -974,22 +977,22 @@ export default function Home() {
 
               <div className="cot-popup-content">
                 <div className="cot-popup-section">
-                  <span className="cot-popup-label">Callsign</span>
+                  <span className="cot-popup-label">{t("cot.callsign")}</span>
                   <span className="cot-popup-value">{markerData[selectedMarker].callsign}</span>
                 </div>
 
                 <div className="cot-popup-section">
-                  <span className="cot-popup-label">Coordinates</span>
+                  <span className="cot-popup-label">{t("cot.coordinates")}</span>
                   <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].coords}</span>
                 </div>
 
                 <div className="cot-popup-section">
-                  <span className="cot-popup-label">MGRS</span>
+                  <span className="cot-popup-label">{t("cot.mgrs")}</span>
                   <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].mgrs}</span>
                 </div>
 
                 <div className="cot-popup-section">
-                  <span className="cot-popup-label">Status</span>
+                  <span className="cot-popup-label">{t("cot.status")}</span>
                   <span className={`cot-popup-value cot-popup-status cot-popup-status--${markerData[selectedMarker].status.toLowerCase()}`}>
                     {markerData[selectedMarker].status}
                   </span>
@@ -997,21 +1000,21 @@ export default function Home() {
 
                 {markerData[selectedMarker].members && (
                   <div className="cot-popup-section">
-                    <span className="cot-popup-label">Members</span>
+                    <span className="cot-popup-label">{t("cot.members")}</span>
                     <span className="cot-popup-value">{markerData[selectedMarker].members.join(", ")}</span>
                   </div>
                 )}
 
                 {markerData[selectedMarker].heading && (
                   <div className="cot-popup-section">
-                    <span className="cot-popup-label">Heading</span>
+                    <span className="cot-popup-label">{t("cot.heading")}</span>
                     <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].heading}</span>
                   </div>
                 )}
 
                 {markerData[selectedMarker].priority && (
                   <div className="cot-popup-section">
-                    <span className="cot-popup-label">Priority</span>
+                    <span className="cot-popup-label">{t("cot.priority")}</span>
                     <span className={`cot-popup-value cot-popup-priority cot-popup-priority--${markerData[selectedMarker].priority.toLowerCase()}`}>
                       {markerData[selectedMarker].priority}
                     </span>
@@ -1020,21 +1023,21 @@ export default function Home() {
 
                 {markerData[selectedMarker].timeLimit && (
                   <div className="cot-popup-section">
-                    <span className="cot-popup-label">Time Limit</span>
+                    <span className="cot-popup-label">{t("cot.timeLimit")}</span>
                     <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].timeLimit}</span>
                   </div>
                 )}
 
                 {markerData[selectedMarker].frequency && (
                   <div className="cot-popup-section">
-                    <span className="cot-popup-label">Frequency</span>
+                    <span className="cot-popup-label">{t("cot.frequency")}</span>
                     <span className="cot-popup-value cot-popup-value--mono">{markerData[selectedMarker].frequency}</span>
                   </div>
                 )}
 
                 {markerData[selectedMarker].threat && (
                   <div className="cot-popup-section">
-                    <span className="cot-popup-label">Threat Level</span>
+                    <span className="cot-popup-label">{t("cot.threatLevel")}</span>
                     <span className="cot-popup-value cot-popup-threat">{markerData[selectedMarker].threat}</span>
                   </div>
                 )}
@@ -1042,13 +1045,13 @@ export default function Home() {
 
               <div className="cot-popup-actions">
                 <button className="cot-action cot-action--primary">
-                  <span>Navigate To</span>
+                  <span>{t("cot.navigateTo")}</span>
                 </button>
                 <button className="cot-action">
-                  <span>Share CoT</span>
+                  <span>{t("cot.shareCot")}</span>
                 </button>
                 <button className="cot-action">
-                  <span>Set Waypoint</span>
+                  <span>{t("cot.setWaypoint")}</span>
                 </button>
               </div>
             </div>
@@ -1059,7 +1062,7 @@ export default function Home() {
             <svg className="player-arrow" viewBox="0 0 24 24" fill="none">
               <path d="M12 2L4 20L12 16L20 20L12 2Z" fill="currentColor"/>
             </svg>
-            <p className="player-label">Your Position</p>
+            <p className="player-label">{t("player.yourPosition")}</p>
           </div>
 
           {/* Tactical HUD Overlay */}
@@ -1067,24 +1070,24 @@ export default function Home() {
             {/* Top Bar */}
             <div className="tactical-hud-top">
               <div className="tactical-hud-item">
-                <span className="tactical-hud-label">Mission</span>
-                <span className="tactical-hud-value">OP Nightfall</span>
+                <span className="tactical-hud-label">{t("hud.mission")}</span>
+                <span className="tactical-hud-value">{t("hud.missionValue")}</span>
               </div>
               <div className="tactical-hud-item tactical-hud-timer">
-                <span className="tactical-hud-label">UTC</span>
+                <span className="tactical-hud-label">{t("hud.utc")}</span>
                 <span className="tactical-hud-value">{utcTime}</span>
               </div>
               <div className="tactical-hud-item">
-                <span className="tactical-hud-label">Team</span>
-                <span className="tactical-hud-value tactical-hud-value--green">4/4 Active</span>
+                <span className="tactical-hud-label">{t("hud.team")}</span>
+                <span className="tactical-hud-value tactical-hud-value--green">{t("hud.teamValue")}</span>
               </div>
             </div>
 
             {/* Bottom Bar */}
             <div className="tactical-hud-bottom">
               <div className="tactical-hud-item">
-                <span className="tactical-hud-label">Objective</span>
-                <span className="tactical-hud-value tactical-hud-value--amber">Secure Point B</span>
+                <span className="tactical-hud-label">{t("hud.objective")}</span>
+                <span className="tactical-hud-value tactical-hud-value--amber">{t("hud.objectiveValue")}</span>
               </div>
               <div className="tactical-hud-compass">
                 <span>W</span>
@@ -1092,7 +1095,7 @@ export default function Home() {
                 <span>E</span>
               </div>
               <div className="tactical-hud-item">
-                <span className="tactical-hud-label">Distance</span>
+                <span className="tactical-hud-label">{t("hud.distance")}</span>
                 <span className="tactical-hud-value">127m</span>
               </div>
             </div>
@@ -1102,68 +1105,48 @@ export default function Home() {
             {/* Section 1: Hero Branding */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h1 ref={heading1Ref}>MILSIM.AI</h1>
-                <p>Command Your Battlefield</p>
+                <h1 ref={heading1Ref}>{t("hero.title")}</h1>
+                <p>{t("hero.subtitle")}</p>
               </div>
             </div>
 
             {/* Section 2: Event Command */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2 ref={heading2Ref}>Event Command</h2>
-                <p>
-                  Create and manage airsoft operations with full control.
-                  From small skirmishes to large-scale milsim events,
-                  command every aspect of the mission.
-                </p>
+                <h2 ref={heading2Ref}>{t("eventCommand.title")}</h2>
+                <p>{t("eventCommand.description")}</p>
               </div>
             </div>
 
             {/* Section 3: Geofenced Zones */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2 ref={heading3Ref}>Geofenced Zones</h2>
-                <p>
-                  Define operational boundaries with precision GPS.
-                  Set spawn points, objectives, and restricted areas
-                  with meter-level accuracy.
-                </p>
+                <h2 ref={heading3Ref}>{t("geofencedZones.title")}</h2>
+                <p>{t("geofencedZones.description")}</p>
               </div>
             </div>
 
             {/* Section 4: Tactical HUD */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2 ref={heading4Ref}>Tactical HUD</h2>
-                <p>
-                  Real-time battlefield awareness at your fingertips.
-                  Track objectives, team status, and mission timers
-                  in an intuitive heads-up display.
-                </p>
+                <h2 ref={heading4Ref}>{t("tacticalHud.title")}</h2>
+                <p>{t("tacticalHud.description")}</p>
               </div>
             </div>
 
             {/* Section 5: Squad Tracking */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2 ref={heading5Ref}>Squad Tracking</h2>
-                <p>
-                  Monitor allied positions across the field.
-                  Coordinate movements, assign waypoints, and maintain
-                  tactical cohesion in real-time.
-                </p>
+                <h2 ref={heading5Ref}>{t("squadTracking.title")}</h2>
+                <p>{t("squadTracking.description")}</p>
               </div>
             </div>
 
             {/* Section 6: Mission Objectives */}
             <div className="hero-content-block">
               <div className="hero-content-copy">
-                <h2 ref={heading6Ref}>Mission Objectives</h2>
-                <p>
-                  Dynamic objectives that drive the action.
-                  Capture points, extraction zones, and timed missions
-                  keep every operator engaged.
-                </p>
+                <h2 ref={heading6Ref}>{t("missionObjectives.title")}</h2>
+                <p>{t("missionObjectives.description")}</p>
               </div>
             </div>
           </div>
@@ -1172,18 +1155,14 @@ export default function Home() {
         </section>
 
         <section className="outro">
-          <h2>Ready to Command?</h2>
-          <p>
-            Join thousands of operators using MILSIM.AI to elevate
-            their airsoft experience. Plan missions, track teams,
-            and dominate the battlefield.
-          </p>
+          <h2>{t("outro.title")}</h2>
+          <p>{t("outro.description")}</p>
           <div className="cta-buttons">
             <Link href="#" className="cta-button cta-button--primary">
-              Join the Operation
+              {t("outro.joinButton")}
             </Link>
             <Link href="#" className="cta-button cta-button--secondary">
-              Download App
+              {t("outro.downloadButton")}
             </Link>
           </div>
         </section>

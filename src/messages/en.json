@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "MILSIM.AI | Command Your Battlefield",
+    "description": "Tactical airsoft community platform with real-time battlefield awareness"
+  },
+  "nav": {
+    "menu": "MENU",
+    "navigation": "NAVIGATION",
+    "problemValidation": "Problem Validation Report",
+    "marketValidation": "Market Validation Report",
+    "investmentThesis": "Investment Thesis",
+    "pitchDeck": "PitchDeck",
+    "executiveSummary": "Executive Summary"
+  },
+  "hero": {
+    "title": "MILSIM.AI",
+    "subtitle": "Command Your Battlefield"
+  },
+  "eventCommand": {
+    "title": "Event Command",
+    "description": "Create and manage airsoft operations with full control. From small skirmishes to large-scale milsim events, command every aspect of the mission."
+  },
+  "geofencedZones": {
+    "title": "Geofenced Zones",
+    "description": "Define operational boundaries with precision GPS. Set spawn points, objectives, and restricted areas with meter-level accuracy."
+  },
+  "tacticalHud": {
+    "title": "Tactical HUD",
+    "description": "Real-time battlefield awareness at your fingertips. Track objectives, team status, and mission timers in an intuitive heads-up display."
+  },
+  "squadTracking": {
+    "title": "Squad Tracking",
+    "description": "Monitor allied positions across the field. Coordinate movements, assign waypoints, and maintain tactical cohesion in real-time."
+  },
+  "missionObjectives": {
+    "title": "Mission Objectives",
+    "description": "Dynamic objectives that drive the action. Capture points, extraction zones, and timed missions keep every operator engaged."
+  },
+  "outro": {
+    "title": "Ready to Command?",
+    "description": "Join thousands of operators using MILSIM.AI to elevate their airsoft experience. Plan missions, track teams, and dominate the battlefield.",
+    "joinButton": "Join the Operation",
+    "downloadButton": "Download App"
+  },
+  "hud": {
+    "mission": "Mission",
+    "missionValue": "OP Nightfall",
+    "utc": "UTC",
+    "team": "Team",
+    "teamValue": "4/4 Active",
+    "objective": "Objective",
+    "objectiveValue": "Secure Point B",
+    "distance": "Distance"
+  },
+  "player": {
+    "yourPosition": "Your Position"
+  },
+  "cot": {
+    "callsign": "Callsign",
+    "coordinates": "Coordinates",
+    "mgrs": "MGRS",
+    "status": "Status",
+    "members": "Members",
+    "heading": "Heading",
+    "priority": "Priority",
+    "timeLimit": "Time Limit",
+    "frequency": "Frequency",
+    "threatLevel": "Threat Level",
+    "navigateTo": "Navigate To",
+    "shareCot": "Share CoT",
+    "setWaypoint": "Set Waypoint"
+  },
+  "markers": {
+    "hqActive": "HQ Active",
+    "alphaSquad": "Alpha Squad",
+    "deltaTeam": "Delta Team",
+    "bravoTeam": "Bravo Team",
+    "charlieTeam": "Charlie Team",
+    "echoTeam": "Echo Team",
+    "foxtrotTeam": "Foxtrot Team",
+    "objBravo": "OBJ Bravo",
+    "objCharlie": "OBJ Charlie",
+    "enemyHq": "Enemy HQ"
+  },
+  "status": {
+    "operational": "Operational",
+    "moving": "Moving",
+    "contested": "Contested",
+    "holding": "Holding",
+    "engaged": "Engaged",
+    "standby": "Standby",
+    "secure": "Secure",
+    "active": "Active"
+  },
+  "cursor": {
+    "scroll": "SCROLL"
+  }
+}
