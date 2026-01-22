@@ -17,6 +17,27 @@ const quantico = Quantico({
 export const metadata = {
   title: "MILSIM.AI | Command Your Battlefield",
   description: "Tactical airsoft community platform with real-time battlefield awareness",
+  openGraph: {
+    title: "MILSIM.AI | Command Your Battlefield",
+    description: "Tactical airsoft community platform with real-time battlefield awareness",
+    url: "https://milsim.ai",
+    siteName: "MILSIM.AI",
+    images: [
+      {
+        url: "/milsima-open-graph.png",
+        width: 1200,
+        height: 630,
+        alt: "MILSIM.AI - Command Your Battlefield",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MILSIM.AI | Command Your Battlefield",
+    description: "Tactical airsoft community platform with real-time battlefield awareness",
+    images: ["/milsima-open-graph.png"],
+  },
 };
 
 export const viewport = {
