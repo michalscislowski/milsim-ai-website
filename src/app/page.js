@@ -269,9 +269,6 @@ export default function Home() {
       const viewportHeightLocked = window.innerHeight;
       const viewportWidthLocked = window.innerWidth;
 
-      // Guard against null refs
-      if (!heroContent || !heroImg) return;
-
       const heroContentHeight = heroContent.offsetHeight;
       const heroContentMovedistance = heroContentHeight - viewportHeightLocked;
 
@@ -281,31 +278,14 @@ export default function Home() {
       const ease = (x) => x * x * (3 - 2 * x);
 
       // Initialize corners to their starting position (at edges, not converged)
-      if (hudCorners) {
-        gsap.set(hudCorners, {
-          "--corner-inset-x": "0px",
-          "--corner-inset-y": "0px",
-        });
-      }
+      gsap.set(hudCorners, {
+        "--corner-inset-x": "0px",
+        "--corner-inset-y": "0px",
+      });
 
       // Scroll distance: 6.02 viewport heights (6 sections + small buffer)
       // Now that CSS uses locked vh values, we can use the same multiplier everywhere
       const scrollMultiplier = 6.02;
-
-      // Create quickSetters for frequently updated properties (much faster than gsap.set)
-      // Use fallback no-op functions if elements don't exist
-      const noop = () => {};
-      const setProgressBarProgress = progressBar ? gsap.quickSetter(progressBar, "--progress") : noop;
-      const setCursorProgress = customCursor ? gsap.quickSetter(customCursor, "--cursor-progress") : noop;
-      const setHeroContentY = heroContent ? gsap.quickSetter(heroContent, "y", "px") : noop;
-      const setHeroImgY = heroImg ? gsap.quickSetter(heroImg, "y", "px") : noop;
-      const setHeroMaskScale = heroMask ? gsap.quickSetter(heroMask, "scale") : noop;
-      const setHeroMaskOpacity = heroMask ? gsap.quickSetter(heroMask, "opacity") : noop;
-      const setSmartphoneMaskOpacity = smartphoneMask ? gsap.quickSetter(smartphoneMask, "opacity") : noop;
-      const setHeroGridOpacity = heroGridOverlay ? gsap.quickSetter(heroGridOverlay, "opacity") : noop;
-      const setTacticalHudOpacity = tacticalHud ? gsap.quickSetter(tacticalHud, "opacity") : noop;
-      const setPlayerMarkerOpacity = playerMarker ? gsap.quickSetter(playerMarker, "opacity") : noop;
-      const setPlayerMarkerY = playerMarker ? gsap.quickSetter(playerMarker, "y", "px") : noop;
 
       ScrollTrigger.create({
         trigger: ".hero",
@@ -313,11 +293,19 @@ export default function Home() {
         end: `+=${viewportHeightLocked * scrollMultiplier}px`,
         pin: true,
         pinSpacing: true,
-        scrub: 1.5,
+        scrub: 1,
         onUpdate: (self) => {
-          setProgressBarProgress(self.progress);
-          setCursorProgress(self.progress);
-          setHeroContentY(-self.progress * heroContentMovedistance);
+          gsap.set(progressBar, {
+            "--progress": self.progress,
+          });
+
+          gsap.set(customCursor, {
+            "--cursor-progress": self.progress,
+          });
+
+          gsap.set(heroContent, {
+            y: -self.progress * heroContentMovedistance,
+          });
 
           // Hero image parallax - adjusted for 6 sections
           let heroImgProgress;
@@ -329,7 +317,10 @@ export default function Home() {
             heroImgProgress = 0.5 + ease((self.progress - 0.7) / 0.3) * 0.5;
           }
 
-          setHeroImgY(heroImgProgress * heroImgMovedistance);
+          gsap.set(heroImg, {
+            y: heroImgProgress * heroImgMovedistance,
+            z: 0, // Maintain GPU compositing
+          });
 
           // Mask scale, saturation, overlay - adjusted for 6 sections
           // Phase 1 (0-30%): Initial state, mask hidden
@@ -370,11 +361,18 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
-          setHeroMaskScale(heroMaskScale);
+          gsap.set(heroMask, {
+            scale: heroMaskScale,
+            z: 0, // Maintain GPU compositing
+          });
 
-          // Filter updates are expensive - only update when value changes significantly
-          if (heroImgElement) heroImgElement.style.filter = `saturate(${heroImgSaturation})`;
-          if (heroImg) heroImg.style.setProperty("--overlay-opacity", heroImgOverlayOpacity);
+          gsap.set(heroImgElement, {
+            filter: `saturate(${heroImgSaturation})`,
+          });
+
+          gsap.set(heroImg, {
+            "--overlay-opacity": heroImgOverlayOpacity,
+          });
 
           // Grid overlay - visible during phases 2-4 (30%-80%)
           let heroGridOpacity;
@@ -390,7 +388,9 @@ export default function Home() {
             heroGridOpacity = 0;
           }
 
-          setHeroGridOpacity(heroGridOpacity);
+          gsap.set(heroGridOverlay, {
+            opacity: heroGridOpacity,
+          });
 
           // Marker 1 (HQ Active) - appears at section 2 (~33%)
           // Point stays visible, label fades out at Tactical HUD
@@ -423,14 +423,14 @@ export default function Home() {
           const marker1BaseOffset = 0.5 * heroImgMovedistance;
           const marker1YOffset = self.progress >= 0.33 ? currentBgOffset - marker1BaseOffset : 0;
 
-          if (marker1) {
-            gsap.set(marker1, {
-              opacity: marker1Opacity,
-              y: marker1YOffset,
-            });
-            const marker1Label = marker1.querySelector(".marker-label");
-            if (marker1Label) gsap.set(marker1Label, { opacity: marker1LabelOpacity });
-          }
+          gsap.set(marker1, {
+            opacity: marker1Opacity,
+            y: marker1YOffset,
+          });
+
+          gsap.set(marker1.querySelector(".marker-label"), {
+            opacity: marker1LabelOpacity,
+          });
 
           // Marker 2 (Alpha Squad) - appears at section 5 (~66%)
           // Stays visible for rest of scroll
@@ -448,7 +448,10 @@ export default function Home() {
           const marker2BaseOffset = 0.5 * heroImgMovedistance;
           const marker2YOffset = self.progress >= 0.66 ? currentBgOffset - marker2BaseOffset : 0;
 
-          if (marker2) gsap.set(marker2, { opacity: marker2Opacity, y: marker2YOffset });
+          gsap.set(marker2, {
+            opacity: marker2Opacity,
+            y: marker2YOffset,
+          });
 
           // Marker 3 (OBJ Bravo) - appears at section 6 (~83%)
           // Stays visible for rest of scroll
@@ -465,7 +468,10 @@ export default function Home() {
           const marker3BaseOffset = 0.7 * heroImgMovedistance;
           const marker3YOffset = self.progress >= 0.83 ? currentBgOffset - marker3BaseOffset : 0;
 
-          if (marker3) gsap.set(marker3, { opacity: marker3Opacity, y: marker3YOffset });
+          gsap.set(marker3, {
+            opacity: marker3Opacity,
+            y: marker3YOffset,
+          });
 
           // Marker 9 (OBJ Charlie) - appears after OBJ Bravo (~90%)
           // Stays visible for rest of scroll
@@ -482,7 +488,10 @@ export default function Home() {
           const marker9BaseOffset = 0.75 * heroImgMovedistance;
           const marker9YOffset = self.progress >= 0.90 ? currentBgOffset - marker9BaseOffset : 0;
 
-          if (marker9) gsap.set(marker9, { opacity: marker9Opacity, y: marker9YOffset });
+          gsap.set(marker9, {
+            opacity: marker9Opacity,
+            y: marker9YOffset,
+          });
 
           // Marker 4 (Delta Team) - appears shortly after Alpha Squad (~70%)
           // Stays visible for rest of scroll
@@ -499,7 +508,10 @@ export default function Home() {
           const marker4BaseOffset = 0.5 * heroImgMovedistance;
           const marker4YOffset = self.progress >= 0.70 ? currentBgOffset - marker4BaseOffset : 0;
 
-          if (marker4) gsap.set(marker4, { opacity: marker4Opacity, y: marker4YOffset });
+          gsap.set(marker4, {
+            opacity: marker4Opacity,
+            y: marker4YOffset,
+          });
 
           // Marker 5 (Bravo Team) - appears shortly after Delta Team (~73%)
           // Stays visible for rest of scroll
@@ -516,7 +528,10 @@ export default function Home() {
           const marker5BaseOffset = 0.5 * heroImgMovedistance;
           const marker5YOffset = self.progress >= 0.73 ? currentBgOffset - marker5BaseOffset : 0;
 
-          if (marker5) gsap.set(marker5, { opacity: marker5Opacity, y: marker5YOffset });
+          gsap.set(marker5, {
+            opacity: marker5Opacity,
+            y: marker5YOffset,
+          });
 
           // Marker 6 (Charlie Team) - appears after Bravo Team (~75%)
           // Stays visible for rest of scroll
@@ -532,7 +547,10 @@ export default function Home() {
           const marker6BaseOffset = 0.5 * heroImgMovedistance;
           const marker6YOffset = self.progress >= 0.75 ? currentBgOffset - marker6BaseOffset : 0;
 
-          if (marker6) gsap.set(marker6, { opacity: marker6Opacity, y: marker6YOffset });
+          gsap.set(marker6, {
+            opacity: marker6Opacity,
+            y: marker6YOffset,
+          });
 
           // Marker 7 (Echo Team) - appears after Charlie Team (~77%)
           // Stays visible for rest of scroll
@@ -548,7 +566,10 @@ export default function Home() {
           const marker7BaseOffset = 0.5 * heroImgMovedistance;
           const marker7YOffset = self.progress >= 0.77 ? currentBgOffset - marker7BaseOffset : 0;
 
-          if (marker7) gsap.set(marker7, { opacity: marker7Opacity, y: marker7YOffset });
+          gsap.set(marker7, {
+            opacity: marker7Opacity,
+            y: marker7YOffset,
+          });
 
           // Marker 8 (Foxtrot Team) - appears after Echo Team (~79%)
           // Stays visible for rest of scroll
@@ -564,7 +585,10 @@ export default function Home() {
           const marker8BaseOffset = 0.5 * heroImgMovedistance;
           const marker8YOffset = self.progress >= 0.79 ? currentBgOffset - marker8BaseOffset : 0;
 
-          if (marker8) gsap.set(marker8, { opacity: marker8Opacity, y: marker8YOffset });
+          gsap.set(marker8, {
+            opacity: marker8Opacity,
+            y: marker8YOffset,
+          });
 
           // Second Geofence (Enemy zone) - draws in red after OBJ Charlie (~92%)
           // Stays visible - outro section covers it with higher z-index
@@ -583,7 +607,10 @@ export default function Home() {
             geofence2Opacity = 1;
           }
 
-          if (geofence2) gsap.set(geofence2, { "--geofence-progress": geofence2Progress, opacity: geofence2Opacity });
+          gsap.set(geofence2, {
+            "--geofence-progress": geofence2Progress,
+            opacity: geofence2Opacity,
+          });
 
           // Marker 10 (Enemy HQ) - appears in center of red geofence (~94%)
           // Stays visible - outro section covers it with higher z-index
@@ -600,7 +627,10 @@ export default function Home() {
           const marker10BaseOffset = 0.9 * heroImgMovedistance;
           const marker10YOffset = self.progress >= 0.94 ? currentBgOffset - marker10BaseOffset : 0;
 
-          if (marker10) gsap.set(marker10, { opacity: marker10Opacity, y: marker10YOffset });
+          gsap.set(marker10, {
+            opacity: marker10Opacity,
+            y: marker10YOffset,
+          });
 
           // HUD Corners animation - converge toward center during section 1->2
           // Then stay converged during tactical phases, expand back at end
@@ -635,10 +665,10 @@ export default function Home() {
           const currentInsetX = cornerProgress * maxInsetX;
           const currentInsetY = cornerProgress * maxInsetY;
 
-          if (hudCorners) {
-            hudCorners.style.setProperty("--corner-inset-x", `${currentInsetX}px`);
-            hudCorners.style.setProperty("--corner-inset-y", `${currentInsetY}px`);
-          }
+          gsap.set(hudCorners, {
+            "--corner-inset-x": `${currentInsetX}px`,
+            "--corner-inset-y": `${currentInsetY}px`,
+          });
 
           // Geofence polygon animation - draws in during section 3 (Geofenced Zones)
           // Section 3 is around 33% progress
@@ -669,7 +699,10 @@ export default function Home() {
           }
 
           // The stroke draws in by animating dashoffset from full perimeter to 0
-          if (geofence) gsap.set(geofence, { "--geofence-progress": geofenceProgress, opacity: geofenceOpacity });
+          gsap.set(geofence, {
+            "--geofence-progress": geofenceProgress,
+            opacity: geofenceOpacity,
+          });
 
           // Mask transition - crossfade from jagged to smartphone shape at Tactical HUD
           // Section 4 (Tactical HUD) is around 50% progress
@@ -706,8 +739,13 @@ export default function Home() {
             }
           }
 
-          setHeroMaskOpacity(jaggedMaskOpacity);
-          setSmartphoneMaskOpacity(smartphoneMaskOpacity);
+          gsap.set(heroMask, {
+            opacity: jaggedMaskOpacity,
+          });
+
+          gsap.set(smartphoneMask, {
+            opacity: smartphoneMaskOpacity,
+          });
 
           // Player position marker - appears during Tactical HUD, stays through Squad Tracking
           let playerMarkerOpacity;
@@ -724,8 +762,10 @@ export default function Home() {
           const playerBaseOffset = 0.5 * heroImgMovedistance;
           const playerYOffset = self.progress >= 0.50 ? currentBgOffset - playerBaseOffset : 0;
 
-          setPlayerMarkerOpacity(playerMarkerOpacity);
-          setPlayerMarkerY(playerYOffset);
+          gsap.set(playerMarker, {
+            opacity: playerMarkerOpacity,
+            y: playerYOffset,
+          });
 
           // Tactical HUD - appears with smartphone mask, then expands to full screen
           let tacticalHudOpacity;
@@ -789,13 +829,13 @@ export default function Home() {
             hudHeightValue = tacticalHudHeight !== null ? `${tacticalHudHeight}vh` : "auto";
           }
 
-          setTacticalHudOpacity(tacticalHudOpacity);
-          if (tacticalHud) {
-            tacticalHud.style.width = `${tacticalHudWidth}%`;
-            tacticalHud.style.height = hudHeightValue;
-            tacticalHud.style.aspectRatio = useAspectRatio ? "1550 / 1050" : "auto";
-            tacticalHud.style.setProperty("--hud-radius", `${tacticalHudRadius}px`);
-          }
+          gsap.set(tacticalHud, {
+            opacity: tacticalHudOpacity,
+            width: `${tacticalHudWidth}%`,
+            height: hudHeightValue,
+            aspectRatio: useAspectRatio ? "1550 / 1050" : "auto",
+            "--hud-radius": `${tacticalHudRadius}px`,
+          });
 
           // Typewriter animation triggers for each section
           // Each section is ~16.67% of scroll (1/6)
