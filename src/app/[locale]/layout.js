@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    metadataBase: new URL("https://milsim.ai"),
+    metadataBase: new URL("https://milsima.com"),
     alternates: {
       canonical: `/${locale}`,
       languages: {
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
-      url: `https://milsim.ai/${locale}`,
+      url: `https://milsima.com/${locale}`,
       siteName: "MILSIM.AI",
       locale: ogLocale,
       alternateLocale,
