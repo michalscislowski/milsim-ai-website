@@ -710,34 +710,10 @@ export default function Home() {
           let smartphoneMaskOpacity;
           let jaggedMaskOpacity;
 
-          if (isMobileLocked) {
-            // On mobile, keep jagged mask visible throughout
-            smartphoneMaskOpacity = 0;
-            jaggedMaskOpacity = 1;
-          } else {
-            // Desktop: smooth crossfade between jagged and smartphone masks
-            if (self.progress <= 0.48) {
-              smartphoneMaskOpacity = 0;
-              jaggedMaskOpacity = 1;
-            } else if (self.progress <= 0.55) {
-              // Smooth crossfade: jagged fades out as smartphone fades in
-              const progress = ease((self.progress - 0.48) / 0.07);
-              smartphoneMaskOpacity = progress;
-              jaggedMaskOpacity = 1 - progress;
-            } else if (self.progress <= 0.70) {
-              // Stay as smartphone
-              smartphoneMaskOpacity = 1;
-              jaggedMaskOpacity = 0;
-            } else if (self.progress <= 0.77) {
-              // Smooth crossfade back: smartphone fades out as jagged fades in
-              const progress = ease((self.progress - 0.70) / 0.07);
-              jaggedMaskOpacity = progress;
-              smartphoneMaskOpacity = 1 - progress;
-            } else {
-              smartphoneMaskOpacity = 0;
-              jaggedMaskOpacity = 1;
-            }
-          }
+          // Skip smartphone mask crossfade - keep jagged mask visible throughout
+          // The crossfade with mask-composite: subtract causes stutter on production
+          smartphoneMaskOpacity = 0;
+          jaggedMaskOpacity = 1;
 
           gsap.set(heroMask, {
             opacity: jaggedMaskOpacity,
