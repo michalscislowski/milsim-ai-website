@@ -24,7 +24,7 @@ export const metadata = {
     siteName: "MILSIM.AI",
     images: [
       {
-        url: "/milsima-open-graph.png",
+        url: "/milsima-open-graph.webp",
         width: 1200,
         height: 630,
         alt: "MILSIM.AI - Command Your Battlefield",
@@ -36,7 +36,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "MILSIM.AI | Command Your Battlefield",
     description: "Tactical airsoft community platform with real-time battlefield awareness",
-    images: ["/milsima-open-graph.png"],
+    images: ["/milsima-open-graph.webp"],
   },
 };
 
