@@ -288,17 +288,19 @@ export default function Home() {
       const scrollMultiplier = 6.02;
 
       // Create quickSetters for frequently updated properties (much faster than gsap.set)
-      const setProgressBarProgress = gsap.quickSetter(progressBar, "--progress");
-      const setCursorProgress = gsap.quickSetter(customCursor, "--cursor-progress");
-      const setHeroContentY = gsap.quickSetter(heroContent, "y", "px");
-      const setHeroImgY = gsap.quickSetter(heroImg, "y", "px");
-      const setHeroMaskScale = gsap.quickSetter(heroMask, "scale");
-      const setHeroMaskOpacity = gsap.quickSetter(heroMask, "opacity");
-      const setSmartphoneMaskOpacity = gsap.quickSetter(smartphoneMask, "opacity");
-      const setHeroGridOpacity = gsap.quickSetter(heroGridOverlay, "opacity");
-      const setTacticalHudOpacity = gsap.quickSetter(tacticalHud, "opacity");
-      const setPlayerMarkerOpacity = gsap.quickSetter(playerMarker, "opacity");
-      const setPlayerMarkerY = gsap.quickSetter(playerMarker, "y", "px");
+      // Use fallback no-op functions if elements don't exist
+      const noop = () => {};
+      const setProgressBarProgress = progressBar ? gsap.quickSetter(progressBar, "--progress") : noop;
+      const setCursorProgress = customCursor ? gsap.quickSetter(customCursor, "--cursor-progress") : noop;
+      const setHeroContentY = heroContent ? gsap.quickSetter(heroContent, "y", "px") : noop;
+      const setHeroImgY = heroImg ? gsap.quickSetter(heroImg, "y", "px") : noop;
+      const setHeroMaskScale = heroMask ? gsap.quickSetter(heroMask, "scale") : noop;
+      const setHeroMaskOpacity = heroMask ? gsap.quickSetter(heroMask, "opacity") : noop;
+      const setSmartphoneMaskOpacity = smartphoneMask ? gsap.quickSetter(smartphoneMask, "opacity") : noop;
+      const setHeroGridOpacity = heroGridOverlay ? gsap.quickSetter(heroGridOverlay, "opacity") : noop;
+      const setTacticalHudOpacity = tacticalHud ? gsap.quickSetter(tacticalHud, "opacity") : noop;
+      const setPlayerMarkerOpacity = playerMarker ? gsap.quickSetter(playerMarker, "opacity") : noop;
+      const setPlayerMarkerY = playerMarker ? gsap.quickSetter(playerMarker, "y", "px") : noop;
 
       ScrollTrigger.create({
         trigger: ".hero",
@@ -366,9 +368,8 @@ export default function Home() {
           setHeroMaskScale(heroMaskScale);
 
           // Filter updates are expensive - only update when value changes significantly
-          heroImgElement.style.filter = `saturate(${heroImgSaturation})`;
-
-          heroImg.style.setProperty("--overlay-opacity", heroImgOverlayOpacity);
+          if (heroImgElement) heroImgElement.style.filter = `saturate(${heroImgSaturation})`;
+          if (heroImg) heroImg.style.setProperty("--overlay-opacity", heroImgOverlayOpacity);
 
           // Grid overlay - visible during phases 2-4 (30%-80%)
           let heroGridOpacity;
@@ -659,8 +660,10 @@ export default function Home() {
           const currentInsetX = cornerProgress * maxInsetX;
           const currentInsetY = cornerProgress * maxInsetY;
 
-          hudCorners.style.setProperty("--corner-inset-x", `${currentInsetX}px`);
-          hudCorners.style.setProperty("--corner-inset-y", `${currentInsetY}px`);
+          if (hudCorners) {
+            hudCorners.style.setProperty("--corner-inset-x", `${currentInsetX}px`);
+            hudCorners.style.setProperty("--corner-inset-y", `${currentInsetY}px`);
+          }
 
           // Geofence polygon animation - draws in during section 3 (Geofenced Zones)
           // Section 3 is around 33% progress
@@ -815,10 +818,12 @@ export default function Home() {
           }
 
           setTacticalHudOpacity(tacticalHudOpacity);
-          tacticalHud.style.width = `${tacticalHudWidth}%`;
-          tacticalHud.style.height = hudHeightValue;
-          tacticalHud.style.aspectRatio = useAspectRatio ? "1550 / 1050" : "auto";
-          tacticalHud.style.setProperty("--hud-radius", `${tacticalHudRadius}px`);
+          if (tacticalHud) {
+            tacticalHud.style.width = `${tacticalHudWidth}%`;
+            tacticalHud.style.height = hudHeightValue;
+            tacticalHud.style.aspectRatio = useAspectRatio ? "1550 / 1050" : "auto";
+            tacticalHud.style.setProperty("--hud-radius", `${tacticalHudRadius}px`);
+          }
 
           // Typewriter animation triggers for each section
           // Each section is ~16.67% of scroll (1/6)
