@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "MILSIM.AI | Dowódź Swoim Polem Bitwy",
-    "description": "Taktyczna platforma społeczności airsoftowej ze świadomością pola bitwy w czasie rzeczywistym"
+    "title": "MILSIM.AI | Przejmij Dowodzenie",
+    "description": "Taktyczna platforma airsoftowa ze świadomością sytuacyjną pola bitwy w czasie rzeczywistym"
   },
   "nav": {
     "menu": "MENU",
@@ -14,31 +14,31 @@
   },
   "hero": {
     "title": "MILSIM.AI",
-    "subtitle": "Dowódź Swoim Polem Bitwy"
+    "subtitle": "Przejmij Dowodzenie"
   },
   "eventCommand": {
-    "title": "Dowodzenie Wydarzeniem",
-    "description": "Twórz i zarządzaj operacjami airsoftowymi z pełną kontrolą. Od małych potyczek po wielkie wydarzenia milsim, dowódź każdym aspektem misji."
+    "title": "Centrum Dowodzenia",
+    "description": "Twórz i zarządzaj operacjami z pełną kontrolą. Od szybkich potyczek po wielodniowe wydarzenia milsim — dowódź każdym aspektem misji."
   },
   "geofencedZones": {
-    "title": "Strefy Geofence",
-    "description": "Wyznaczaj granice operacyjne z precyzyjnym GPS. Ustaw punkty odradzania, cele i strefy zastrzeżone z dokładnością do metra."
+    "title": "Strefy Operacyjne",
+    "description": "Wyznaczaj granice pola walki z precyzją GPS. Punkty startu, cele misji i strefy zastrzeżone — wszystko z dokładnością do metra."
   },
   "tacticalHud": {
     "title": "Taktyczny HUD",
-    "description": "Świadomość pola bitwy w czasie rzeczywistym na wyciągnięcie ręki. Śledź cele, status drużyny i timery misji w intuicyjnym wyświetlaczu."
+    "description": "Pełna świadomość sytuacyjna na wyciągnięcie ręki. Cele, status drużyny i czas misji — w przejrzystym interfejsie heads-up."
   },
   "squadTracking": {
-    "title": "Śledzenie Drużyny",
-    "description": "Monitoruj pozycje sojuszników na polu. Koordynuj ruchy, przypisuj punkty nawigacyjne i utrzymuj taktyczną spójność w czasie rzeczywistym."
+    "title": "Śledzenie Oddziałów",
+    "description": "Pozycje sojuszników w czasie rzeczywistym. Koordynuj manewry, wyznaczaj punkty nawigacyjne i utrzymuj taktyczną przewagę."
   },
   "missionObjectives": {
     "title": "Cele Misji",
-    "description": "Dynamiczne cele napędzające akcję. Punkty do zdobycia, strefy ewakuacji i misje czasowe angażują każdego operatora."
+    "description": "Dynamiczne cele napędzające akcję. Punkty do przejęcia, strefy ewakuacji i misje na czas — każdy operator w pełnym zaangażowaniu."
   },
   "outro": {
-    "title": "Gotowy do Dowodzenia?",
-    "description": "Dołącz do tysięcy operatorów używających MILSIM.AI, aby podnieść swoje doświadczenie airsoftowe. Planuj misje, śledź drużyny i dominuj na polu bitwy.",
+    "title": "Gotowy do Akcji?",
+    "description": "Dołącz do tysięcy operatorów, którzy z MILSIM.AI wynoszą rozgrywkę airsoft na wyższy poziom. Planuj misje, koordynuj drużyny, dominuj na polu bitwy.",
     "joinButton": "Dołącz do Operacji",
     "downloadButton": "Pobierz Aplikację"
   },
@@ -47,10 +47,10 @@
     "missionValue": "OP Nightfall",
     "utc": "UTC",
     "team": "Drużyna",
-    "teamValue": "4/4 Aktywnych",
+    "teamValue": "4/4 Aktywni",
     "objective": "Cel",
     "objectiveValue": "Zabezpiecz Punkt B",
-    "distance": "Dystans"
+    "distance": "Odległość"
   },
   "player": {
     "yourPosition": "Twoja Pozycja"
@@ -60,24 +60,24 @@
     "coordinates": "Współrzędne",
     "mgrs": "MGRS",
     "status": "Status",
-    "members": "Członkowie",
-    "heading": "Kierunek",
+    "members": "Skład",
+    "heading": "Azymut",
     "priority": "Priorytet",
     "timeLimit": "Limit Czasu",
     "frequency": "Częstotliwość",
     "threatLevel": "Poziom Zagrożenia",
-    "navigateTo": "Nawiguj Do",
+    "navigateTo": "Nawiguj",
     "shareCot": "Udostępnij CoT",
-    "setWaypoint": "Ustaw Punkt"
+    "setWaypoint": "Wyznacz Punkt"
   },
   "markers": {
     "hqActive": "Sztab Aktywny",
     "alphaSquad": "Oddział Alpha",
-    "deltaTeam": "Drużyna Delta",
-    "bravoTeam": "Drużyna Bravo",
-    "charlieTeam": "Drużyna Charlie",
-    "echoTeam": "Drużyna Echo",
-    "foxtrotTeam": "Drużyna Foxtrot",
+    "deltaTeam": "Oddział Delta",
+    "bravoTeam": "Oddział Bravo",
+    "charlieTeam": "Oddział Charlie",
+    "echoTeam": "Oddział Echo",
+    "foxtrotTeam": "Oddział Foxtrot",
     "objBravo": "CEL Bravo",
     "objCharlie": "CEL Charlie",
     "enemyHq": "Sztab Wroga"
@@ -85,9 +85,9 @@
   "status": {
     "operational": "Operacyjny",
     "moving": "W Ruchu",
-    "contested": "Sporny",
+    "contested": "Zagrożony",
     "holding": "Utrzymuje",
-    "engaged": "W Walce",
+    "engaged": "W Kontakcie",
     "standby": "Gotowość",
     "secure": "Zabezpieczony",
     "active": "Aktywny"
