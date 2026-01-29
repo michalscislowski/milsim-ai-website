@@ -9,7 +9,10 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+// Register plugin only on client side to avoid SSR issues
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // Detect mobile once at module level
 const getIsMobile = () => typeof window !== "undefined" && window.innerWidth <= 800;
@@ -296,7 +299,8 @@ export default function Home() {
         end: `+=${viewportHeightLocked * scrollMultiplier}px`,
         pin: true,
         pinSpacing: true,
-        scrub: 1,
+        scrub: 1.2, // Slightly higher for smoother mask transitions in production
+        invalidateOnRefresh: true, // Recalculate on resize/hydration
         onUpdate: (self) => {
           gsap.set(progressBar, {
             "--progress": self.progress,
@@ -326,35 +330,40 @@ export default function Home() {
           });
 
           // Mask scale, saturation, overlay - adjusted for 6 sections
-          // Phase 1 (0-30%): Initial state, mask hidden
-          // Phase 2 (30-40%): Mask reveals, desaturation begins
-          // Phase 3 (40-70%): Core features revealed, markers appear sequentially
-          // Phase 4 (70-80%): Mask closes, resaturation
-          // Phase 5 (80-100%): Final state, CTA transition
+          // Phase 1 (0-27%): Initial state, mask hidden
+          // Phase 2 (27-42%): Mask reveals, desaturation begins (extended for smoother animation)
+          // Phase 3 (42-68%): Core features revealed, markers appear sequentially
+          // Phase 4 (68-83%): Mask closes, resaturation (extended for smoother animation)
+          // Phase 5 (83-100%): Final state, CTA transition
 
           // Use larger mask scale on mobile (portrait) to ensure it's fully off-screen
           const maxMaskScale = isMobileLocked ? 6 : 2.5;
           const maskScaleRange = maxMaskScale - 1;
 
+          // Smoother ease-out for mask scaling (quartic ease-out reduces aliasing)
+          const maskEase = (x) => 1 - Math.pow(1 - x, 4);
+
           let heroMaskScale;
           let heroImgSaturation;
           let heroImgOverlayOpacity;
 
-          if (self.progress <= 0.3) {
+          if (self.progress <= 0.27) {
             heroMaskScale = maxMaskScale;
             heroImgSaturation = 1;
             heroImgOverlayOpacity = 0.35;
-          } else if (self.progress <= 0.4) {
-            const phaseProgress = ease((self.progress - 0.3) / 0.1);
+          } else if (self.progress <= 0.42) {
+            // Extended from 10% to 15% window for smoother transition
+            const phaseProgress = maskEase((self.progress - 0.27) / 0.15);
             heroMaskScale = maxMaskScale - phaseProgress * maskScaleRange;
             heroImgSaturation = 1 - phaseProgress;
             heroImgOverlayOpacity = 0.35 + phaseProgress * 0.35;
-          } else if (self.progress <= 0.7) {
+          } else if (self.progress <= 0.68) {
             heroMaskScale = 1;
             heroImgSaturation = 0;
             heroImgOverlayOpacity = 0.7;
-          } else if (self.progress <= 0.8) {
-            const phaseProgress = ease((self.progress - 0.7) / 0.1);
+          } else if (self.progress <= 0.83) {
+            // Extended from 10% to 15% window for smoother transition
+            const phaseProgress = maskEase((self.progress - 0.68) / 0.15);
             heroMaskScale = 1 + phaseProgress * maskScaleRange;
             heroImgSaturation = phaseProgress;
             heroImgOverlayOpacity = 0.7 - phaseProgress * 0.35;
@@ -364,9 +373,12 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
+          // Round scale to 3 decimal places to reduce sub-pixel aliasing on mask edges
+          // force3D ensures GPU layer stays active in production builds
           gsap.set(heroMask, {
-            scale: heroMaskScale,
-            z: 0, // Maintain GPU compositing
+            scale: Math.round(heroMaskScale * 1000) / 1000,
+            force3D: true,
+            rotation: 0.01, // Tiny rotation forces persistent GPU layer
           });
 
           gsap.set(heroImgElement, {
@@ -377,16 +389,16 @@ export default function Home() {
             "--overlay-opacity": heroImgOverlayOpacity,
           });
 
-          // Grid overlay - visible during phases 2-4 (30%-80%)
+          // Grid overlay - visible during phases 2-4 (27%-83%)
           let heroGridOpacity;
-          if (self.progress <= 0.35) {
+          if (self.progress <= 0.37) {
             heroGridOpacity = 0;
-          } else if (self.progress <= 0.4) {
-            heroGridOpacity = ease((self.progress - 0.35) / 0.05);
-          } else if (self.progress <= 0.7) {
+          } else if (self.progress <= 0.42) {
+            heroGridOpacity = ease((self.progress - 0.37) / 0.05);
+          } else if (self.progress <= 0.68) {
             heroGridOpacity = 1;
-          } else if (self.progress <= 0.75) {
-            heroGridOpacity = 1 - ease((self.progress - 0.7) / 0.05);
+          } else if (self.progress <= 0.73) {
+            heroGridOpacity = 1 - ease((self.progress - 0.68) / 0.05);
           } else {
             heroGridOpacity = 0;
           }
