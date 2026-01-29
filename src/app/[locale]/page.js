@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -187,6 +187,13 @@ export default function Home() {
 
   // Real-time UTC clock state
   const [utcTime, setUtcTime] = useState("00:00:00");
+
+  // Sync Lenis smooth scroll with GSAP ScrollTrigger
+  // This prevents flickering in production by ensuring ScrollTrigger
+  // updates on every Lenis scroll frame
+  useLenis(() => {
+    ScrollTrigger.update();
+  });
 
   useEffect(() => {
     const updateTime = () => {
