@@ -93,7 +93,6 @@ export default async function LocaleLayout({ children, params }) {
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="preload" href="/hero-img.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/mask.svg" as="image" type="image/svg+xml" />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>

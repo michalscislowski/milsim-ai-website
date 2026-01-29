@@ -380,12 +380,11 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
-          // Round scale to 3 decimal places to reduce sub-pixel aliasing on mask edges
-          // force3D ensures GPU layer stays active in production builds
+          // Animate mask-size instead of transform scale to avoid re-rasterization flickering
+          // Base mask-size is 50%, so multiply by scale factor
+          const maskSizePercent = Math.round(50 * heroMaskScale);
           gsap.set(heroMask, {
-            scale: Math.round(heroMaskScale * 1000) / 1000,
-            force3D: true,
-            rotation: 0.01, // Tiny rotation forces persistent GPU layer
+            "--mask-size": `${maskSizePercent}%`,
           });
 
           gsap.set(heroImgElement, {
