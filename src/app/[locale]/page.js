@@ -380,19 +380,12 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
-          // Mobile: use transform scale (more compatible)
-          // Desktop: use mask-size (smoother, no flickering)
-          if (isMobileLocked) {
-            gsap.set(heroMask, {
-              scale: heroMaskScale,
-              force3D: true,
-            });
-          } else {
-            const maskSizePercent = Math.round(50 * heroMaskScale);
-            gsap.set(heroMask, {
-              "--mask-size": `${maskSizePercent}%`,
-            });
-          }
+          // Animate mask-size instead of transform scale to avoid re-rasterization flickering
+          // Base mask-size is 50%, so multiply by scale factor
+          const maskSizePercent = Math.round(50 * heroMaskScale);
+          gsap.set(heroMask, {
+            "--mask-size": `${maskSizePercent}%`,
+          });
 
           gsap.set(heroImgElement, {
             filter: `saturate(${heroImgSaturation})`,
