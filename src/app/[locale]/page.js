@@ -380,11 +380,10 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
-          // Animate mask-size instead of transform scale to avoid re-rasterization flickering
-          // Base mask-size is 50%, so multiply by scale factor
-          const maskSizePercent = Math.round(50 * heroMaskScale);
+          // Use transform scale with Lenis sync to avoid flickering
           gsap.set(heroMask, {
-            "--mask-size": `${maskSizePercent}%`,
+            scale: heroMaskScale,
+            force3D: true,
           });
 
           gsap.set(heroImgElement, {
