@@ -291,7 +291,7 @@ section {
 }
 
 .hero-mask {
-  --mask-size: 125%;
+  --mask-size: 300%;
   position: absolute;
   top: 0;
   left: 0;
@@ -307,6 +307,12 @@ section {
   will-change: mask-size, -webkit-mask-size;
   pointer-events: none;
   contain: layout paint;
+}
+
+@media (min-width: 801px) {
+  .hero-mask {
+    --mask-size: 125%;
+  }
 }
 
 .hero-mask--smartphone {
