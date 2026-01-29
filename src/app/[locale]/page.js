@@ -380,11 +380,19 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
-          // Use transform scale with Lenis sync to avoid flickering
-          gsap.set(heroMask, {
-            scale: heroMaskScale,
-            force3D: true,
-          });
+          // Mobile: use transform scale (more compatible)
+          // Desktop: use mask-size (smoother, no flickering)
+          if (isMobileLocked) {
+            gsap.set(heroMask, {
+              scale: heroMaskScale,
+              force3D: true,
+            });
+          } else {
+            const maskSizePercent = Math.round(50 * heroMaskScale);
+            gsap.set(heroMask, {
+              "--mask-size": `${maskSizePercent}%`,
+            });
+          }
 
           gsap.set(heroImgElement, {
             filter: `saturate(${heroImgSaturation})`,

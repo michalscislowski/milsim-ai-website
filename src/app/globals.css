@@ -305,10 +305,23 @@ section {
   mask-composite: subtract;
   will-change: transform;
   pointer-events: none;
-  transform: scale(2.5) translateZ(0);
+  transform: scale(6) translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   contain: layout paint;
+}
+
+/* Desktop: use mask-size animation (smoother, no flickering) */
+@media (min-width: 801px) {
+  .hero-mask {
+    --mask-size: 125%;
+    -webkit-mask: linear-gradient(var(--light), var(--light)),
+      url("/mask.svg") center/var(--mask-size) no-repeat;
+    mask: linear-gradient(var(--light), var(--light)),
+      url("/mask.svg") center/var(--mask-size) no-repeat;
+    transform: none;
+    will-change: auto;
+  }
 }
 
 .hero-mask--smartphone {
