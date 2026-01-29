@@ -298,13 +298,18 @@ section {
   width: 100%;
   height: 100vh;
   background-color: var(--dark);
-  mask: linear-gradient(var(--light), var(--light)),
-    url("/mask.svg") center/var(--mask-size) no-repeat;
-  -webkit-mask: linear-gradient(var(--light), var(--light)),
-    url("/mask.svg") center/var(--mask-size) no-repeat;
-  mask-composite: subtract;
+  -webkit-mask-image: linear-gradient(var(--light), var(--light)),
+    url("/mask.svg");
+  mask-image: linear-gradient(var(--light), var(--light)),
+    url("/mask.svg");
+  -webkit-mask-position: center, center;
+  mask-position: center, center;
+  -webkit-mask-repeat: no-repeat, no-repeat;
+  mask-repeat: no-repeat, no-repeat;
+  -webkit-mask-size: 100% 100%, var(--mask-size);
+  mask-size: 100% 100%, var(--mask-size);
   -webkit-mask-composite: subtract;
-  will-change: mask-size, -webkit-mask-size;
+  mask-composite: subtract;
   pointer-events: none;
   contain: layout paint;
 }
