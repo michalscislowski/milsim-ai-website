@@ -380,12 +380,19 @@ export default function Home() {
             heroImgOverlayOpacity = 0.35;
           }
 
-          // Animate mask-size instead of transform scale to avoid re-rasterization flickering
-          // Base mask-size is 50%, so multiply by scale factor
-          const maskSizePercent = Math.round(50 * heroMaskScale);
-          gsap.set(heroMask, {
-            "--mask-size": `${maskSizePercent}%`,
-          });
+          // Mobile: use transform scale (mask-size custom property doesn't work on mobile Safari)
+          // Desktop: use mask-size animation (smoother, avoids flickering)
+          if (isMobileLocked) {
+            gsap.set(heroMask, {
+              scale: heroMaskScale,
+              force3D: true,
+            });
+          } else {
+            const maskSizePercent = Math.round(50 * heroMaskScale);
+            gsap.set(heroMask, {
+              "--mask-size": `${maskSizePercent}%`,
+            });
+          }
 
           gsap.set(heroImgElement, {
             filter: `saturate(${heroImgSaturation})`,
