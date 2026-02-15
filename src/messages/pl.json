@@ -7,18 +7,14 @@
   "nav": {
     "menu": "MENU",
     "navigation": "NAWIGACJA",
-    "problemValidation": "Raport Walidacji Problemu",
-    "marketValidation": "Raport Walidacji Rynku",
-    "investmentThesis": "Teza Inwestycyjna",
-    "pitchDeck": "Prezentacja",
-    "executiveSummary": "Podsumowanie Wykonawcze"
+    "animation": "Animacja"
   },
   "hero": {
     "title": "MILSIM.AI",
     "subtitle": "Przejmij Dowodzenie"
   },
   "eventCommand": {
-    "title": "Centrum Dowodzenia",
+    "title": "Kontrola Misji",
     "description": "Twórz i zarządzaj operacjami z pełną kontrolą. Od szybkich potyczek po wielodniowe wydarzenia milsim — dowódź każdym aspektem misji."
   },
   "geofencedZones": {
