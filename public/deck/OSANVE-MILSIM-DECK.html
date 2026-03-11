@@ -985,6 +985,218 @@ html, body {
 .stream-item h4 { font-family: var(--font-display); font-size: 0.6rem; font-weight: 600; letter-spacing: 1px; color: var(--text); }
 .stream-item p { font-size: 0.72rem; color: var(--text-sec); }
 
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto;
+    height: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .deck {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .slide {
+    position: relative !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+    padding: 2.5rem 1.2rem 2rem;
+    min-height: auto;
+    height: auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .slide:first-child {
+    min-height: 80vh;
+  }
+
+  .slide:last-child {
+    border-bottom: none;
+  }
+
+  /* Hide slide-based nav — use scroll */
+  .slide-nav,
+  .slide-arrows,
+  .pdf-btn {
+    display: none !important;
+  }
+
+  /* Stack split layouts */
+  .slide-split {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+
+  /* Typography adjustments */
+  .slide-title {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+  }
+
+  .slide-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .hero-logo {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+  }
+
+  .hero-tagline {
+    font-size: clamp(0.6rem, 2.5vw, 0.85rem);
+    letter-spacing: 3px;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem;
+  }
+
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    justify-content: center;
+  }
+
+  /* Collapse multi-column grids */
+  .numbers-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.8rem;
+  }
+
+  .pipeline {
+    flex-direction: column;
+  }
+
+  .pipe-arrow {
+    display: none;
+  }
+
+  .roadmap-row {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+
+  .roadmap-row::before {
+    display: none;
+  }
+
+  .rm-phase {
+    padding-top: 0;
+    padding-left: 2rem;
+    border-left: 2px solid #005c1a;
+  }
+
+  .rm-dot {
+    top: 0;
+    left: -9px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .team-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.8rem;
+  }
+
+  .team-photo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .edge-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dualuse-row {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .fidelity-cols {
+    grid-template-columns: 1fr !important;
+  }
+
+  .biz-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .solution-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  .annual-row {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .cta-details {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .cta-box {
+    padding: 1.5rem;
+  }
+
+  /* Inline grid overrides — slides with inline style grids */
+  [style*="grid-template-columns:repeat(4"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  [style*="grid-template-columns:repeat(3"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns:180px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Canvas sizing */
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* SVG graphics */
+  .slide-graphic {
+    min-height: 250px;
+  }
+
+  .slide-graphic svg {
+    max-height: 50vh;
+  }
+
+  /* Cards & items */
+  .card {
+    padding: 1rem;
+  }
+
+  .barrier p,
+  .pipe-step p,
+  .edge-item p,
+  .biz-desc {
+    font-size: 0.85rem;
+  }
+
+  .num-val {
+    font-size: 1.6rem;
+  }
+
+  .num-card {
+    padding: 1.2rem 0.8rem;
+  }
+
+  /* Flow line text on solution slide */
+  [style*="font-size:0.7rem"][style*="gap:0.4rem"] {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+    font-size: 0.6rem !important;
+  }
+}
+
 /* ===== PRINT / PDF EXPORT ===== */
 @media print {
   * {
@@ -4158,41 +4370,49 @@ html, body {
 
 <!-- ===== JAVASCRIPT ===== -->
 <script>
+const isMobile = window.innerWidth <= 768;
 const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
 let currentSlide = 0;
 
-// Build nav dots
-const nav = document.getElementById('slideNav');
-const counter = document.createElement('span');
-counter.className = 'slide-counter';
-nav.appendChild(counter);
-
-slides.forEach((_, i) => {
-  const dot = document.createElement('button');
-  dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
-  dot.onclick = () => goToSlide(i);
-  nav.appendChild(dot);
-});
-
-const counterEnd = document.createElement('span');
-counterEnd.className = 'slide-counter';
-nav.appendChild(counterEnd);
-
-function updateCounter() {
-  counter.textContent = String(currentSlide + 1).padStart(2, '0');
-  counterEnd.textContent = '/ ' + String(totalSlides).padStart(2, '0');
+// On mobile: make all slides visible and skip slide management
+if (isMobile) {
+  slides.forEach(s => s.classList.add('active'));
 }
-updateCounter();
+
+// Build nav dots (desktop only)
+const nav = document.getElementById('slideNav');
+if (!isMobile) {
+  const counter = document.createElement('span');
+  counter.className = 'slide-counter';
+  nav.appendChild(counter);
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    nav.appendChild(dot);
+  });
+
+  const counterEnd = document.createElement('span');
+  counterEnd.className = 'slide-counter';
+  nav.appendChild(counterEnd);
+
+  function updateCounter() {
+    counter.textContent = String(currentSlide + 1).padStart(2, '0');
+    counterEnd.textContent = '/ ' + String(totalSlides).padStart(2, '0');
+  }
+  updateCounter();
+}
 
 function goToSlide(n) {
-  if (n < 0 || n >= totalSlides) return;
+  if (isMobile || n < 0 || n >= totalSlides) return;
   slides[currentSlide].classList.remove('active');
   nav.querySelectorAll('.slide-dot')[currentSlide].classList.remove('active');
   currentSlide = n;
   slides[currentSlide].classList.add('active');
   nav.querySelectorAll('.slide-dot')[currentSlide].classList.add('active');
-  updateCounter();
+  if (typeof updateCounter === 'function') updateCounter();
   document.getElementById('prevBtn').disabled = currentSlide === 0;
   document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
 }
@@ -4201,39 +4421,41 @@ function changeSlide(dir) {
   goToSlide(currentSlide + dir);
 }
 
-// Keyboard navigation
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-    e.preventDefault();
-    changeSlide(1);
-  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-    e.preventDefault();
-    changeSlide(-1);
-  } else if (e.key === 'Home') {
-    e.preventDefault();
-    goToSlide(0);
-  } else if (e.key === 'End') {
-    e.preventDefault();
-    goToSlide(totalSlides - 1);
-  }
-});
+// Desktop-only: keyboard nav, swipe, PDF export
+if (!isMobile) {
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      changeSlide(1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      changeSlide(-1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goToSlide(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goToSlide(totalSlides - 1);
+    }
+  });
 
-// Touch/swipe support
-let touchStartX = 0;
-document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
-document.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 60) changeSlide(dx < 0 ? 1 : -1);
-});
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 60) changeSlide(dx < 0 ? 1 : -1);
+  });
+
+  // Init slide view
+  goToSlide(0);
+}
 
 // PDF Export
 function exportPDF() {
-  // Make all slides visible for print
   document.body.classList.add('print-mode');
   slides.forEach(s => s.classList.add('active'));
   setTimeout(() => {
     window.print();
-    // Restore after print
     setTimeout(() => {
       document.body.classList.remove('print-mode');
       slides.forEach((s, i) => {
@@ -4242,9 +4464,6 @@ function exportPDF() {
     }, 500);
   }, 100);
 }
-
-// Init
-goToSlide(0);
 </script>
 </body>
 </html>
