@@ -7,11 +7,8 @@
   "nav": {
     "menu": "MENU",
     "navigation": "NAVIGATION",
-    "problemValidation": "Problem Validation Report",
-    "marketValidation": "Market Validation Report",
-    "investmentThesis": "Investment Thesis",
-    "pitchDeck": "PitchDeck",
-    "executiveSummary": "Executive Summary"
+    "animation": "Animation",
+    "pitchDeck": "Pitch Deck"
   },
   "hero": {
     "title": "MILSIM.AI",

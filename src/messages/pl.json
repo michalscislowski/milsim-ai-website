@@ -7,7 +7,8 @@
   "nav": {
     "menu": "MENU",
     "navigation": "NAWIGACJA",
-    "animation": "Animacja"
+    "animation": "Animacja",
+    "pitchDeck": "Pitch Deck"
   },
   "hero": {
     "title": "MILSIM.AI",

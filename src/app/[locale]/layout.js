@@ -97,7 +97,7 @@ export default async function LocaleLayout({ children, params }) {
       <body>
         <NextIntlClientProvider messages={messages}>
           <LanguageSwitcher />
-          {/* <Menu /> */}
+          <Menu />
           {children}
         </NextIntlClientProvider>
       </body>

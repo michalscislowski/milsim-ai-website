@@ -8,13 +8,8 @@ export default function Menu() {
   const t = useTranslations("nav");
   const locale = useLocale();
 
-  // Menu items with locale-aware paths for static HTML documents
   const menuItems = [
-    { labelKey: "problemValidation", href: `/${locale === "pl" ? "01-problem-validation-report-pl.html" : "01-problem-validation-report.html"}` },
-    { labelKey: "marketValidation", href: `/${locale === "pl" ? "02-market-validation-report-pl.html" : "02-market-validation-report.html"}` },
-    { labelKey: "investmentThesis", href: `/${locale === "pl" ? "03-investment-thesis-report-pl.html" : "03-investment-thesis-report.html"}` },
-    { labelKey: "pitchDeck", href: `/${locale === "pl" ? "04-pitchdeck-pl.html" : "04-pitchdeck.html"}` },
-    { labelKey: "executiveSummary", href: `/${locale === "pl" ? "05-executive-summary-pl.html" : "05-executive-summary.html"}` },
+    { labelKey: "pitchDeck", href: `/${locale}/pitch-deck` },
   ];
 
   const toggleMenu = () => {
@@ -63,8 +58,6 @@ export default function Menu() {
                 href={item.href}
                 className="slide-menu-link"
                 onClick={closeMenu}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <span className="slide-menu-link-index">{String(index + 1).padStart(2, "0")}</span>
                 <span className="slide-menu-link-label">{t(item.labelKey)}</span>
